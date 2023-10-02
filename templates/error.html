@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="/static/front-tools/images/clap.png" type="image">
+    <link rel="stylesheet" href="/static/front-tools/css/logand.css">
+	<title>Forum</title>
+</head>
+<body>
+    <!-- -------------------------------------------------------------------- -->
+	<div id="errorservice">
+		<div class="background">
+			<div class="errors">
+				<h1>{{.}}</h1>
+				{{if eq . "404"}}
+				<h2>Page not found</h2>
+				{{else if eq . "500"}}
+				<h2>Internal server error</h2>
+				{{else if eq . "405"}}
+                <h2>Method not allowed</h2>
+				{{else}}
+				<h3>Something wrong</h3>
+				{{end}}
+			</div>
+			<a href="/home">Homepage</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------- -->
+</body>
+</html>

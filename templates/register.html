@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>login page</title>
+    <br><br>
+ 
+    <link rel="stylesheet" href="/static/front-tools/css/logand.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="/static/front-tools/images/clap.png" type="image">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <style media="screen">
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <!-- ----------------------formulaire pour l'enregistrement------------------------------ -->
+    {{ if .}}
+    <p style="color: #fff; font-size: 30px; background-color: rgb(51, 49, 49); width: 20%; height: 20%; margin-top: 2rem; margin-left: 4rem; text-align: center;">{{.Message}}</p>
+    <form method="post" action="/login">   
+        <br> 
+        <h3>Login</h3>
+        <br>
+        <label for="username">Enter your username *</label>
+        <input type="text" placeholder="Email or Username" id="username" name="username" value="{{.Username}}" required>
+        <br>
+        <label for="username">Enter your password *</label>
+        <input type="password" placeholder="Password" id="password" name="password" value="{{.Password}}" required>
+        <!-- --------------redirection vers la page de creation de compte----------- -->
+        <a href="/create">
+        <button>Log In</button>
+    <!-- </a> -->
+        <br>
+          <p>Don't have an account? <a href="/create">Create one</a></p>
+      </form>
+    {{else}}
+    <form method="post" action="/login">   
+        <br> 
+        <h3>Login</h3>
+        <br>
+        <label for="username">Enter your username *</label>
+        <input type="text" placeholder="Email or Username" id="username" name="username" required>
+        <br>
+        <label for="username">Enter your password *</label>
+        <input type="password" placeholder="Password" id="password" name="password" required>
+        <!-- --------------redirection vers la page de creation de compte----------- -->
+        <a href="/create">
+        <button>Log In</button>
+    </a>
+        <br>
+          <p>Don't have an account? <a href="/create">Create one</a></p>
+      </form>
+    {{end}}
+      <!-- -------------------------------------------------------------------- -->
+  </body>
+  </html>
