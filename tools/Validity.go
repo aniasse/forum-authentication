@@ -17,5 +17,5 @@ func IsInvalid(input string) bool {
 }
 
 func ValidExtension(s string) bool {
-	return strings.HasSuffix(s, ".jpeg") || strings.HasSuffix(s, ".png") || strings.HasSuffix(s, ".avif") || strings.HasSuffix(s, ".jpg")
+	return strings.HasSuffix(s, ".jpeg") || strings.HasSuffix(s, ".png") || strings.HasSuffix(s, ".avif") || strings.HasSuffix(s, ".jpg") || strings.HasSuffix(s, ".gif")
 }

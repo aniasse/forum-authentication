@@ -306,9 +306,10 @@ a{
 .create-post-input{
     background-color: #ffffffc4;
     padding: 20px 25px 10px;
-    display: flex;
+    display: block;
     align-items: flex-start;
 }
+
 .create-post-input img{
     width: 35px;
     border-radius: 50%;
@@ -345,7 +346,14 @@ a{
     justify-content: center;
     cursor: pointer;
     width: 200px;
+    min-width: 100px;
+
 }
+
+.create-post-links li img{
+    width: 20px;
+    margin-right: 5px;
+ }
 .category-list {
     display: block;
     top: 100%;
@@ -354,6 +362,13 @@ a{
     z-index: 1;
     padding-left: 15px;
 }
+.image-upload_Preview img{
+    margin: 12px;
+    width: 60%;
+    height: 60%;
+    display: none;
+}
+
 .category-list.hidden {
     top: 100%;
     display: none; /* Masquer par défaut grâce à la classe .hidden */
@@ -386,7 +401,26 @@ a{
     height: 1px;
     background: #ccc;
 }
-
+.separate{
+    flex: 1;
+    height: 2px;
+    margin-bottom: 10px;
+}
+.create-post-input input{
+    margin-left: 12px;
+    width: 50%;
+    height: 30px;
+    border-radius: 20px;
+    border: 1px solid#000;
+    margin-bottom: 5px;
+    padding-left: 15px;
+}
+.title-input{
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    width: 100%;
+}
 .post{
     background: #fff;
     padding: 20px 25px 5px;
@@ -455,17 +489,41 @@ a{
 #comment-container pre{
     color: #000;
 }
-.post-read textarea{
+.post-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    height: 100%;
-    resize: none;
-    border: none;
-    background: transparent;
-    color: #000;
-    cursor: default;
-    pointer-events: none;
+    margin-bottom: 15px;
+    color: #fff;
+   
 }
 
+.post-title h3 {
+    text-align: center;
+    width: 80%;
+    margin: 0;
+    font-size: 18px; 
+    font-weight: bold;
+    background-color: #045be6;
+    border-radius: 25px; 
+    padding: 10px; 
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 1);
+}
+.post-title hr{
+    width: 0;
+    border: none;
+    color: #fff;
+}
+.post-read img{
+    margin-left: 5%;
+    width: 90%;
+    height: 400px;
+    border-radius: 15px;
+    margin-top: 15px;
+    object-fit: cover;
+}
 .profile-menu-link-btn{
     .logoutbut{
         display: flex;

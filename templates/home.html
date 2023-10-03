@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/static/front-tools/css/style.css">
     <link rel="shortcut icon" href="/static/front-tools/images/clap.png" type="image">
     <script src="/static/front-tools/JS/script.js" defer></script>
-    <script src="/static/front-tools/JS/upload.js"></script>
+    <script src="/static/front-tools/JS/upload.js" defer></script>
     <title>Forum</title>
 </head>
 <body>
@@ -85,14 +85,24 @@
                         </div>
                     </div>
                     <!--  ---------- main-content ----------   -->
-        <div class="main-content">
+        <div class="main-content"  style="width: 50%;">
             <div class="create-post">
                 <form action="/home" id="postForm" method="post" enctype="multipart/form-data">
                     <div class="create-post-input">
                         <img src="/static/front-tools/images/profil.jpeg" alt="Profile Image">
-                        <input type="text" name="title" maxlength="25" required >
-                        <textarea rows="auto" id="postContent" placeholder="Write a post" name="post_content" wrap="soft" style="overflow-y: scroll; white-space: pre-wrap; display: block; margin-top: 55px; margin-left: -155px" maxlength="1500" ></textarea>
+                        <div class="title-input">
+                            <p>Title :</p>
+                            <input type="text" name="title" maxlength="25" required >
+                        </div>
+                        
+                        <textarea rows="auto" id="postContent" placeholder="Write a post" name="post_content" wrap="soft" style="overflow-y: scroll; white-space: pre-wrap;" maxlength="1500" ></textarea>
                         <p id="errorMessage" style="color: red; display: none;">You cannot exceed 15 lines.</p>
+                    </div>
+                    <div class="image-upload_Preview">
+                        <img id="imagePreview" src="" alt="Image Preview">
+                    </div>
+                    <div class="image-upload_Preview">
+                        <img id="imagePreview" src="" alt="Image Preview">
                     </div>
                     <hr>
                     <div class="create-post-links">
@@ -125,22 +135,32 @@
                                 </div>
                             </div>
                         </div>
-                         <!--upload image side-->
-                        <input type="file" name="image" id="image" accept=".jpeg, .png,.gif, .avif, .jpg, .JPG, .JPEG, .GIF, .PNG, .AVIF" onchange="checkFile()">
-                        <span id="error" style="color: red;"></span> <!--displaying error if uploaded image is greater than 20MB with js-->
+                        <div class="image-uploading">
+                            <li>
+                                <label for="image"  class="upload-label" style="cursor: pointer; display: flex; align-items: center;">
+                                    <img src="/static/front-tools/images/photo.png">
+                                    <span>Image</span> 
+                                </label>
+                                <input type="file" name="image" id="image" style="display: none;" accept=".jpeg, .png,.gif, .avif, .jpg, .JPG, .JPEG, .GIF, .PNG, .AVIF" onchange="checkFile()">
+                                <span id="error" style="color: red;"></span> <!--displaying error if uploaded image is greater than 20MB with js-->
+                            </li>
+                        </div>
                         <button type="submit" name="subpost" value="SP">Post</button>
-                        <!--end of upload image side-->
                     </div>
                 </form>
             </div>
             
-            <!------------ -display post & comment----------->
+                        <!------------ -display post & comment----------->
+            
             {{range $index, $value := .Postab}}
             <div class="post" id="{{$value.PostId}}">
-                <div style="display: block; margin:0 40%; border: 3px solid black; padding-left:5%;">
-                    {{$value.Title}}
-                   </div>  
-                <div class="post-author"> 
+                <div class="post-title">
+                    <hr>
+                    <h3>{{$value.Title}}</h3>
+                    <hr>
+                </div>
+                <hr class="separate">
+                <div class="post-author">
                     <div class="post-author_info">
                         <img src="/static/front-tools/images/profil.jpeg">
                         <div>
@@ -153,13 +173,13 @@
                         <small>{{$value.Time}}</small>
                     </div>
                 </div>
+               
                 <div class="post-read">
-                    <textarea rows="15" class="auto-resize-textarea" wrap="soft" readonly>{{$value.Content}}</textarea>
-                  {{if ne $value.ImageLink ""}}
-                    <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image" style="width:50%;">
+                    <pre style="word-wrap: break-word; white-space: pre-wrap;">{{$value.Content}}</pre> 
+                    {{if ne $value.ImageLink ""}}
+                    <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image">
                     {{end}}
                 </div>
-
                 <div class="post-stats">
                     {{range $value.Categorie}}
                     <div>
@@ -236,7 +256,7 @@
                             </div>
                         </div>
                         <div class="post-read">
-                            <textarea rows="15" id="textarea_{{.CommentId}}" wrap="soft" readonly  class="auto-resize-textarea">{{.Content}}</textarea>
+                            <pre style="word-wrap: break-word; white-space: pre-wrap;">{{.Content}}</pre>
                         </div>
 
                         <div class="post-stats">

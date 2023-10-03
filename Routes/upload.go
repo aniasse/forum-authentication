@@ -13,7 +13,7 @@ import (
 func Upload_mngmnt(w http.ResponseWriter, r *http.Request) (string, error) {
 	//*checking the file 's size
 	if r.Method == "POST" {
-		maxsize := 1 * 1024 * 1024
+		maxsize := 20 * 1024 * 1024
 		err := r.ParseMultipartForm(int64(maxsize))
 		if err != nil {
 			return "", errors.New("❌ could not allocted memory due to empty file in form")
