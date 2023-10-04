@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>login page</title>
+    <link rel="stylesheet" href="/static/front-tools/css/logand.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="shortcut icon" href="/static/front-tools/images/clap.png" type="image">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <style media="screen">
+
+    </style>
+</head>
+<body>
+ {{if .}}
+    <p style="color: #fff; font-size: 30px; background-color: rgb(51, 49, 49); width: 20%; height: 20%; margin-top: 2rem; margin-left: 4rem; text-align: center;">{{.Errormessage}}</p>
+<!-- {{else}} -->
+<!-- <p style="border: 2px solid green;">non</p> -->
+{{end}}
+    
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+  <!--   --------------------------formulaire pour inscription------------------------------- -->
+
+ {{if .}}
+
+  {{if .CreateForm}}
+  <form method="post" action="/create">
+    <h3>Create account</h3>
+   <label for="password">Write your name *</label>
+   <div id="ligne">  
+   <div class="forename">
+    <input type="text" placeholder="forename" name="surname" minlength="2" maxlength="15" value="{{.CreateForm.Surname}}" required>
+    </div>
+    <div class="name">
+    <label for="Name"></label>
+    <input type="text" placeholder="Name" name="name" minlength="2" maxlength="15" value="{{.CreateForm.Name}}" required>
+    </div></div>
+    <label for="username">Create a username *</label>
+    <input type="text" placeholder="Username" id="username" name="username" minlength="2" maxlength="15" value="{{.CreateForm.Username}}" required>
+
+    <label for="email">Write your email *</label>
+    <input type="email" placeholder="Email or Phone" id="email" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" name="email" value="{{.CreateForm.Email}}" required >
+    
+    <label for="password">Create and confirm password *</label>
+    <div class="creationpwd">
+    <div id="creationofpwd">
+    <input type="password" placeholder="Password" id="password" name="password" value="{{.CreateForm.Password}}" minlength="8" maxlength="15" required>
+     </div>
+    <div class="confirmationpwd">
+    <input type="password" placeholder="Confirm it" id="password" name="confirmpwd" value="{{.CreateForm.Confirmpwd}}" minlength="8" maxlength="15" required>
+    </div>
+    </div>
+
+    
+    <br>
+    <button class="signup-button">Create</button>
+    
+    <p class="goback">Go back to the <a href="/login">login</a></p>
+</form>
+    {{end}}
+    {{else}}
+    <form method="post" action="/create">
+        <h3>Create account</h3>
+       <label for="password">Write your name *</label>
+       <div id="ligne">  
+       <div class="forename">
+        <input type="text" placeholder="forename" name="surname" minlength="2" maxlength="15" required>
+        </div>
+        <div class="name">
+        <label for="Name"></label>
+        <input type="text" placeholder="Name" name="name" minlength="2" maxlength="15" required>
+        </div></div>
+        <label for="username">Create a username *</label>
+        <input type="text" placeholder="Username" id="username" name="username" minlength="2" maxlength="15" required>
+
+        <label for="email">Write your email *</label>
+        <input type="email" placeholder="Email or Phone" id="email" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" name="email" required >
+        
+        <label for="password">Create and confirm password *</label>
+        <div class="creationpwd">
+        <div id="creationofpwd">
+        <input type="password" placeholder="Password" id="password" name="password" minlength="2" maxlength="15" required>
+         </div>
+        <div class="confirmationpwd">
+        <input type="password" placeholder="Confirm it" id="password" name="confirmpwd" minlength="2" maxlength="15" required>
+        </div>
+        </div>
+
+        
+        <br>
+        <button class="signup-button">Create</button>
+        
+        <p class="goback">Go back to the <a href="/login">login</a></p>
+    </form>
+   
+{{end}}
+
+<!--     -------------------------------------------------------------------------- -->
+</body>
+</html>

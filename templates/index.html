@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/front-tools/css/style.css">
+    <link rel="shortcut icon" href="/static/front-tools/images/clap.png" type="image">
+    <script src="/static/front-tools/JS/script.js" defer></script>
+    <title>Forum</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="/" class="logo">
+                <H2>FORUM</H2>
+            </a>
+           
+        </div>
+        <div class="navbar-center">
+        </div>
+        <div class="navbar-right">
+            <div class="login">
+                <a href="/login"><span>LOG IN</span></a>
+                <a href="/create"><span>SIGN UP</span></a>
+            </div>
+        </div>
+             <!--  ---------- profile-drop-down-menu ----------   -->     
+        <div class="profile-menu-wrap" id="profileMenu">
+            <div class="profile-menu">
+                <div class="user-info">
+                    <img src="/static/front-tools/images/profil.jpeg">
+                    <div>
+                        <h3>{{.CurrentN}} {{.CurrentSN}}</h3>
+                        <p>@{{.CurrentUN}}</p>
+                    </div>
+                </div>
+                <hr>
+                <a href="#" class="profile-menu-link">
+                    <img src="/static/front-tools/images/feedback.png">
+                    <p>Give Feedback</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="profile-menu-link">
+                    <img src="/static/front-tools/images/setting.png">
+                    <p>Settings & Privacy</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="profile-menu-link">
+                    <img src="/static/front-tools/images/help.png">
+                    <p>Help & Support</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="profile-menu-link">
+                    <img src="/static/front-tools/images/display.png">
+                    <p>Display & Accessiblity</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="profile-menu-link">
+                    <img src="/static/front-tools/images/logout.png">
+                    <p>Logout</p>
+                    <span>></span>
+                </a>
+            </div>
+        </div>   
+    </nav>
+                    <!--  ---------- navbar close ----------   -->
+
+    <div class="container">
+                    <!--  ---------- left-sidebar ----------   -->
+        <div class="right-sidebar">
+            <div class="sidebar-news">
+                <img src="/static/front-tools/images/filter.png" class="info-icon">
+                <h3>Filter</h3>
+                <div id="activeFilter" class="sidebar-filter">
+                    <ul>
+                        <li class="post-link"><a href="#"><span>Posts</span></a></li>
+                        <li class="post-link"><a href="#"><span>Favorites</span></a></li>
+                        <li class="post-link"><a href="#"><span>Comments</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-filter-category">
+                <img src="/static/front-tools/images/category.png" class="info-icon">
+                <h3>Categories</h3>
+                <div class="sidebar-category">
+                    <a href="/index?filter=education"><img src="/static/front-tools/images/education.png">Education</a>
+                    <a href="/index?filter=sport"><img src="/static/front-tools/images/sport.png">Sport</a>
+                    <a href="/index?filter=art"><img src="/static/front-tools/images/art.png" class="radius">Art & Culture</a>
+                    <a href="/index?filter=cinema"><img src="/static/front-tools/images/cinema.png">Cinema</a>
+                    <a href="/index?filter=health"><img src="/static/front-tools/images/health.png">Health</a>
+                    <a href="/index?filter=others"><img src="/static/front-tools/images/other.png">Others</a>
+                </div>
+            </div>
+        </div>
+    
+                    <!--  ---------- main-content ----------   -->
+        <div class="main-content">
+            {{if eq .Empty true}}
+            <div style="margin: 5% 40%;">
+                <p style="color:rgb(1, 13, 36); font-size:larger" >NO RESULT</p>
+                <a href="/" style="color:rgb(185, 185, 185);">Go back </a>
+            </div>
+            {{else}}
+
+            {{range $index, $value := .Postab}}
+            <div class="post" id="{{$value.PostId}}">
+                <div class="post-title">
+                    <hr>
+                    <h3>{{$value.Title}}</h3>
+                    <hr>
+                </div> 
+                <div class="post-author">
+                    <div class="post-author_info">
+                        <img src="/static/front-tools/images/profil.jpeg">
+                        <div>
+                            <h1>{{$value.Surname}} {{$value.Name}}</h1>
+                            <small>@{{$value.Username}}</small>
+                            <small>{{$value.Time}}</small>
+                        </div>
+                    </div>
+                    <div class="date">
+                        <small>{{$value.Date}}</small>
+                    </div>
+                </div>
+                <div class="post-read">
+                    <pre style="word-wrap: break-word; white-space: pre-wrap;">{{$value.Content}}</pre> 
+                    {{if ne $value.ImageLink ""}}
+                    <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image">
+                    {{end}}
+                </div>
+                    
+                <div class="post-stats">
+                    {{range $value.Categorie}}
+                    <div>
+                        <span class="liked-users">{{.}}</span>
+                    </div>
+                    {{end}}
+                </div>
+            
+                <div class="post-activity">
+                    <div class="reactform">
+                        <input type="text" name="Rpostid" value="{{$value.PostId}}" style="display: none;">
+                        <div data-post_id="{{$value.PostId}}"  class="comment-section-toggler">
+                            <img src="/static/front-tools/images/profil.jpeg" class="post-activity-user-icon">
+                            <img src="/static/front-tools/images/down-arrow.png" class="post-activity-arrow-icon">
+                        </div>
+                        <label for="{{$value.PostId}}like" style="display: inline;">
+                            <div class="post-activity-link" id="like-button">
+                                {{if eq $value.SessionReact "true"}}
+                                <img src="/static/front-tools/images/like.svg" class="post-link" style="filter:invert(39%) sepia(74%) saturate(3469%) hue-rotate(214deg) brightness(92%) contrast(91%);">
+                                {{else if eq $value.SessionReact "false"}}
+                                <img src="/static/front-tools/images/like.svg" class="post-link">
+                                {{else }}
+                                <img src="/static/front-tools/images/like.svg" class="post-link">
+                                {{end}}
+                                <span id="thereaction" class="post-link">Like</span>
+                                <span class="like-count">  {{len $value.Like}}</span>
+                            </div>
+                        </label>
+                        <input type="submit" name="react" id="{{$value.PostId}}like" style="display: none;" value="true">
+                        <label for="{{$value.PostId}}dislike">
+                            <div class="post-activity-link" id="dislike-button">
+                                {{if eq $value.SessionReact "false"}}
+                                <img src="/static/front-tools/images/dislike.svg" class="post-link" style="filter:invert(7%) sepia(86%) saturate(6423%) hue-rotate(9deg) brightness(89%) contrast(112%);">
+                                {{else if eq $value.SessionReact "true"}}
+                                <img src="/static/front-tools/images/dislike.svg" class="post-link">
+                                {{else}}
+                                <img src="/static/front-tools/images/dislike.svg" class="post-link">
+                                {{end}}
+                                <span id="thereaction" class="post-link">Dislike</span>
+                                <span class="dislike-count">  {{len $value.Dislike}}</span>
+                            </div>
+                        </label>
+                        <input type="submit" name="react" id="{{$value.PostId}}dislike" style="display: none" value="false">
+                    </div>
+                        <div class="post-activity-link-comment" data-post_id="{{$value.PostId}}">
+                            <img src="/static/front-tools/images/comment.png" class="post-link">
+                            <span id="thereaction" class="post-link">Comment</span>
+                            <span id="comment-count" class="comment-count">  {{len .Comment_tab}}</span>
+                        </div>
+                        
+                </div>
+                <div id="comment-container_{{$value.PostId}}" class="comment-container">
+                    <!-- Contenu des commentaires ici -->
+                    {{range $value.Comment_tab}}
+                    <div class="comments" id="{{.CommentId}}">
+                        <div class="comment-author">
+                            <div class="post-author_info">
+                                <img src="/static/front-tools/images/profil.jpeg">
+                                <div>
+                                    <h1>{{.Name}} {{.Surname}}</h1>
+                                    <small>@{{.Username}}</small>
+                                    <small>{{.Time}}</small>
+                                </div>
+                            </div>
+                            <div class="date">
+                                <small>{{.Date}}</small>
+                            </div>
+                        </div>
+                        <div class="post-read">
+                            <pre style="word-wrap: break-word; white-space: pre-wrap;">{{.Content}}</pre>
+                        </div>
+                            
+                        <div class="post-stats">
+                        </div>
+                        <div class="comment-activity">
+                            <input type="text" name="Rcomid" value="{{.CommentId}}" style="display: none;"> 
+                            <label for="{{.CommentId}}like">
+                                <div class="post-activity-link" id="comment-like-button">
+                                    {{if eq .SessionReact "true"}}
+                                    <img src="/static/front-tools/images/like.svg"  class="post-link" style="filter:invert(39%) sepia(74%) saturate(3469%) hue-rotate(214deg) brightness(92%) contrast(91%);">
+                                    {{else if eq .SessionReact "false"}}
+                                    <img src="/static/front-tools/images/like.svg" class="post-link">
+                                    {{else}}
+                                    <img src="/static/front-tools/images/like.svg" class="post-link">
+                                    {{end}}
+                                    <span class="post-link" id="thereaction">Like</span>
+                                    <span class="like-count">  {{len .Likecomm}}</span>
+                                </div>
+                            </label>
+                            <input type="submit" name="reactcomm" id="{{.CommentId}}like" style="display: none;" value="true">
+                            <label for="{{.CommentId}}dislike">
+                                <div class="post-activity-link" id="comment-dislike-button">
+                                    {{if eq .SessionReact "false"}}
+                                    <img src="/static/front-tools/images/dislike.svg" class="post-link" style="filter:invert(7%) sepia(86%) saturate(6423%) hue-rotate(9deg) brightness(89%) contrast(112%);">
+                                    {{else if eq .SessionReact "true"}}
+                                    <img src="/static/front-tools/images/dislike.svg"  class="post-link">
+                                    {{else}}
+                                    <img src="/static/front-tools/images/dislike.svg" class="post-link">
+                                    {{end}}
+                                    <span class="post-link" id="thereaction">Dislike</span>
+                                    <span class="dislike-count">{{len .Dislikecomm}}</span>
+                                </div>
+                            </label>
+                            <input type="submit" name="reactcomm" id="{{.CommentId}}dislike" style="display: none;" value="false">
+        
+    
+    <!-- --------------------ranger dans data-username le nom du user qui doit etre repondu-------------------------------------- -->
+    
+                            <div class="post-activity-link-reply" data-comment_id="{{.CommentId}}" data-username="student">
+                                <img src="/static/front-tools/images/reply.png" class="post-link">
+                                <span class="post-link" id="thereaction">Reply</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+            {{end}}
+            {{end}}
+
+            <div class="login-request" id="logRequest">
+                <span class="close-button" onclick="closeLoginRequest()">&times;</span>
+                <p>Please log in. <br> Your account is required to interact with content.</p>
+                <div class="login">
+                    <a href="/login"><span>LOG IN</span></a>
+                    <a href="/create"><span>SIGN UP</span></a>
+                </div>
+            </div>
+            
+            
+        </div>
+                
+    </div>
+    <footer>
+        <div class="sidebar-useful-links"> <div class="copyright-msg">
+            <H2>Forum</H2>
+            <p>VAAMS &#169; 2023. All right reserved</p>
+        </div>
+    </div>
+    </footer>
+    
+</body>
+
+
+</html>
