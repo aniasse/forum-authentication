@@ -161,9 +161,12 @@
 
             {{range $index, $value := .Postab}}
             <div class="post" id="{{$value.PostId}}">
-                <div style="display: block; margin:0 40%; border: 3px solid black; padding-left:5%;">
-                    {{$value.Title}}
-                   </div>  
+                <div class="post-title">
+                    <hr>
+                    <h3>{{$value.Title}}</h3>
+                    <hr>
+                </div>
+                <hr class="separate">
                 <div class="post-author"> 
                     <div class="post-author_info">
                         <img src="/static/front-tools/images/profil.jpeg">
@@ -178,9 +181,9 @@
                     </div>
                 </div>
                 <div class="post-read">
-                    <textarea rows="15" class="auto-resize-textarea" wrap="soft" readonly>{{$value.Content}}</textarea>
-                  {{if ne $value.ImageLink ""}}
-                    <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image" style="width:50%;">
+                    <pre style="word-wrap: break-word; white-space: pre-wrap;">{{$value.Content}}</pre> 
+                    {{if ne $value.ImageLink ""}}
+                    <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image">
                     {{end}}
                 </div>
 
@@ -260,7 +263,7 @@
                             </div>
                         </div>
                         <div class="post-read">
-                            <textarea rows="15" id="textarea_{{.CommentId}}" wrap="soft" readonly  class="auto-resize-textarea">{{.Content}}</textarea>
+                            <pre style="word-wrap: break-word; white-space: pre-wrap;">{{.Content}}</pre>
                         </div>
 
                         <div class="post-stats">
