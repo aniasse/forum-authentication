@@ -39,7 +39,7 @@ GetData retrieves datas from our database and returns their values
 
 Ex: WHERE age > 12, WHERE name = 'nabou', ORDER by, etc....
 */
-func (database Db) GetData(Attributes string, From string, condition string) (*sql.Rows, error) {
+func (database *Db) GetData(Attributes string, From string, condition string) (*sql.Rows, error) {
 	query := fmt.Sprintf("SELECT %v FROM %v %v;", Attributes, From, condition)
 	switch {
 	case Attributes == "":
@@ -69,7 +69,7 @@ It must be written in this format : name = aniasse , username = aniasse@gmail.co
 
 Ex: WHERE age > 12, ORDER by, etc....
 */
-func (database Db) UPDATE(table string, Toset string, condition string) error {
+func (database *Db) UPDATE(table string, Toset string, condition string) error {
 	query := fmt.Sprintf("UPDATE %s SET %s %s;", table, Toset, condition)
 	_, err := database.Doc.Exec(query)
 	if err != nil {
@@ -95,7 +95,7 @@ DELETE removes an element from a table
   - condition  represents the other instruction that specifies which datas to fecth
     Ex: WHERE age > 12, ORDER by, etc....
 */
-func (database Db) DELETE(table string, condition string) error {
+func (database *Db) DELETE(table string, condition string) error {
 	query := fmt.Sprintf("DELETE FROM %v %s;", table, condition)
 	if table == "" {
 		log.Fatal("⚠ ERROR: cannot delete data from database, missing entity (table)\n")
@@ -133,4 +133,24 @@ func Getelement(rows *sql.Rows) (string, error) {
 	}
 
 	return element, nil
+}
+
+func (database *Db) Exist(Attribute string, From string, condition string) (bool, error) {
+	check, errdata := database.GetData(Attribute, From, condition)
+	if errdata != nil {
+		fmt.Println("⚠ ERROR ⚠ : Couldn't get data from database in 'Exist' function ❌")
+		return false, errdata
+	}
+
+	checkvalue, errCheckVal := Getelement(check)
+	if errCheckVal != nil {
+		fmt.Println("⚠ ERROR ⚠ : Couldn't get value in 'Exist' function ❌")
+		return false, errCheckVal
+	}
+	// if there is no such post => return empty string in checkvalue variable
+	if checkvalue == "" {
+		return false, nil
+	} else {
+		return true, nil
+	}
 }

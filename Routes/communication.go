@@ -16,6 +16,7 @@ type Res struct {
 	CurrentSN string
 	CurrentUN string
 	Postab    Com.Posts
+	Empty     bool
 }
 
 var (
@@ -45,25 +46,22 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 		return
 	}
 
+	fmt.Println("postab size ->> ", len(postab))
 	Display_mngmnt(w, r) //display all values in the forum database
-	fmt.Println(postab)
-	if len(postab) == 0 {
-		errwel := postab.Welcome_user(database, Id_user)
-		if errwel != nil {
-			fmt.Printf("⚠ ERRWEL ⚠ :%s ❌", errwel)
+	//--removing the welcoming post
+	if len(postab) > 1 {
+		errdelwel, state := postab.DeleteWelcome_user(database, Id_user)
+		if errdelwel != nil {
+			fmt.Printf("⚠ ERRDELWEL ⚠ :%s ❌\n", errdelwel)
 			Err.Snippets(w, 500)
 			return
 		}
-	} else {
-		errdelwel:=postab.DeleteWelcome_user(database, Id_user)
-		if errdelwel != nil {
-			fmt.Printf("⚠ ERRDELWEL ⚠ :%s ❌", errdelwel)
-			Err.Snippets(w, 500)
-			return
+		if state { // welcome post deletion occured
+			http.Redirect(w, r, "/home", http.StatusSeeOther)
+			fmt.Println("🎉 first post created by user n°= ", Id_user)
 		}
 	}
-
-	//?------------ client sent a request-----------------
+	//?------------ client sent a request -----------------
 	if r.Method == "POST" {
 		//--------retrieving form values ----------
 		fmt.Println("--------------------------------------------")
@@ -292,9 +290,12 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 		Err.Snippets(w, 500)
 		return
 	}
-
 	// user's name
 	current_username, current_surname, current_name := tools.GetName_byID(database, Id_user)
+
+	//returning "empty" signal to show postab is empty
+	//(there 's no result after filter)
+
 	//struct to execute
 	final := Res{
 		CurrentUN: current_username,
@@ -308,6 +309,7 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 	if errexc != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR ⚠ executing file --> %v\n", errexc)
+		Err.Snippets(w, 500)
 		return
 	}
 	fmt.Println("--------------- 🟢🌐 home data sent -----------------------") //debug

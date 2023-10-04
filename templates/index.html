@@ -94,8 +94,14 @@
         </div>
     
                     <!--  ---------- main-content ----------   -->
-        <div class="main-content" style="width: 50%;">
-          
+        <div class="main-content">
+            {{if eq .Empty true}}
+            <div style="margin: 5% 40%;">
+                <p style="color:rgb(1, 13, 36); font-size:larger" >NO RESULT</p>
+                <a href="/" style="color:rgb(185, 185, 185);">Go back </a>
+            </div>
+            {{else}}
+
             {{range $index, $value := .Postab}}
             <div class="post" id="{{$value.PostId}}">
                 <div class="post-title">
@@ -241,6 +247,8 @@
                 </div>
             </div>
             {{end}}
+            {{end}}
+
             <div class="login-request" id="logRequest">
                 <span class="close-button" onclick="closeLoginRequest()">&times;</span>
                 <p>Please log in. <br> Your account is required to interact with content.</p>

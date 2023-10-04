@@ -13,7 +13,7 @@
     <nav class="navbar">
         <div class="navbar-left">
             <a href="/home" class="logo">
-                <H2>FORUM</H2>
+                <h2>FORUM</h2>
             </a>
         </div>
         <div class="navbar-center">
@@ -146,21 +146,25 @@
                             </li>
                         </div>
                         <button type="submit" name="subpost" value="SP">Post</button>
+                        <!--end of upload image side-->
                     </div>
                 </form>
             </div>
             
-                        <!------------ -display post & comment----------->
-            
+            <!------------ -display post & comment----------->
+            {{if eq .Empty true}}
+            <div style="margin: 5% 40%;">
+                <p style="color:rgb(1, 13, 36); font-size:larger" >NO RESULT</p>
+                <a href="/home" style="color:rgb(185, 185, 185);">Go back </a>
+            </div>
+            {{else}}
+
             {{range $index, $value := .Postab}}
             <div class="post" id="{{$value.PostId}}">
-                <div class="post-title">
-                    <hr>
-                    <h3>{{$value.Title}}</h3>
-                    <hr>
-                </div>
-                <hr class="separate">
-                <div class="post-author">
+                <div style="display: block; margin:0 40%; border: 3px solid black; padding-left:5%;">
+                    {{$value.Title}}
+                   </div>  
+                <div class="post-author"> 
                     <div class="post-author_info">
                         <img src="/static/front-tools/images/profil.jpeg">
                         <div>
@@ -173,13 +177,13 @@
                         <small>{{$value.Time}}</small>
                     </div>
                 </div>
-               
                 <div class="post-read">
-                    <pre style="word-wrap: break-word; white-space: pre-wrap;">{{$value.Content}}</pre> 
-                    {{if ne $value.ImageLink ""}}
-                    <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image">
+                    <textarea rows="15" class="auto-resize-textarea" wrap="soft" readonly>{{$value.Content}}</textarea>
+                  {{if ne $value.ImageLink ""}}
+                    <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image" style="width:50%;">
                     {{end}}
                 </div>
+
                 <div class="post-stats">
                     {{range $value.Categorie}}
                     <div>
@@ -256,7 +260,7 @@
                             </div>
                         </div>
                         <div class="post-read">
-                            <pre style="word-wrap: break-word; white-space: pre-wrap;">{{.Content}}</pre>
+                            <textarea rows="15" id="textarea_{{.CommentId}}" wrap="soft" readonly  class="auto-resize-textarea">{{.Content}}</textarea>
                         </div>
 
                         <div class="post-stats">
@@ -316,6 +320,7 @@
                 
             </div>
             {{end}}
+            {{end}}
             
             
         </div>
@@ -323,7 +328,7 @@
     <footer>
         <div class="sidebar-useful-links"> 
             <div class="copyright-msg">
-                <H2>Forum</H2>
+                <h2>Forum</h2>
                 <p>VAAMS &#169; 2023. All right reserved</p>
             </div>
         </div>

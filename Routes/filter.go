@@ -228,6 +228,12 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 		error_file.Execute(w, "500")
 		return
 	}
+	//returning "empty" signal to show postab is empty
+	//(there 's no result after filter)
+	var empty bool
+	if len(newtab) == 0 {
+		empty = true
+	}
 	//users name and surname
 	//struct to execute
 	finalex := struct {
@@ -235,11 +241,13 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 		CurrentSN string
 		CurrentUN string
 		Postab    Com.Posts
+		Empty     bool
 	}{
 		CurrentN:  name,
 		CurrentSN: surname,
 		CurrentUN: username,
 		Postab:    newtab,
+		Empty:     empty,
 	}
 
 	//sending data to html
@@ -437,12 +445,28 @@ func Filter(w http.ResponseWriter, r *http.Request, database db.Db) {
 	username, name, surname := tools.GetName_byID(database, Id_user)
 	fmt.Println("creds ", username, name, surname)
 
+	//returning "empty" signal to show postab is empty
+	//(there 's no result after filter)
+	var empty bool
+	if len(newtab) == 0 {
+		empty = true
+	}
+	fmt.Println("empty bool filter -> ", empty)
+
+	//users name and surname
 	//struct to execute
-	final := Res{
+	final := struct {
+		CurrentN  string
+		CurrentSN string
+		CurrentUN string
+		Postab    Com.Posts
+		Empty     bool
+	}{
 		CurrentN:  name,
 		CurrentSN: surname,
 		CurrentUN: username,
 		Postab:    newtab,
+		Empty:     empty,
 	}
 
 	//sending data to html
@@ -612,13 +636,26 @@ func Indexfilter(w http.ResponseWriter, r *http.Request, database db.Db) {
 	}
 	username, name, surname := tools.GetName_byID(database, Id_user)
 	fmt.Println("creds ", username, name, surname)
-
+	//returning "empty" signal to show postab is empty
+	//(there 's no result after filter)
+	var empty bool
+	if len(newtab) == 0 {
+		empty = true
+	}
+	//users name and surname
 	//struct to execute
-	final := Res{
+	final := struct {
+		CurrentN  string
+		CurrentSN string
+		CurrentUN string
+		Postab    Com.Posts
+		Empty     bool
+	}{
 		CurrentN:  name,
 		CurrentSN: surname,
 		CurrentUN: username,
 		Postab:    newtab,
+		Empty:     empty,
 	}
 
 	//sending data to html

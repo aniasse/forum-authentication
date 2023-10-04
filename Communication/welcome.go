@@ -1,6 +1,7 @@
 package comm
 
 import (
+	"errors"
 	"fmt"
 	data "forum/Database"
 	tools "forum/tools"
@@ -20,6 +21,8 @@ As the first user, you are a pioneer. Feel free to explore topics that interest 
 Whether it's science, technology, art, or more, your voice is valuable. 
 Contribute to make this community vibrant and enriching for everyone. We look forward to your contributions.
 Thank you for being part of this adventure with us!
+
+❌ PS: THIS POST WILL DISAPPEAR AFTER YOU CREATE ONE ❌
 		  `
 		value = strings.ReplaceAll(value, "'", "2@c86cb3")
 		//-- formatting title's special chars
@@ -64,25 +67,49 @@ Thank you for being part of this adventure with us!
 	return nil
 }
 
-func (Post_tab *Posts) DeleteWelcome_user(database data.Db, id_user string) error {
+func (Post_tab *Posts) DeleteWelcome_user(database data.Db, id_user string) (error, bool) {
 	if id_user != "" {
+		//----------   checking the existence of the post   ------------------
+		condicheck := "WHERE image = \"welcoming.png\""
+		check, errcheck := database.Exist(data.Id_post, data.Post, condicheck)
+		if errcheck != nil {
+			fmt.Println("⚠ ERROR ⚠ : Couldn't get data from database in 'DeleteWelcome_user function' ❌")
+			return errcheck, check
+		}
+
+		if !check {
+			return nil, false
+		}
+		// check, errdata := database.GetData(data.Post, data.Id_post, condicheck)
+		// if errdata != nil {
+		// 	fmt.Println("⚠ ERROR ⚠ : Couldn't get data from database in 'DeleteWelcome_user function' ❌")
+		// 	return errdata, false
+		// }
+		// checkvalue, errCheckVal := data.Getelement(check)
+		// if errCheckVal != nil {
+		// 	fmt.Println("⚠ ERROR ⚠ : Couldn't get value in 'DeleteWelcome_user' function ❌")
+		// 	return errCheckVal, false
+		// }
+		// // if there is no such post => return empty string in checkvalue variable
+		// if checkvalue == "" {
+		// 	return nil, false
+		// }
+		//-----------------------  end of checking   -----------------------
 
 		condition := "WHERE id_post = \"avamspost\""
 		errdel := database.DELETE("posts", condition)
 		if errdel != nil {
 			fmt.Println("⚠ ERROR ⚠ : Couldn't delete welcome post in database ❌")
-			return errdel
+			return errdel, false
 		}
 
 		condition1 := "WHERE id_user = \"avams\""
 		errdel1 := database.DELETE("users", condition1)
 		if errdel1 != nil {
 			fmt.Println("⚠ ERROR ⚠ : Couldn't delete avams profil in database ❌")
-			return errdel1
+			return errdel1, false
 		}
-
-
-
+		return nil, true
 	}
-	return nil
+	return errors.New("cannot delete without an Id user"), false
 }

@@ -34,6 +34,7 @@ func Index(w http.ResponseWriter, r *http.Request, database db.Db) {
 	}
 
 	Display_mngmnt(w, r) // displaying datas
+	//--displaying welcoming post when database is empty
 	if len(postab) == 0 {
 		errwel := postab.Welcome_user(database, "index")
 		if errwel != nil {
@@ -42,13 +43,7 @@ func Index(w http.ResponseWriter, r *http.Request, database db.Db) {
 			return
 		}
 		http.Redirect(w, r, "/", http.StatusSeeOther)
-	} else {
-		errdelwel := postab.DeleteWelcome_user(database, Id_user)
-		if errdelwel != nil {
-			fmt.Printf("⚠ INDEX ERRDELWEL ⚠ :%s\n ❌", errdelwel)
-			Err.Snippets(w, 500)
-			return
-		}
+		fmt.Println("✔ ✨ welcome post sent ✨")
 	}
 
 	//--removing the reactions highlihts

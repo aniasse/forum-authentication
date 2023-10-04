@@ -95,7 +95,13 @@
             
             <div class="main-content">
                             <!------------ -display post & comment----------->
-                
+                            {{if eq .Empty true}}
+                            <div style="margin: 5% 40%;">
+                                <p style="color:rgb(1, 13, 36); font-size:larger" >NO RESULT</p>
+                                <a href="/home" style="color:rgb(185, 185, 185);">Go back </a>
+                            </div>
+                            {{else}}
+
                 {{range $index, $value := .Postab}}
                 <div class="post" id="{{$value.PostId}}">
                     <div class="post-title">
@@ -257,6 +263,7 @@
                         {{end}}
                     </div>
                 </div>
+                {{end}}
                 {{end}}
             </div>
             </div>
