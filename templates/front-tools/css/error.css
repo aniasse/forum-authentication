@@ -8,6 +8,7 @@
 body{
     color: white;
     background-image: url("/static/images/loginimage1.jpg");
+    background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
     height: 310px;

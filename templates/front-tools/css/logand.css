@@ -8,6 +8,7 @@
 body{
     background-color: #f1eded;
     background-image: url(".././images/loginimage1.jpg");
+    background-attachment: fixed;
     background-size: cover;
 }
 .background{
@@ -29,8 +30,8 @@ body{
 }
 
 form{
-    height: 710px;
-    width: 500px;
+    height: 47rem;
+    width: 33rem;
     background-color: rgba(238, 238, 247, 0.925);
     position: absolute;
     transform: translate(-50%,-50%);
@@ -41,8 +42,6 @@ form{
     box-shadow: 0 0 40px rgba(38, 37, 48, 0.6);
     padding: 50px 35px;
     filter: blur(100%);
-}
-form *{
     font-family: 'Poppins',sans-serif;
     color: #0e0d0d;
     letter-spacing: 0.5px;

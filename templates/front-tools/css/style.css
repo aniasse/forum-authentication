@@ -969,7 +969,15 @@ body.open-login-overlay::before {
     .post-read textarea{
     color: #f0f2f5e5;
     border: none;
-}
+    }
+    pre{
+        color: #dddada;
+        background-color: #0a0a0a;
+    }
+    .input-title{
+        background-color: #444343;
+        color: #f0f2f5e5;
+    }
     .profile-container-inner{
         h1{
             color: #000000;
