@@ -171,11 +171,6 @@ a{
     width: 50%;
     padding: 10%;
     margin-left: 20%;
-    
-
-    
-    
-    
     p{
        color:  #0f0f0f;
        padding-left: 25%;
@@ -352,6 +347,7 @@ a{
     background: transparent;
     margin-top: 8px;
     resize: vertical;
+    padding-left: 5px;
 }
 ::placeholder{
     font-weight: 500;
@@ -443,6 +439,9 @@ a{
     border: 1px solid#000;
     margin-bottom: 5px;
     padding-left: 15px;
+}
+.create-post-input input:focus{
+    outline: none;
 }
 .title-input{
     display: flex;

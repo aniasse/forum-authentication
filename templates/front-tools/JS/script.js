@@ -6,25 +6,48 @@ function toggleMenu(){
 }
 
 // ---------------------- toggle commentaire --------------------------
-
 // Sélectionnez tous les éléments de commentaire
 const commentContainers = document.querySelectorAll(".comment-container");
-console.log(commentContainers)
-// Ajoutez des gestionnaires d'événements à chaque commentaire
-togglers = document.querySelectorAll(".comment-section-toggler")
+console.log(commentContainers);
 
-togglers.forEach(toggler=>{
-        toggler.addEventListener("click",(e)=>{
-            let id = toggler.dataset.post_id
-        let test =document.querySelector(`#comment-container_${id}`)
-            console.log(test)
-            if (test.style.display === "none" || test.style.display === "") {
-                test.style.display = "block";
-            } else {
-                test.style.display = "none";
-            }
-        })
-})
+// Ajoutez des gestionnaires d'événements à chaque commentaire
+const toggles = document.querySelectorAll(".comment-section-toggler");
+
+toggles.forEach(toggler => {
+    toggler.addEventListener("click", (e) => {
+        let id = toggler.dataset.post_id;
+        let test = document.querySelector(`#comment-container_${id}`);
+
+        // Vérifiez si l'état du commentaire est stocké en local
+        const isOpen = localStorage.getItem(`comment_${id}_open`) === "true";
+
+        if (isOpen) {
+            test.style.display = "none";
+            // Mettez à jour l'état dans le stockage local
+            localStorage.setItem(`comment_${id}_open`, "false");
+        } else {
+            test.style.display = "block";
+            // Mettez à jour l'état dans le stockage local
+            localStorage.setItem(`comment_${id}_open`, "true");
+        }
+    });
+});
+
+// Restaurez l'état des commentaires lors du chargement de la page
+toggles.forEach(toggler => {
+    let id = toggler.dataset.post_id;
+    let test = document.querySelector(`#comment-container_${id}`);
+
+    const isOpen = localStorage.getItem(`comment_${id}_open`) === "true";
+
+    if (isOpen) {
+        test.style.display = "block";
+    } else {
+        test.style.display = "none";
+    }
+});
+
+
 
 
 // ------------------- comment input js ------------------------
