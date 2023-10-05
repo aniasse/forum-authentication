@@ -20,7 +20,6 @@
     
     <!-- ----------------------formulaire pour l'enregistrement------------------------------ -->
     {{ if .}}
-    <p style="color: #fff; font-size: 30px; background-color: rgb(51, 49, 49); width: 20%; height: 20%; margin-top: 2rem; margin-left: 4rem; text-align: center;">{{.Message}}</p>
     <form method="post" action="/login">   
         <br> 
         <h3>Login</h3>
@@ -31,6 +30,7 @@
         <label for="username">Enter your password *</label>
         <input type="password" placeholder="Password" id="password" name="password" value="{{.Password}}" required>
         <!-- --------------redirection vers la page de creation de compte----------- -->
+        <p style="color: #fb1b1b; margin-top: 2rem; text-align: center;">{{.Message}}</p>
         <a href="/create">
         <button>Log In</button>
     <!-- </a> -->
@@ -47,6 +47,7 @@
         <br>
         <label for="username">Enter your password *</label>
         <input type="password" placeholder="Password" id="password" name="password" required>
+        <p style="color: #fb1b1b; margin-top: 2rem; text-align: center;">{{.Message}}</p>
         <!-- --------------redirection vers la page de creation de compte----------- -->
         <a href="/create">
         <button>Log In</button>
