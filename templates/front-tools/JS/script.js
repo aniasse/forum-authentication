@@ -245,3 +245,38 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+
+// ------------------- JS upload image ----------------------
+function selectMurImage() {
+    // Cliquez sur le champ d'entrée de l'image de mur pour ouvrir la boîte de dialogue de sélection de fichier
+    document.getElementById("murImageInput").click();
+}
+function selectProfileImage() {
+    // Cliquez sur le champ d'entrée de l'image de profil pour ouvrir la boîte de dialogue de sélection de fichier
+    document.getElementById("profileImageInput").click();
+}
+function uploadMurImage() {
+    // Récupérez le fichier sélectionné pour l'image de mur
+    const imageInput = document.getElementById("murImageInput");
+    const selectedFile = imageInput.files[0];
+    if (selectedFile) {
+        // Créez un objet URL pour l'image sélectionnée
+        const imageURL = URL.createObjectURL(selectedFile);
+        // Mettez à jour l'image de mur avec la nouvelle image
+        const murImage = document.getElementById("murImage");
+        murImage.src = imageURL;
+    }
+}
+function uploadProfileImage() {
+    // Récupérez le fichier sélectionné pour l'image de profil
+    const imageInput = document.getElementById("profileImageInput");
+    const selectedFile = imageInput.files[0];
+    if (selectedFile) {
+        // Créez un objet URL pour l'image sélectionnée
+        const imageURL = URL.createObjectURL(selectedFile);
+        // Mettez à jour l'image de profil avec la nouvelle image
+        const profileImage = document.getElementById("profileImage");
+        profileImage.src = imageURL;
+    }
+}
