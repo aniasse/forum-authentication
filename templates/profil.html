@@ -1,65 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/front-tools/css/style.css">
-    <link rel="shortcut icon" href="/static/front-tools/images/clap.png" type="image">
-    <script src="/static/front-tools/JS/script.js" defer></script>
-    <title>Forum</title>
-</head>
+    {{template "head" .}}
 <body>
-    <nav class="navbar">
-        <div class="navbar-left">
-            <a href="/home" class="logo">
-                <H2>FORUM</H2>
-            </a>
-        </div>
-        <div class="navbar-center">
-            <ul>
-                <li><a href="/home" ><img src="/static/front-tools/images/home.png"><span>Home</span></a></li>
-                <li><a href="/myprofil?filter=posts" class="active-link"><img src="/static/front-tools/images/network.png"><span>My Profil</span></a></li>               
-                
-            </ul>
-        </div>
-        <div class="navbar-right">
-            <div class="online">
-                <img src="/static/front-tools/images/profil.jpeg" class="nav-profile-img" onclick="toggleMenu()">
-            </div>
-        </div>
-             <!--  ---------- profile-drop-down-menu ----------   -->     
-        <div class="profile-menu-wrap" id="profileMenu">
-            <div class="profile-menu">
-                <div class="user-info">
-                    <img src="/static/front-tools/images/profil.jpeg">
-                    <div>
-                        <h3>{{.CurrentSN}} {{.CurrentN}}</h3>
-                        <p>@{{.CurrentUN}}</p>
-                    </div>
-                </div>
-                <hr>
-                <a href="#" class="profile-menu-link">
-                    <img src="/static/front-tools/images/display.png" class="darkorlight-image">
-                    <img src="/static/front-tools/images/lightmod.png" class="light-mode-image" alt="Light Mode">
-                    <span><button id="dark-mode-toggle"><p>Display</p></button></span>
-                </a>
-                <form action="/logout" class="profile-menu-link-btn" method="post">
-                    <a href="#" class="profile-menu-link">
-                    <button type="submit" class="logoutbut" style="display: flex; background: transparent; border: none; color: #fff; align-items: center; margin-right: 8rem;">
-                    <img src="/static/front-tools/images/logout.png">
-                    <p>Logout</p>
-                    </button>
-                <span></span>              
-                </a>     
-            </form>
-            </div>
-        </div>   
-    </nav>
+                     <!--  ---------- navbar ----------   -->
+    {{template "navbar" .}}
                     <!--  ---------- navbar close ----------   -->
                     
     <div class="container">
         <div class="right-sidebar">
             <div class="sidebar-news">
+                <!-- filter by Posts Fav and Comments  -->
                 <img src="/static/front-tools/images/filter.png" class="info-icon">
                 <h3>Filter</h3>
                 <div id="activeFilter" class="sidebar-filter">
@@ -70,6 +20,7 @@
                     </ul>
                 </div>
             </div>
+            <!-- filter by categories  -->
             <div class="sidebar-filter-category">
                 <img src="/static/front-tools/images/category.png" class="info-icon">
                 <h3>Categories</h3>
@@ -85,6 +36,7 @@
             </div>
         <div class="profile-main" style="width: 50%;">
             <div class="profile-container">
+                <!-- user infos  -->
                 <img src="/static/front-tools/images/mur.png" width="100%" height="300px" id="murImage" onclick="selectMurImage()">
                 <div class="profile-container-inner">
                     <img src="/static/front-tools/images/profil.jpeg" class="profile-pic" width="100%" height="150px" id="profileImage" onclick="selectProfileImage()"> 
@@ -95,189 +47,13 @@
             
             <div class="main-content">
                             <!------------ -display post & comment----------->
-                            {{if eq .Empty true}}
-                            <div class="vide">
-                                <p>NO RESULT</p>
-                                <a href="/home">Go back </a>
-                            </div>
-                            {{else}}
-
-                {{range $index, $value := .Postab}}
-                <div class="post" id="{{$value.PostId}}">
-                    <div class="post-title">
-                        <hr>
-                        <h3>{{$value.Title}}</h3>
-                        <hr>
-                    </div> 
-                    <hr class="separate">
-                    <div class="post-author">
-                        <div class="post-author_info">
-                            <img src="/static/front-tools/images/profil.jpeg">
-                            <div>
-                                <h1>{{$value.Surname}} {{$value.Name}}</h1>
-                                <small>@{{$value.Username}}</small>
-                                <small>{{$value.Time}}</small>
-                            </div>
-                        </div>
-                        <div class="date">
-                            <small>{{$value.Date}}</small>
-                        </div>
-                    </div>
-                    <div class="post-read">
-                        <pre style="word-wrap: break-word; white-space: pre-wrap;">{{$value.Content}}</pre> 
-                        {{if ne $value.ImageLink ""}}
-                        <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image">
-                        {{end}}
-                    </div>
-                        
-                    <div class="post-stats">
-                        {{range $value.Categorie}}
-                        <div>
-                            <span class="liked-users">{{.}}</span>
-                        </div>
-                        {{end}}
-                    </div>
-                
-                    <div class="post-activity">
-                        <form action="/home" method="post" class="reactform">
-                            <input type="text" name="Rpostid" value="{{$value.PostId}}" style="display: none;">
-                            <div data-post_id="{{$value.PostId}}"  class="comment-section-toggler">
-                                <img src="/static/front-tools/images/profil.jpeg" class="post-activity-user-icon">
-                                <img src="/static/front-tools/images/down-arrow.png" class="post-activity-arrow-icon">
-                            </div>
-                            <label for="{{$value.PostId}}like" style="display: inline;">
-                                <div class="post-activity-link" id="like-button">
-                                    {{if eq $value.SessionReact "true"}}
-                                    <img src="/static/front-tools/images/like.svg" style="filter:invert(39%) sepia(74%) saturate(3469%) hue-rotate(214deg) brightness(92%) contrast(91%);">
-                                    {{else if eq $value.SessionReact "false"}}
-                                    <img src="/static/front-tools/images/like.svg">
-                                    {{else }}
-                                    <img src="/static/front-tools/images/like.svg">
-                                    {{end}}
-                                    <span>Like</span>
-                                    <span class="like-count">{{len $value.Like}}</span>
-                                </div>
-                            </label>
-                            <input type="submit" name="react" id="{{$value.PostId}}like" style="display: none;" value="true">
-                            <label for="{{$value.PostId}}dislike">
-                                <div class="post-activity-link" id="dislike-button">
-                                    {{if eq $value.SessionReact "false"}}
-                                    <img src="/static/front-tools/images/dislike.svg" style="filter:invert(7%) sepia(86%) saturate(6423%) hue-rotate(9deg) brightness(89%) contrast(112%);">
-                                    {{else if eq $value.SessionReact "true"}}
-                                    <img src="/static/front-tools/images/dislike.svg">
-                                    {{else}}
-                                    <img src="/static/front-tools/images/dislike.svg">
-                                    {{end}}
-                                    <span>Dislike</span>
-                                    <span class="dislike-count">{{len $value.Dislike}}</span>
-                                </div>
-                            </label>
-                            <input type="submit" name="react" id="{{$value.PostId}}dislike" style="display: none" value="false">
-                        </form>
-                            <div class="post-activity-link-comment" data-post_id="{{$value.PostId}}">
-                                <img src="/static/front-tools/images/comment.png">
-                                <span>Comment</span>
-                                <span id="comment-count" class="comment-count">{{len .Comment_tab}}</span>
-                            </div>
-                            
-                    </div>
-                    <div class="post-activity-comment-input" id="commenting_{{$value.PostId}}">
-                        <form action="/home" method="post">
-                            <input type="text" name="postid" value="{{$value.PostId}}" style="display:none;">
-                            <textarea id="comment-input"  rows="4" placeholder="Écrivez votre commentaire ici" name="newcomment" style="overflow-y: scroll;" maxlength="1000"></textarea>
-                            <button type="submit" name="subcomm" value="SC">Comment</button>
-                        </form>
-                    </div>
-                    <div id="comment-container_{{$value.PostId}}" class="comment-container">
-                        <!-- Contenu des commentaires ici -->
-                        {{range $value.Comment_tab}}
-                        <div class="comments" id="{{.CommentId}}">
-                            <div class="comment-author">
-                                <div class="post-author_info">
-                                    <img src="/static/front-tools/images/profil.jpeg">
-                                    <div>
-                                        <h1>{{.Name}} {{.Surname}}</h1>
-                                        <small>@{{.Username}}</small>
-                                        <small>{{.Time}}</small>
-                                    </div>
-                                </div>
-                                <div class="date">
-                                    <small>{{.Date}}</small>
-                                </div>
-                            </div>
-                            <div class="post-read">
-                                <pre style="word-wrap: break-word; white-space: pre-wrap;">{{.Content}}</pre>
-                            </div>
-                                
-                            <div class="post-stats">
-                            </div>
-                            <div class="comment-activity">
-                                <form action="/home" method="post" class="reactform">
-                                    <input type="text" name="Rcomid" value="{{.CommentId}}" style="display: none;"> 
-                                    <label for="{{.CommentId}}like">
-                                        <div class="post-activity-link" id="comment-like-button">
-                                            {{if eq .SessionReact "true"}}
-                                            <img src="/static/front-tools/images/like.svg" style="filter:invert(39%) sepia(74%) saturate(3469%) hue-rotate(214deg) brightness(92%) contrast(91%);">
-                                            {{else if eq .SessionReact "false"}}
-                                            <img src="/static/front-tools/images/like.svg">
-                                            {{else}}
-                                            <img src="/static/front-tools/images/like.svg">
-                                            {{end}}
-                                            <span id="thereaction">Like</span>
-                                            <span class="like-count">{{len .Likecomm}}</span>
-                                        </div>
-                                    </label>
-                                    <input type="submit" name="reactcomm" id="{{.CommentId}}like" style="display: none;" value="true">
-                                    <label for="{{.CommentId}}dislike">
-                                        <div class="post-activity-link" id="comment-dislike-button">
-                                            {{if eq .SessionReact "false"}}
-                                            <img src="/static/front-tools/images/dislike.svg" style="filter:invert(7%) sepia(86%) saturate(6423%) hue-rotate(9deg) brightness(89%) contrast(112%);">
-                                           {{else if eq .SessionReact "true"}}
-                                            <img src="/static/front-tools/images/dislike.svg">
-                                            {{else}}
-                                            <img src="/static/front-tools/images/dislike.svg">
-                                            {{end}}
-                                            <span id="thereaction">Dislike</span>
-                                            <span class="dislike-count">{{len .Dislikecomm}}</span>
-                                        </div>
-                                    </label>
-                                    <input type="submit" name="reactcomm" id="{{.CommentId}}dislike" style="display: none;" value="false">
-                
-            
-            <!-- --------------------ranger dans data-username le nom du user qui doit etre repondu-------------------------------------- -->
-            
-                                    <div class="post-activity-link-reply" data-comment_id="{{.CommentId}}" data-username="student">
-                                        <img src="/static/front-tools/images/reply.png">
-                                        <span id="thereaction">Reply</span>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="post-activity-reply-input" id="replying_{{.CommentId}}">
-                                <form action="/home" method="post">
-                                    <input type="text" name="postid" value="{{.PostId}}" style="display: none;">
-                                    <input type="text" name="comId" value="{{.CommentId}}" style="display: none;">
-                                    <textarea id="reply-input" rows="4" placeholder="Écrivez votre commentaire ici" name="replycomm" style="overflow-y: scroll;" maxlength="1000"></textarea>
-                                    <button type="submit" name="subreply" value="SR">Reply</button>
-                                </form>
-                            </div>
-                        </div>
-                        {{end}}
-                    </div>
-                </div>
-                {{end}}
-                {{end}}
+                            {{template "mainContent" .}}
             </div>
             </div>
         </div>
         </div>
     </div>
-    <footer>
-        <div class="sidebar-useful-links"> 
-            <div class="copyright-msg">
-                <H2>Forum</H2>
-                <p>VAAMS &#169; 2023. All right reserved</p>
-            </div>
-        </div>
-    </footer>
+  <!-- ------------------ footer -------------- -->
+  {{template "footer" .}}
 </body>
 </html>

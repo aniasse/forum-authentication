@@ -55,7 +55,7 @@ func Index(w http.ResponseWriter, r *http.Request, database db.Db) {
 		postab[i].SessionReact = ""
 	}
 
-	file, errf := template.ParseFiles("templates/index.html")
+	file, errf := template.ParseFiles("templates/index.html", "templates/head.html", "templates/navbar.html", "templates/footer.html")
 	if errf != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR ⚠ parsing --> %v\n", errf)

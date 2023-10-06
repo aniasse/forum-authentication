@@ -219,7 +219,7 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 	}
 
 	username, name, surname := tools.GetName_byID(database, Id_user)
-	file, errf := template.ParseFiles("templates/profil.html")
+	file, errf := template.ParseFiles("templates/profil.html", "templates/head.html", "templates/navbar.html", "templates/main.html", "templates/footer.html")
 	if errf != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR ⚠ parsing profil.html--> %v\n", errf)
@@ -433,7 +433,7 @@ func Filter(w http.ResponseWriter, r *http.Request, database db.Db) {
 		}
 	}
 
-	file, errf := template.ParseFiles("templates/home.html")
+	file, errf := template.ParseFiles("templates/home.html", "templates/head.html", "templates/navbar.html", "templates/main.html", "templates/footer.html")
 	if errf != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR ⚠ parsing home.html--> %v\n", errf)
@@ -625,7 +625,7 @@ func Indexfilter(w http.ResponseWriter, r *http.Request, database db.Db) {
 		}
 	}
 
-	file, errf := template.ParseFiles("templates/index.html")
+	file, errf := template.ParseFiles("templates/index.html", "templates/footer.html", "templates/navbar.html", "templates/head.html")
 	if errf != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR ⚠ parsing home.html--> %v\n", errf)

@@ -283,7 +283,7 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 
 	} //?------------ end of request treatment-----------------
 
-	file, errf := template.ParseFiles("templates/home.html")
+	file, errf := template.ParseFiles("templates/home.html", "templates/head.html", "templates/navbar.html", "templates/main.html", "templates/footer.html")
 	if errf != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR ⚠ parsing --> %v\n", errf)
