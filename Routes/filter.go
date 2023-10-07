@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"path"
 
 	auth "forum/Authentification"
 	Com "forum/Communication"
@@ -36,7 +37,7 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 
 	//fin code
 	//checking the http request
-	if r.Method != "GET" {
+	if r.Method != "GET" && r.Method != "POST" {
 		fmt.Printf("⚠ ERROR ⚠ : cannot access to that page by with mode other than GET must log out to reach it ❌")
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		error_file := template.Must(template.ParseFiles("templates/error.html"))
@@ -44,142 +45,14 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 		return
 	}
 	fmt.Println("in profil")
-	//-------------- retrieving datas ---------------//
-	//--1
-	errGetPost := postab.GetPost_data(database)
-	if errGetPost != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
-		return
-	}
-	//--2
-	errGetComm := commtab.GetComment_data(database)
-	if errGetComm != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
-		return
-	}
-	//--3
-	errectabcomm := reactab_com.GetReact_comdata(database)
-	if errectabcomm != nil {
-		fmt.Printf("⚠ ERROR ⚠ : Couldn't get comments reaction for display from database\n")
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
-		return
-	}
-	//--4
-	categos, err := Com.GetPost_categories(database)
-	if err != nil {
-		fmt.Printf("⚠ ERROR ⚠ : Couldn't get categories data from database\n")
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
-		return
-	}
-	//--5
-	errectab := reactab.Get_reacPosts_data(database)
-	if errectab != nil {
-		fmt.Printf("⚠ ERROR ⚠ : Couldn't get reaction for display a from database\n")
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
-		return
-	}
-	//--------------------------------------------------------------------//
-	// storing the session's id
-	for i := range postab {
-		postab[i].SessionId = Id_user
-	}
-	for i := range commtab {
-		commtab[i].SessionId = Id_user
-	}
 
-	//storing user's name in structures
-	for i := range postab {
-		username, name, surname := tools.GetName_byID(database, postab[i].UserId)
-		postab[i].Username = username
-		postab[i].Name = name
-		postab[i].Surname = surname
-	}
-
-	for i := range commtab {
-		username, name, surname := tools.GetName_byID(database, commtab[i].UserId)
-		commtab[i].Username = username
-		commtab[i].Name = name
-		commtab[i].Surname = surname
-	}
-
-	//storing the reactions in corresponding comments
-	for i := range commtab {
-		for j := range reactab_com {
-			if commtab[i].CommentId == reactab_com[j].CommentId {
-				switch reactab_com[j].Reaction {
-				case true:
-					commtab[i].Likecomm = append(commtab[i].Likecomm, "true")
-					if reactab_com[j].UserId == Id_user {
-						commtab[i].SessionReact = "true"
-					}
-
-				case false:
-					commtab[i].Dislikecomm = append(commtab[i].Dislikecomm, "false")
-					if reactab_com[j].UserId == Id_user {
-						commtab[i].SessionReact = "false"
-					}
-				}
-			}
-		}
-	}
-
-	//storing the comments in corresponding posts
-	for i := range postab {
-		for j := range commtab {
-			if postab[i].PostId == commtab[j].PostId {
-				postab[i].Comment_tab = append(postab[i].Comment_tab, commtab[j])
-			}
-		}
-	}
-
-	//storing the categories in corresponding posts
-	for i := range postab {
-		for j := range categos {
-			if postab[i].PostId == categos[j].PostId {
-				postab[i].Categorie = append(postab[i].Categorie, categos[j].Category)
-			}
-		}
-	}
-
-	//storing the reactions in corresponding posts
-	for i := range postab {
-		for j := range reactab {
-			if postab[i].PostId == reactab[j].PostId {
-				switch reactab[j].Reaction {
-				case true:
-					postab[i].Like = append(postab[i].Like, "true")
-					if reactab[j].UserId == Id_user {
-						postab[i].SessionReact = "true"
-					}
-
-				case false:
-					postab[i].Dislike = append(postab[i].Dislike, "false")
-					if reactab[j].UserId == Id_user {
-						postab[i].SessionReact = "false"
-					}
-				}
-			}
-		}
-	}
-
+	//------------------------------------------------
 	//--------retrieving form values ----------
 	fmt.Println("--------------------------------------------")
-	fmt.Println("             Profil form values             ")
+	fmt.Println("             Profil form value             ")
 	fmt.Println("--------------------------------------------")
-
-	choice := r.URL.Query().Get("filter")
-	fmt.Println("[INFO] choice: ", choice) //debug
-
+	choice := path.Base(r.URL.Path)
+	fmt.Println("[INFO] profil filter choice: ", choice) //debug
 	if choice != "posts" && choice != "favorites" && choice != "comments" {
 		fmt.Printf("⚠ ERROR ⚠ parsing --> bad request ❌\n")
 		w.WriteHeader(http.StatusNotFound)
@@ -188,6 +61,149 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 		return
 	}
 
+	GetAll_fromDB(w, r)
+	ProcessData(w, r, "/myprofil/"+choice)
+	//-------------------------------------------------------------------------
+	//-------------- retrieving datas ---------------//
+	//--1
+	// errGetPost := postab.GetPost_data(database)
+	// if errGetPost != nil {
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	error_file := template.Must(template.ParseFiles("templates/error.html"))
+	// 	error_file.Execute(w, "500")
+	// 	return
+	// }
+	// //--2
+	// errGetComm := commtab.GetComment_data(database)
+	// if errGetComm != nil {
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	error_file := template.Must(template.ParseFiles("templates/error.html"))
+	// 	error_file.Execute(w, "500")
+	// 	return
+	// }
+	// //--3
+	// errectabcomm := reactab_com.GetReact_comdata(database)
+	// if errectabcomm != nil {
+	// 	fmt.Printf("⚠ ERROR ⚠ : Couldn't get comments reaction for display from database\n")
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	error_file := template.Must(template.ParseFiles("templates/error.html"))
+	// 	error_file.Execute(w, "500")
+	// 	return
+	// }
+	// //--4
+	// categos, err := Com.GetPost_categories(database)
+	// if err != nil {
+	// 	fmt.Printf("⚠ ERROR ⚠ : Couldn't get categories data from database\n")
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	error_file := template.Must(template.ParseFiles("templates/error.html"))
+	// 	error_file.Execute(w, "500")
+	// 	return
+	// }
+	// //--5
+	// errectab := reactab.Get_reacPosts_data(database)
+	// if errectab != nil {
+	// 	fmt.Printf("⚠ ERROR ⚠ : Couldn't get reaction for display a from database\n")
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	error_file := template.Must(template.ParseFiles("templates/error.html"))
+	// 	error_file.Execute(w, "500")
+	// 	return
+	// }
+	// //--------------------------------------------------------------------//
+	// // storing the session's id
+	// for i := range postab {
+	// 	postab[i].SessionId = Id_user
+	// }
+	// for i := range commtab {
+	// 	commtab[i].SessionId = Id_user
+	// }
+
+	// //storing user's name in structures
+	// for i := range postab {
+	// 	username, name, surname := tools.GetName_byID(database, postab[i].UserId)
+	// 	postab[i].Username = username
+	// 	postab[i].Name = name
+	// 	postab[i].Surname = surname
+	// }
+
+	// for i := range commtab {
+	// 	username, name, surname := tools.GetName_byID(database, commtab[i].UserId)
+	// 	commtab[i].Username = username
+	// 	commtab[i].Name = name
+	// 	commtab[i].Surname = surname
+	// }
+
+	// //storing the reactions in corresponding comments
+	// for i := range commtab {
+	// 	for j := range reactab_com {
+	// 		if commtab[i].CommentId == reactab_com[j].CommentId {
+	// 			switch reactab_com[j].Reaction {
+	// 			case true:
+	// 				commtab[i].Likecomm = append(commtab[i].Likecomm, "true")
+	// 				if reactab_com[j].UserId == Id_user {
+	// 					commtab[i].SessionReact = "true"
+	// 				}
+
+	// 			case false:
+	// 				commtab[i].Dislikecomm = append(commtab[i].Dislikecomm, "false")
+	// 				if reactab_com[j].UserId == Id_user {
+	// 					commtab[i].SessionReact = "false"
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// //storing the comments in corresponding posts
+	// for i := range postab {
+	// 	for j := range commtab {
+	// 		if postab[i].PostId == commtab[j].PostId {
+	// 			postab[i].Comment_tab = append(postab[i].Comment_tab, commtab[j])
+	// 		}
+	// 	}
+	// }
+
+	// //storing the categories in corresponding posts
+	// for i := range postab {
+	// 	for j := range categos {
+	// 		if postab[i].PostId == categos[j].PostId {
+	// 			postab[i].Categorie = append(postab[i].Categorie, categos[j].Category)
+	// 		}
+	// 	}
+	// }
+
+	// //storing the reactions in corresponding posts
+	// for i := range postab {
+	// 	for j := range reactab {
+	// 		if postab[i].PostId == reactab[j].PostId {
+	// 			switch reactab[j].Reaction {
+	// 			case true:
+	// 				postab[i].Like = append(postab[i].Like, "true")
+	// 				if reactab[j].UserId == Id_user {
+	// 					postab[i].SessionReact = "true"
+	// 				}
+
+	// 			case false:
+	// 				postab[i].Dislike = append(postab[i].Dislike, "false")
+	// 				if reactab[j].UserId == Id_user {
+	// 					postab[i].SessionReact = "false"
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// choice := r.URL.Query().Get("filter")
+	// fmt.Println("[INFO] choice: ", choice) //debug
+
+	// if choice != "posts" && choice != "favorites" && choice != "comments"  {
+	// 	fmt.Printf("⚠ ERROR ⚠ parsing --> bad request ❌\n")
+	// 	w.WriteHeader(http.StatusNotFound)
+	// 	error_file := template.Must(template.ParseFiles("templates/error.html"))
+	// 	error_file.Execute(w, "400")
+	// 	return
+	// }
+
+	// ------------------------------------------
 	var newtab Com.Posts
 
 	switch {
@@ -228,8 +244,8 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 		error_file.Execute(w, "500")
 		return
 	}
-	//returning "empty" signal to show postab is empty
-	//(there 's no result after filter)
+
+	//returning "empty" signal to show postab is empty (there 's no result after filter)
 	var empty bool
 	if len(newtab) == 0 {
 		empty = true
@@ -362,10 +378,14 @@ func Filter(w http.ResponseWriter, r *http.Request, database db.Db) {
 				switch reactab_com[j].Reaction {
 				case true:
 					commtab[i].Likecomm = append(commtab[i].Likecomm, "true")
-					commtab[i].SessionReact = "true"
+					if reactab_com[j].UserId == Id_user {
+						commtab[i].SessionReact = "true"
+					}
 				case false:
 					commtab[i].Dislikecomm = append(commtab[i].Dislikecomm, "false")
-					commtab[i].SessionReact = "false"
+					if reactab_com[j].UserId == Id_user {
+						commtab[i].SessionReact = "false"
+					}
 				}
 			}
 		}
@@ -396,10 +416,14 @@ func Filter(w http.ResponseWriter, r *http.Request, database db.Db) {
 				switch reactab[j].Reaction {
 				case true:
 					postab[i].Like = append(postab[i].Like, "true")
-					postab[i].SessionReact = "true"
+					if reactab[j].UserId == Id_user {
+						postab[i].SessionReact = "true"
+					}
 				case false:
 					postab[i].Dislike = append(postab[i].Dislike, "false")
-					postab[i].SessionReact = "false"
+					if reactab[j].UserId == Id_user {
+						postab[i].SessionReact = "false"
+					}
 				}
 			}
 		}
