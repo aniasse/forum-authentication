@@ -87,15 +87,37 @@ The project is organized into multiple directories for better source code organi
 
          |   ├── const_db.go
 
-            |   ├── Init_db.go
+         |   ├── Init_db.go
 
-            |   ├── tables.go
+         |   ├── tables.go
 
       ├── templates
 
          |   ├── front-tools
 
          |   ├── image_storage
+
+         |   ├── createacount.html
+
+         |   ├── error.html
+
+         |   ├── footer.html
+
+         |   ├── head.html
+
+         |   ├── image_storage
+
+         |   ├── home.html
+
+         |   ├── index.html
+
+         |   ├── main.html
+
+         |   ├── navbar.hmtl
+
+         |   ├── profil.html
+
+         |   ├── register.html
 
       ├── tools
 
