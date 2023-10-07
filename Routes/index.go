@@ -33,7 +33,7 @@ func Index(w http.ResponseWriter, r *http.Request, database db.Db) {
 		return
 	}
 
-	Display_mngmnt(w, r) // displaying datas
+	GetAll_fromDB(w, r) // displaying datas
 	//--displaying welcoming post when database is empty
 	if len(postab) == 0 {
 		errwel := postab.Welcome_user(database, "index")
