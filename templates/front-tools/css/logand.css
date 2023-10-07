@@ -8,6 +8,7 @@
 body{
     background-color: #f1eded;
     background-image: url(".././images/loginimage1.jpg");
+    background-attachment: fixed;
     background-size: cover;
 }
 .background{
@@ -29,8 +30,8 @@ body{
 }
 
 form{
-    height: 710px;
-    width: 500px;
+    height: 47rem;
+    width: 33rem;
     background-color: rgba(238, 238, 247, 0.925);
     position: absolute;
     transform: translate(-50%,-50%);
@@ -41,8 +42,6 @@ form{
     box-shadow: 0 0 40px rgba(38, 37, 48, 0.6);
     padding: 50px 35px;
     filter: blur(100%);
-}
-form *{
     font-family: 'Poppins',sans-serif;
     color: #0e0d0d;
     letter-spacing: 0.5px;
@@ -108,7 +107,50 @@ input{
 ::placeholder{
     color: #181717;
 }
-button{
+.social-mess{
+    margin-top: 20px;
+}
+.otherwebsites{
+    display: flex;
+    .github-button{
+        margin-left: 17%;
+    }
+    .google-button{
+        margin-left: 20%;
+    }
+}
+.google-button a,
+.github-button a {
+    text-decoration: none;
+}
+.google-button, .github-button{
+    display: flex;
+    color: #0b0b0b;
+    width: 21%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 0 10px; /* Marge entre les boutons */
+    cursor: pointer;
+    .google-logo{
+        width: 60%;
+    }
+    p {
+        margin-left: 5px;
+        margin-top: 15px;
+    }
+    a {
+        text-decoration: none;
+    }
+}
+.google-button:hover, .github-button:hover{
+    background-color: #045be6;
+}
+.google-button:hover p, .github-button:hover p {
+    color: #fff;
+}
+ 
+.login-button{
     margin-top: 50px;
     width: 100%;
     background-color: #045be6;
@@ -122,12 +164,12 @@ button{
 
 /* -------------------------------------messageback---------------------------------- */
 .MessageOfBack{
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
     color: red;
-    width: 80%;
+    width: 100%;
     padding: 10px;
     text-align: center;
-    overflow: hidden;
+    overflow-x: auto;
     animation: scrollMessage 10s linear infinite;
 }
 @keyframes scrollMessage{
