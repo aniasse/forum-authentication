@@ -39,7 +39,11 @@ func Handlers() {
 			Rt.LogOutHandler(w, r, tab)
 		case "/home":
 			Rt.HomeHandler(w, r, tab)
-		case "/myprofil":
+		case "/myprofil/posts":
+			Rt.Profil(w, r, tab)
+		case "/myprofil/favorites":
+			Rt.Profil(w, r, tab)
+		case "/myprofil/comments":
 			Rt.Profil(w, r, tab)
 		case "/filter":
 			Rt.Filter(w, r, tab)
