@@ -3,9 +3,9 @@ package Route
 import (
 	"database/sql"
 	"fmt"
+	Err "forum/Authentification"
 	Com "forum/Communication"
 	tools "forum/tools"
-	"html/template"
 	"net/http"
 )
 
@@ -17,53 +17,40 @@ func GetAll_fromDB(w http.ResponseWriter, r *http.Request) {
 	// connecting to database
 	database.Doc, errd = sql.Open("sqlite3", "forum.db")
 	if errd != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
+		Err.Snippets(w, 500)
 		return
 	}
 	//-------------- retrieving datas ---------------//
 	//--1
 	errGetPost := postab.GetPost_data(database)
 	if errGetPost != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
+		Err.Snippets(w, 500)
 		return
 	}
 	//--2
 	errGetComm := commtab.GetComment_data(database)
 	if errGetComm != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
+		Err.Snippets(w, 500)
 		return
 	}
 	//--3
 	errectabcomm := reactab_com.GetReact_comdata(database)
 	if errectabcomm != nil {
-		fmt.Printf("⚠ ERROR ⚠ : Couldn't get comments reaction for display from database\n")
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
+		Err.Snippets(w, 500)
 		return
 	}
 	//--4
 	categos, err := Com.GetPost_categories(database)
 	if err != nil {
 		fmt.Printf("⚠ ERROR ⚠ : Couldn't get categories data from database\n")
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
+		Err.Snippets(w, 500)
 		return
 	}
 	//--5
 	errectab := reactab.Get_reacPosts_data(database)
 	if errectab != nil {
 		fmt.Printf("⚠ ERROR ⚠ : Couldn't get reaction for display a from database\n")
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
+		Err.Snippets(w, 500)
 		return
 	}
 	//--------------------------------------------------------------------//
