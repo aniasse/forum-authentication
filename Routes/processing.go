@@ -56,7 +56,7 @@ func ProcessData(w http.ResponseWriter, r *http.Request, redirect string) {
 		fmt.Println("[INFO] reply comment: ", replycomm) //debug
 
 		//-------------------------image's link----------------------------
-		Image, errimage := Upload_mngmnt(w, r)
+		Image, errimage := Upload_mngmnt(w, r, 20, "image")
 		fmt.Println("[INFO] Post image link: ", Image) //debug
 		//---------------------------------------------------------------
 
