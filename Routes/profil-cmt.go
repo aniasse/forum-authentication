@@ -43,7 +43,11 @@ func Profil_comment(w http.ResponseWriter, r *http.Request, database db.Db) {
 	}
 
 	GetAll_fromDB(w, r)
-	ProcessData(w, r, "/myprofil/"+choice)
+	StatusCode := ProcessData(w, r, "/myprofil/"+choice)
+	if StatusCode != 200 {
+		auth.Snippets(w, StatusCode)
+		return
+	}
 
 	var newtab Com.Posts
 	for _, v := range postab {
