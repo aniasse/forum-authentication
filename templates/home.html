@@ -14,9 +14,9 @@
                 <h3>Filter</h3>
                 <div id="activeFilter" class="sidebar-filter">
                     <ul>
-                        <li><a href="/myprofil?filter=posts" onclick="activateFilter(this)"><span>Posts</span></a></li>
-                        <li><a href="/myprofil?filter=favorites" onclick="activateFilter(this)"><span>Favorites</span></a></li>
-                        <li><a href="/myprofil?filter=comments" onclick="activateFilter(this)"><span>Comments</span></a></li>
+                        <li><a href="/myprofil/posts" onclick="activateFilter(this)"><span>Posts</span></a></li>
+                        <li><a href="/myprofil/favorites" onclick="activateFilter(this)"><span>Favorites</span></a></li>
+                        <li><a href="/myprofil/comments" onclick="activateFilter(this)"><span>Comments</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                             <input class="input-title" type="text" name="title" maxlength="25" required >
                         </div>
                         <!-- adding post text  -->
-                        <textarea rows="auto" id="postContent" placeholder="Write a post" name="post_content" wrap="soft" style="overflow-y: scroll; white-space: pre-wrap;" maxlength="1500" required ></textarea>
+                        <textarea rows="auto" id="postContent" placeholder="Write a post" name="post_content" wrap="soft" style="overflow-y: scroll; white-space: pre-wrap;" maxlength="1500"></textarea>
                         <p id="errorMessage" style="color: red; display: none;">You cannot exceed 15 lines.</p>
                     </div>
                     <!-- image upload preview  -->
