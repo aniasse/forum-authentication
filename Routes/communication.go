@@ -44,8 +44,12 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 	}
 
 	fmt.Println("postab size ->> ", len(postab))
-	GetAll_fromDB(w, r) //display all values in the forum database
-	ProcessData(w, r, redirect) //Process datas received fromn client request
+	GetAll_fromDB(w, r)                       //display all values in the forum database
+	StatusCode := ProcessData(w, r, redirect) //Process datas received fromn client request
+	if StatusCode != 200 {
+		Err.Snippets(w, StatusCode)
+		return
+	}
 
 	file, errf := template.ParseFiles("templates/home.html", "templates/head.html", "templates/navbar.html", "templates/main.html", "templates/footer.html")
 	if errf != nil {
