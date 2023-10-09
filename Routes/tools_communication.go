@@ -12,7 +12,7 @@ import (
 // CreateP_mngmnt handles user's post activity
 func CreateP_mngmnt(w http.ResponseWriter, r *http.Request, categorie []string, title string, content string, image string, redirect string) {
 
-	errpost := postab.Create_post(database, Id_user, categorie, title, content, image)
+	idPost_toReplace, errpost := postab.Create_post(database, Id_user, categorie, title, content, image)
 	if errpost != nil {
 		fmt.Printf("⚠ ERROR ⚠ : Couldn't create post from user %s ❌\n", Id_user)
 		Err.Snippets(w, 500)
@@ -22,8 +22,12 @@ func CreateP_mngmnt(w http.ResponseWriter, r *http.Request, categorie []string, 
 
 	//*Getting the id post according to the content for html relative link
 	//---formatting content to escape special chars
-	content = strings.ReplaceAll(content, "'", "2@c86cb3")
-	content = strings.ReplaceAll(content, "`", "2#c86cb3")
+	if content == "" {
+		content = idPost_toReplace
+	} else {
+		content = strings.ReplaceAll(content, "'", "2@c86cb3")
+		content = strings.ReplaceAll(content, "`", "2#c86cb3")
+	}
 
 	//---fetching id post in database
 	condition := fmt.Sprintf("WHERE %s = '%s'", db.Description, content)
