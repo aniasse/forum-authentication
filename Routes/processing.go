@@ -2,19 +2,18 @@ package Route
 
 import (
 	"fmt"
-	Err "forum/Authentification"
 	tools "forum/tools"
 	"net/http"
+	"strings"
 )
 
-func ProcessData(w http.ResponseWriter, r *http.Request, redirect string) {
+func ProcessData(w http.ResponseWriter, r *http.Request, redirect string) int {
 	//--removing the welcoming post
 	if len(postab) > 1 {
 		errdelwel, state := postab.DeleteWelcome_user(database, Id_user)
 		if errdelwel != nil {
 			fmt.Printf("⚠ ERRDELWEL ⚠ :%s ❌\n", errdelwel)
-			Err.Snippets(w, 500)
-			return
+			return 500
 		}
 		if state { // welcome post deletion occured
 			http.Redirect(w, r, "/home", http.StatusSeeOther)
@@ -105,43 +104,36 @@ func ProcessData(w http.ResponseWriter, r *http.Request, redirect string) {
 			//verifying the request method
 			if r.Method != "POST" {
 				fmt.Printf("⚠ ERROR ⚠ : cannot access to that page by with mode other than POST ❌")
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 			//checking Id_user validity
 			if tools.IsnotExist_user(Id_user, database) {
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 			//checking Title's validity
 			if Title == "" {
 				fmt.Printf("⚠ ERROR ⚠ : Couldn't create post from user %s due to empty title ❌\n", Id_user)
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 			//checking content's validity
-			if content == "" {
+			if strings.TrimSpace(content) == "" && Image == "" {
 				fmt.Printf("⚠ ERROR ⚠ : Couldn't create post from user %s due to empty content ❌\n", Id_user)
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 			//checking categore's validity
 			if len(categorie) < 1 { //user did not select a categorie
 				fmt.Printf("⚠ ERROR ⚠ : Couldn't create post from user %s due to missing category❌\n", Id_user)
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
-			if tools.IsInvalid(content) || tools.IsInvalid(Title) || len(Title) > 25 { //found only spaces,newlines in the input or chars number limit exceeded
+			if len(content) > 1500 || tools.IsInvalid(Title) || len(Title) > 25 { //found only spaces,newlines in the input or chars number limit exceeded
 				fmt.Printf("⚠ ERROR ⚠ : Couldn't create post from user %s due to invalid input ❌\n", Id_user)
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
 			if errimage != nil {
 				fmt.Printf("⚠ ERROR ⚠ : Couldn't create post from user %s, error encoutered while uploading image\n%s ❌\n", Id_user, errimage)
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 			CreateP_mngmnt(w, r, categorie, content, Title, Image, redirect)
 
@@ -149,28 +141,24 @@ func ProcessData(w http.ResponseWriter, r *http.Request, redirect string) {
 		case Id_user != "" && Subcomm != "" && Id_post != "":
 			//!--checking Id_user and Id_post validity
 			if tools.IsnotExist_user(Id_user, database) || tools.IsnotExist_Post(Id_post, database) {
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
 			//!--checking if the comment is empty
 			if newcomment == "" {
 				fmt.Printf("⚠ ERROR ⚠ : Couldn't create comment from user %s due to empty content ❌\n", Id_user)
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
 			//!--checking the comment validity
 			if tools.IsInvalid(newcomment) { //found only spaces or newlines in the input
 				fmt.Printf("⚠ ERROR ⚠ : Couldn't create comment in post %s from user %s due to invalid input ❌\n", Id_post, Id_user)
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
 			if r.Method != "POST" {
 				fmt.Printf("⚠ ERROR ⚠ : cannot access to that page by with mode other than POST ❌")
-				Err.Snippets(w, 405)
-				return
+				return 405
 			}
 			CreateC_mngmnt(w, r, Id_post, newcomment)
 			http.Redirect(w, r, redirect+"#"+Id_post, http.StatusSeeOther)
@@ -179,28 +167,24 @@ func ProcessData(w http.ResponseWriter, r *http.Request, redirect string) {
 		case Id_user != "" && Id_post != "" && Id_comment != "" && subreply != "":
 			//!--checking Id_user, Id_post and Id_comment validity
 			if tools.IsnotExist_user(Id_user, database) || tools.IsnotExist_Post(Id_post, database) || tools.IsnotExist_Comment(Id_comment, database) {
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
 			//!--checking if the comment is empty
 			if replycomm == "" {
 				fmt.Printf("⚠ ERROR ⚠ : Couldn't create comment reply from user %s due to empty content ❌\n", Id_user)
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
 			//!--checking the comment validity
 			if tools.IsInvalid(replycomm) { //found only spaces or newlines in the input
 				fmt.Printf("⚠ ERROR ⚠ : Couldn't create comment in post %s from user %s due to invalid input ❌\n", Id_post, Id_user)
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
 			if r.Method != "POST" {
 				fmt.Printf("⚠ ERROR ⚠ : cannot access to that page by with mode other than POST ❌")
-				Err.Snippets(w, 405)
-				return
+				return 405
 			}
 			ReplyC_mngmnt(w, r, Id_post, Id_comment, Id_user, replycomm)
 			http.Redirect(w, r, redirect+"#"+Id_post, http.StatusSeeOther)
@@ -209,14 +193,12 @@ func ProcessData(w http.ResponseWriter, r *http.Request, redirect string) {
 		case Id_user != "" && Id_postR != "" && React != "":
 			//!--checking id_user and id_post validity
 			if tools.IsnotExist_user(Id_user, database) || tools.IsnotExist_Post(Id_postR, database) {
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
 			if r.Method != "POST" {
 				fmt.Printf("⚠ ERROR ⚠ : cannot access to that page by with mode other than POST ❌")
-				Err.Snippets(w, 405)
-				return
+				return 405
 			}
 			Reactpost_mngmnt(w, r, Id_postR, React)
 			http.Redirect(w, r, redirect+"#"+Id_postR, http.StatusSeeOther) //refreshing the page after data processing
@@ -225,14 +207,12 @@ func ProcessData(w http.ResponseWriter, r *http.Request, redirect string) {
 		case Id_user != "" && Id_commentR != "" && Reactcomm != "":
 			//!--checking id_user and id_post validity
 			if tools.IsnotExist_user(Id_user, database) || tools.IsnotExist_Comment(Id_commentR, database) {
-				Err.Snippets(w, 400)
-				return
+				return 400
 			}
 
 			if r.Method != "POST" {
 				fmt.Printf("⚠ ERROR ⚠ : cannot access to that page by with mode other than POST ❌")
-				Err.Snippets(w, 405)
-				return
+				return 405
 			}
 			Reactcmnt_mngmnt(w, r, Id_commentR, Reactcomm)
 			http.Redirect(w, r, redirect+"#"+Id_commentR, http.StatusSeeOther) //refreshing the page after data processing
@@ -242,4 +222,5 @@ func ProcessData(w http.ResponseWriter, r *http.Request, redirect string) {
 		} // end switch case
 
 	} //?------------ end of request treatment-----------------
+	return 200
 }
