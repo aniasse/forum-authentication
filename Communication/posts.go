@@ -80,26 +80,30 @@ func (Post_tab *Posts) GetPost_data(database data.Db) error {
 	return nil
 }
 
-func (Post_tab *Posts) Create_post(database data.Db, id_user string, categorie []string, value string, title string, image string) error {
+func (Post_tab *Posts) Create_post(database data.Db, id_user string, categorie []string, value string, title string, image string) (string, error) {
+	id_post, errp := uuid.NewV4() //id
 
-	if id_user != "" && value != "" && title !=""{
+	if id_user != "" && title != "" {
 		//generating postID, date and time
-		id_post, errp := uuid.NewV4() //id
 		if errp != nil {
 			fmt.Println("❌ Create_post ⚠ ERROR ⚠ : couldn't generate a unique post id")
-			return errp
+			return "", errp
 		}
 		date, time := tools.Time() //date and time
 
 		// inserting value in database
 		//-- formatting value's special chars
-		value = strings.ReplaceAll(value, "'", "2@c86cb3")
-		value = strings.ReplaceAll(value, "`", "2#c86cb3")
-		
+		if value == "" {
+			value = id_post.String()
+		} else {
+			value = strings.ReplaceAll(value, "'", "2@c86cb3")
+			value = strings.ReplaceAll(value, "`", "2#c86cb3")
+		}
+
 		//-- formatting title's special chars
 		title = strings.ReplaceAll(title, "'", "2@c86cb3")
 		title = strings.ReplaceAll(title, "`", "2#c86cb3")
-		
+
 		//-- formatting image link's special chars
 		image = strings.ReplaceAll(image, "'", "2@c86cb3")
 		image = strings.ReplaceAll(image, "`", "2#c86cb3")
@@ -110,7 +114,7 @@ func (Post_tab *Posts) Create_post(database data.Db, id_user string, categorie [
 		if err != nil {
 			fmt.Println("⚠ ERROR ⚠ : Couldn't insert post in database ❌")
 			fmt.Printf("⚠ : %v\n", err)
-			return err
+			return "", err
 		}
 
 		//inserting categories
@@ -121,7 +125,7 @@ func (Post_tab *Posts) Create_post(database data.Db, id_user string, categorie [
 			if err != nil {
 				fmt.Println("⚠ ERROR ⚠ : Couldn't insert categories in database ❌")
 				fmt.Printf("⚠ : %v\n", err)
-				return err
+				return "", err
 			}
 
 		}
@@ -132,5 +136,5 @@ func (Post_tab *Posts) Create_post(database data.Db, id_user string, categorie [
 		Post_tab.GetPost_data(database)
 	}
 
-	return nil
+	return id_post.String(), nil
 }
