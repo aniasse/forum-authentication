@@ -1,8 +1,67 @@
-{{define "mainContent"}}
- <!------------ -display post & comment----------->
- {{if eq .Empty true}}
- <div class="vide" style="margin: 5% 20%;">
-     <p>NO RESULT</p>
+<!DOCTYPE html>
+<html lang="en">
+    {{template "head" .}}
+<body>
+                     <!--  ---------- navbar ----------   -->
+    {{template "navbar" .}}
+                    <!--  ---------- navbar close ----------   -->
+                    
+    <div class="container">
+        <div class="right-sidebar">
+            <div class="sidebar-news">
+                <!-- filter by Posts Fav and Comments  -->
+                <img src="/static/front-tools/images/filter.png" class="info-icon">
+                <h3>Filter</h3>
+                <div id="activeFilter" class="sidebar-filter">
+                    <ul>
+                        <li><a href="/myprofil/posts" onclick="activateFilter(this)"><span>Posts</span></a></li>
+                        <li><a href="/myprofil/favorites" onclick="activateFilter(this)"><span>Favorites</span></a></li>
+                        <li><a href="/myprofil/comments" onclick="activateFilter(this)"><span>Comments</span></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- filter by categories  -->
+            <div class="sidebar-filter-category">
+                <img src="/static/front-tools/images/category.png" class="info-icon">
+                <h3>Categories</h3>
+                <div class="sidebar-category">
+                    <a href="/filter?filter=education"><img src="/static/front-tools/images/education.png">Education</a>
+                    <a href="/filter?filter=sport"><img src="/static/front-tools/images/sport.png">Sport</a>
+                    <a href="/filter?filter=culture"><img src="/static/front-tools/images/art.png" class="radius">Art & Culture</a>
+                    <a href="/filter?filter=cinema"><img src="/static/front-tools/images/cinema.png">Cinema</a>
+                    <a href="/filter?filter=health"><img src="/static/front-tools/images/health.png">Health</a>
+                    <a href="/filter?filter=others"><img src="/static/front-tools/images/other.png">Others</a>
+                </div>
+            </div>
+            </div>
+        <div class="profile-main" style="width: 50%;">
+            <div class="profile-container">
+                <!-- user infos  -->
+                <form action="#" id="imageForm">
+                    <label for="murImageInput">
+                        <img src="../static/front-tools/images/mur.png" width="100%" height="300px" id="murImage" onclick="selectMurImage()">
+                    </label>
+                    <input type="file" id="murImageInput" name="murImage" accept="image/*" onchange="uploadMurImage()" style="display: none;" />
+                </form>
+                
+                <div class="profile-container-inner">
+                    <form action="#" id="profileImageForm">
+                        <label for="profileImageInput">
+                            <img src="../static/front-tools//images/profil.jpeg" class="profile-pic" width="100%" height="150px" id="profileImage" onclick="selectProfileImage()">
+                        </label>
+                        <input type="file" id="profileImageInput" name="profileImage" accept="image/*" onchange="uploadProfileImage()" style="display: none;" />
+                    </form>
+                <h1>{{.CurrentSN}} {{.CurrentN}}</h1>
+                    <b>@{{.CurrentUN}}</b>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                            <!------------ -display post & comment----------->
+                            {{if eq .Empty true}}
+ <div class="vide">
+     <p>😕 You don't have any favorite post 💬</p>
      <a href="/home">Go back </a>
  </div>
  {{else}}
@@ -44,7 +103,7 @@
      </div>
  
      <div class="post-activity">
-         <form action="/home" method="post" class="reactform">
+         <form action="/myprofil/favorites" method="post" class="reactform">
              <input type="text" name="Rpostid" value="{{$value.PostId}}" style="display: none;">
              <div data-post_id="{{$value.PostId}}"  class="comment-section-toggler">
                  <img src="/static/front-tools/images/profil.jpeg" class="post-activity-user-icon">
@@ -87,7 +146,7 @@
              
      </div>
      <div class="post-activity-comment-input" id="commenting_{{$value.PostId}}">
-         <form action="/home" method="post">
+         <form action="/myprofil/favorites" method="post">
              <input type="text" name="postid" value="{{$value.PostId}}" style="display:none;">
              <textarea id="comment-input"  rows="4" placeholder="Write your comment here" name="newcomment" style="overflow-y: scroll;" maxlength="1000" required></textarea>
              <button type="submit" name="subcomm" value="SC">Comment</button>
@@ -117,7 +176,7 @@
              <div class="post-stats">
              </div>
              <div class="comment-activity">
-                 <form action="/home" method="post" class="reactform">
+                 <form action="/myprofil/favorites" method="post" class="reactform">
                      <input type="text" name="Rcomid" value="{{.CommentId}}" style="display: none;"> 
                      <label for="{{.CommentId}}like">
                          <div class="post-activity-link" id="comment-like-button">
@@ -158,7 +217,7 @@
                  </form>
              </div>
              <div class="post-activity-reply-input" id="replying_{{.CommentId}}">
-                 <form action="/home" method="post">
+                 <form action="/myprofil/favorites" method="post">
                      <input type="text" name="postid" value="{{.PostId}}" style="display: none;">
                      <input type="text" name="comId" value="{{.CommentId}}" style="display: none;">
                      <textarea id="reply-input" rows="4" placeholder="Write your reply here" name="replycomm" style="overflow-y: scroll;" maxlength="1000" required></textarea>
@@ -172,4 +231,12 @@
  </div>
  {{end}}
  {{end}}
-{{end}}
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+  <!-- ------------------ footer -------------- -->
+  {{template "footer" .}}
+</body>
+</html>

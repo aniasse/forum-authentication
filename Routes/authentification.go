@@ -320,7 +320,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request, tab db.Db) {
 			fmt.Println("cookie valide,affichage de /home", s)
 			id, _, _ := auth.HelpersBA(tab, "id_user", "WHERE usersession='"+c.Value+"'", "")
 			
-			Communication(w, r, id, "/home", "home")
+			Communication(w, r, id, "/home")
 			return
 		}
 	}

@@ -2,8 +2,8 @@ package Route
 
 import (
 	"fmt"
+	Err "forum/Authentification"
 	db "forum/Database"
-	"html/template"
 	"net/http"
 )
 
@@ -37,9 +37,7 @@ func Reactpost_mngmnt(w http.ResponseWriter, r *http.Request, Post_Id string, Re
 					errupdate := database.UPDATE(db.Post_reaction, toset, condition_upd)
 					if errupdate != nil {
 						fmt.Printf("⚠ ERROR ⚠ : Couldn't update user's reaction in database\n %s", errupdate)
-						w.WriteHeader(http.StatusInternalServerError)
-						error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-						error_file.Execute(w, "500")
+						Err.Snippets(w, 500)
 						return
 					}
 
@@ -50,9 +48,7 @@ func Reactpost_mngmnt(w http.ResponseWriter, r *http.Request, Post_Id string, Re
 					errupdate := database.UPDATE(db.Post_reaction, toset, condition_upd)
 					if errupdate != nil {
 						fmt.Printf("⚠ ERROR ⚠ : Couldn't update user's reaction in database\n %s", errupdate)
-						w.WriteHeader(http.StatusInternalServerError)
-						error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-						error_file.Execute(w, "500")
+						Err.Snippets(w, 500)
 						return
 					}
 
@@ -62,9 +58,7 @@ func Reactpost_mngmnt(w http.ResponseWriter, r *http.Request, Post_Id string, Re
 					errdel := database.DELETE(db.Post_reaction, condel)
 					if errdel != nil {
 						fmt.Printf("⚠ ERROR ⚠ : Couldn't delete dislike reaction in database\n %s", errdel)
-						w.WriteHeader(http.StatusInternalServerError)
-						error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-						error_file.Execute(w, "500")
+						Err.Snippets(w, 500)
 						return
 					}
 
@@ -75,9 +69,7 @@ func Reactpost_mngmnt(w http.ResponseWriter, r *http.Request, Post_Id string, Re
 
 					if errdel != nil {
 						fmt.Printf("⚠ ERROR ⚠ : Couldn't delete like reaction in database %s \n", errdel)
-						w.WriteHeader(http.StatusInternalServerError)
-						error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-						error_file.Execute(w, "500")
+						Err.Snippets(w, 500)
 						return
 					}
 
@@ -88,9 +80,7 @@ func Reactpost_mngmnt(w http.ResponseWriter, r *http.Request, Post_Id string, Re
 				erreac := reactab.React_post(database, Post_Id, Id_user, react)
 				if erreac != nil {
 					fmt.Printf("⚠ ERROR ⚠ : %s ❌\n", erreac)
-					w.WriteHeader(http.StatusInternalServerError)
-					error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-					error_file.Execute(w, "500")
+					Err.Snippets(w, 500)
 					return
 				}
 
@@ -106,6 +96,9 @@ func Reactpost_mngmnt(w http.ResponseWriter, r *http.Request, Post_Id string, Re
 		fmt.Println("error in Reactpost_mngmnt")
 	}
 }
+
+/*----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------*/
 
 // Reactcmnt_mngmnt handle all posts activities (creation, like and dislike)
 func Reactcmnt_mngmnt(w http.ResponseWriter, r *http.Request, Comment_Id string, React string) {
@@ -139,9 +132,7 @@ func Reactcmnt_mngmnt(w http.ResponseWriter, r *http.Request, Comment_Id string,
 					errupdate := database.UPDATE(db.Comment_reaction, toset, condition_upd)
 					if errupdate != nil {
 						fmt.Printf("⚠ ERROR ⚠ : Couldn't update user's comment reaction in database\n %s", errupdate)
-						w.WriteHeader(http.StatusInternalServerError)
-						error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-						error_file.Execute(w, "500")
+						Err.Snippets(w, 500)
 						return
 					}
 
@@ -152,9 +143,7 @@ func Reactcmnt_mngmnt(w http.ResponseWriter, r *http.Request, Comment_Id string,
 					errupdate := database.UPDATE(db.Comment_reaction, toset, condition_upd)
 					if errupdate != nil {
 						fmt.Printf("⚠ ERROR ⚠ : Couldn't update user's comment reaction in database\n %s", errupdate)
-						w.WriteHeader(http.StatusInternalServerError)
-						error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-						error_file.Execute(w, "500")
+						Err.Snippets(w, 500)
 						return
 					}
 
@@ -164,9 +153,7 @@ func Reactcmnt_mngmnt(w http.ResponseWriter, r *http.Request, Comment_Id string,
 					errdel := database.DELETE(db.Comment_reaction, condel)
 					if errdel != nil {
 						fmt.Printf("⚠ ERROR ⚠ : Couldn't delete dislike comment reaction in database\n %s", errdel)
-						w.WriteHeader(http.StatusInternalServerError)
-						error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-						error_file.Execute(w, "500")
+						Err.Snippets(w, 500)
 						return
 					}
 
@@ -177,9 +164,7 @@ func Reactcmnt_mngmnt(w http.ResponseWriter, r *http.Request, Comment_Id string,
 
 					if errdel != nil {
 						fmt.Printf("⚠ ERROR ⚠ : Couldn't delete like comment reaction in database %s \n", errdel)
-						w.WriteHeader(http.StatusInternalServerError)
-						error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-						error_file.Execute(w, "500")
+						Err.Snippets(w, 500)
 						return
 					}
 
@@ -191,9 +176,7 @@ func Reactcmnt_mngmnt(w http.ResponseWriter, r *http.Request, Comment_Id string,
 				erreac := reactab_com.React_comment(database, Id_user, Comment_Id, react)
 				if erreac != nil {
 					fmt.Printf("⚠ ERROR ⚠ : %s ❌\n", erreac)
-					w.WriteHeader(http.StatusInternalServerError)
-					error_file := template.Must(template.ParseFiles("new-frontend/templates/error.html"))
-					error_file.Execute(w, "500")
+					Err.Snippets(w, 500)
 					return
 				}
 

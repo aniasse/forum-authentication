@@ -63,14 +63,8 @@ func Snippets(w http.ResponseWriter, statusCode int) {
 //
 // while managing any errors that may occur.
 func DisplayFile(w http.ResponseWriter, templatePath string) {
-	// file, errparsefile := template.ParseFiles(templatePath)
 	file, errExecutionFile := template.ParseFiles(templatePath)
 
-	// if errparsefile != nil {
-	// 	fmt.Println("du mal a parser")
-	// 	Snippets(w, http.StatusInternalServerError)
-	// 	return
-	// }
 	errExecutionFile = file.Execute(w, nil)
 	if errExecutionFile != nil {
 		fmt.Println("Probléme de parsing ou d'execution de fichier", templatePath)
@@ -79,6 +73,8 @@ func DisplayFile(w http.ResponseWriter, templatePath string) {
 	}
 	fmt.Println("✅ File displays!", templatePath)
 }
+
+
 func DisplayFilewithexecute(w http.ResponseWriter, templatePath string, execute interface{}, status int) {
 	w.WriteHeader(status)
 	file, errparsefile := template.ParseFiles(templatePath)
