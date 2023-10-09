@@ -46,7 +46,7 @@ func (database Db) Tables() {
 			id_post TEXT PRIMARY KEY NOT NULL,
 			user_id TEXT NOT NULL ,
 			title TEXT NOT NULL,
-			description TEXT NOT NULL,
+			description TEXT DEFAULT "",
 			image TEXT DEFAULT "",
 			time TEXT NOT NULL,
 			date TEXT NOT NULL,
