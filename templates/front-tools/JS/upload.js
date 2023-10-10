@@ -39,3 +39,7 @@ function previewImage() {
 // Écouteur d'événements pour détecter les changements dans l'input file
 var imageInput = document.getElementById('image');
 imageInput.addEventListener('change', previewImage);
+
+
+
+    

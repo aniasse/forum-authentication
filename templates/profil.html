@@ -38,15 +38,16 @@
         <div class="profile-main" style="width: 50%;">
             <div class="profile-container">
                 <!-- user infos  -->
-                <form action="#" id="imageForm" method="post">
+                <form action="#" id="imageForm" class="profile-image-input" method="post">
                     <label for="murImageInput">
                         <img src="../static/front-tools/images/mur.png" width="100%" height="300px" id="murImage" onclick="selectMurImage()">
                     </label>
                     <input type="file" id="murImageInput" name="murImage" accept="image/*" onchange="uploadMurImage()" style="display: none;" />
+                
                 </form>
                 
                 <div class="profile-container-inner">
-                    <form action="#" id="profileImageForm" method="post">
+                    <form action="#" id="profileImageForm" class="profile-image-input" method="post">
                         <label for="profileImageInput">
                             <img src="../static/front-tools//images/profil.jpeg" class="profile-pic" width="100%" height="150px" id="profileImage" onclick="selectProfileImage()">
                         </label>

@@ -47,7 +47,24 @@ toggles.forEach(toggler => {
     }
 });
 
+//------------------------------------------------------------------------
 
+// Fonction pour automatiser la soumission du formulaire lorsque l'image est sélectionnée
+function autoSubmitForm(formId, inputId) {
+    var form = document.getElementById(formId);
+    var input = document.getElementById(inputId);
+
+    if (form && input) {
+        input.addEventListener("change", function () {
+            form.submit();
+            console.log("Formulaire soumis !");
+        });
+    }
+}
+
+// Appelez la fonction pour chaque formulaire
+autoSubmitForm("imageForm", "murImageInput");
+autoSubmitForm("profileImageForm", "profileImageInput");
 
 
 // ------------------- comment input js ------------------------
@@ -133,9 +150,6 @@ function closeLoginRequest() {
     loginRequest.classList.remove("open-log-request");
     body.classList.remove("open-login-overlay");
 };
-
-
-    
 
 /* --------------------------------dark-mode------------------------------------------ */
 
