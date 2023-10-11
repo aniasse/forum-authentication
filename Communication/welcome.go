@@ -70,7 +70,7 @@ Thank you for being part of this adventure with us!
 func (Post_tab *Posts) DeleteWelcome_user(database data.Db, id_user string) (error, bool) {
 	if id_user != "" {
 		//----------   checking the existence of the post   ------------------
-		condicheck := "WHERE image = \"welcoming.png\""
+		condicheck := "WHERE id_post = \"avamspost\""
 		check, errcheck := database.Exist(data.Id_post, data.Post, condicheck)
 		if errcheck != nil {
 			fmt.Println("⚠ ERROR ⚠ : Couldn't get data from database in 'DeleteWelcome_user function' ❌")
@@ -80,20 +80,6 @@ func (Post_tab *Posts) DeleteWelcome_user(database data.Db, id_user string) (err
 		if !check {
 			return nil, false
 		}
-		// check, errdata := database.GetData(data.Post, data.Id_post, condicheck)
-		// if errdata != nil {
-		// 	fmt.Println("⚠ ERROR ⚠ : Couldn't get data from database in 'DeleteWelcome_user function' ❌")
-		// 	return errdata, false
-		// }
-		// checkvalue, errCheckVal := data.Getelement(check)
-		// if errCheckVal != nil {
-		// 	fmt.Println("⚠ ERROR ⚠ : Couldn't get value in 'DeleteWelcome_user' function ❌")
-		// 	return errCheckVal, false
-		// }
-		// // if there is no such post => return empty string in checkvalue variable
-		// if checkvalue == "" {
-		// 	return nil, false
-		// }
 		//-----------------------  end of checking   -----------------------
 
 		condition := "WHERE id_post = \"avamspost\""
