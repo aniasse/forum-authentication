@@ -42,6 +42,7 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 	}
 
 	GetAll_fromDB(w, r)
+	UploadImageUser(w, r, Id_user)
 	StatusCode := ProcessData(w, r, "/myprofil/"+choice)
 	if StatusCode != 200 {
 		auth.Snippets(w, StatusCode)
