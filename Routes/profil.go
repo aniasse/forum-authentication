@@ -61,7 +61,7 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 	current_cover, _, errcover := auth.HelpersBA(database, "pc", " WHERE id_user='"+Id_user+"'", "")
 	//handle error
 	if errpp || errcover {
-		auth.Snippets(w, http.StatusInternalServerError)
+		auth.Snippets(w, http.StatusInternalServerError) 
 	}
 	//end
 	file, errf := template.ParseFiles("templates/profil.html", "templates/head.html", "templates/navbar.html", "templates/main.html", "templates/footer.html")
