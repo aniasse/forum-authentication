@@ -52,7 +52,7 @@ func Handlers() {
 	fmt.Println("| 🌐 Server has started at \033[32mhttps://localhost:443\033[0m 🟢  |")
 	fmt.Println("|                                                    |")
 	fmt.Println("📡----------------------------------------------------📡")
-	errr := http.ListenAndServeTLS(":443", "security/certificate.pem", "security/private.key", nil)
+	errr := http.ListenAndServeTLS(":8080", "security/certificate.pem", "security/private.key", nil)
     if errr != nil {
         fmt.Printf("Erreur de serveur HTTPS : %s\n", errr)
     }
