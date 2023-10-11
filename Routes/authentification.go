@@ -126,8 +126,8 @@ func CreateAccountPage(w http.ResponseWriter, r *http.Request, tab db.Db) {
 			creds = &Credentials{Name: name, Username: username, Email: email, Password: hashpassword, id: newid.String(), Surname: surname}
 			//save user in database
 			// fmt.Println("creds", creds)
-			values := "('" + creds.id + "','" + creds.Email + "','" + creds.Name + "','" + creds.Username + "','" + creds.Surname + "','" + creds.Password + "')"
-			attributes := "(id_user,email,name,username,surname, password)"
+			values := "('" + creds.id + "','" + creds.Email + "','" + creds.Name + "','" + creds.Username + "','" + creds.Surname + "','" + creds.Password + "','../static/front-tools/images/profil.jpeg','../static/front-tools/images/mur.png')"
+			attributes := "(id_user,email,name,username,surname, password,pp,pc)"
 			error := tab.INSERT(db.User, attributes, values)
 			if error != nil {
 				fmt.Println("something wrong")
