@@ -12,7 +12,7 @@ func (Post_tab *Posts) Welcome_user(database data.Db, id_user string) error {
 	if id_user != "" {
 
 		date, time := tools.Time() //date and time
-		categorie := []string{"Education", "Sport", "Art & culture", "Cinema", "health", "others"}
+		categorie := []string{"education", "sport", "art & culture", "cinema", "health", "others"}
 		// inserting value in database
 		//-- formatting value's special chars
 		value := `
@@ -29,7 +29,7 @@ Thank you for being part of this adventure with us!
 		title := "FIRST USER 🎉"
 
 		//-- formatting image link's special chars
-		image := "welcoming.png"
+		image := "welcome.jpg"
 
 		request0 := fmt.Sprintf("(%s, %s,%s, %s, %s, %s, %s)", data.Id_post, data.User_id, data.Title, data.Description, data.Image, data.Time, data.Date)
 		values := fmt.Sprintf("('%s', '%s', '%s', '%s','%s', '%s', '%s')", "avamspost", "avams", title, value, image, time, date)
