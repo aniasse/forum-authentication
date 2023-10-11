@@ -56,6 +56,14 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 	}
 
 	username, name, surname := tools.GetName_byID(database, Id_user)
+	//code
+	current_pp, _, errpp := auth.HelpersBA(database, "pp", " WHERE id_user='"+Id_user+"'", "")
+	current_cover, _, errcover := auth.HelpersBA(database, "pc", " WHERE id_user='"+Id_user+"'", "")
+	//handle error
+	if errpp || errcover {
+		auth.Snippets(w, http.StatusInternalServerError)
+	}
+	//end
 	file, errf := template.ParseFiles("templates/profil.html", "templates/head.html", "templates/navbar.html", "templates/main.html", "templates/footer.html")
 	if errf != nil {
 		//sending metadata about the error to the servor
@@ -71,11 +79,13 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 	//users name and surname
 	//struct to execute
 	finalex := Res{
-		CurrentN:  name,
-		CurrentSN: surname,
-		CurrentUN: username,
-		Postab:    newtab,
-		Empty:     empty,
+		CurrentN:     name,
+		CurrentSN:    surname,
+		CurrentUN:    username,
+		CurrentPP:    current_pp,
+		CurrentCover: current_cover,
+		Postab:       newtab,
+		Empty:        empty,
 	}
 
 	//sending data to html
