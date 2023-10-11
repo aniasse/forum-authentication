@@ -12,11 +12,13 @@ import (
 )
 
 type Res struct {
-	CurrentN  string
-	CurrentSN string
-	CurrentUN string
-	Postab    Com.Posts
-	Empty     bool
+	CurrentN     string
+	CurrentSN    string
+	CurrentUN    string
+	CurrentPP    string
+	CurrentCover string
+	Postab       Com.Posts
+	Empty        bool
 }
 
 var (
