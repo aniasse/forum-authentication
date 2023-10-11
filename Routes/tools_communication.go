@@ -54,7 +54,13 @@ func CreateC_mngmnt(w http.ResponseWriter, r *http.Request, Id_post string, newc
 // ReplyC_mngmnt handles user's comment reply activity
 func ReplyC_mngmnt(w http.ResponseWriter, r *http.Request, Id_post string, Id_comment string, Id_user string, replycomm string) {
 
-	com_owner_username := tools.GetName_bycomment(database, Id_comment)
+	com_owner_username, errGN := tools.GetName_bycomment(database, Id_comment)
+	if errGN != nil {
+		//sending metadata about the error to the servor
+		Err.Snippets(w, 500)
+		return
+	}
+	
 	fmt.Println("name comm ", com_owner_username)
 	reply := fmt.Sprintf("@%v %v", com_owner_username, replycomm)
 

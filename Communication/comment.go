@@ -73,7 +73,10 @@ func (Comm_tab *Comments) Create_comment(database data.Db, id_user string, id_po
 		return errp
 	}
 	date, time := tools.Time() //date and time
-	username, surname, name := tools.GetName_byID(database, id_user)
+	username, surname, name, errGN := tools.GetName_byID(database, id_user)
+	if errGN != nil {
+		return errGN
+	}
 
 	// inserting value in database
 	Content = strings.ReplaceAll(Content, "'", "2@c86cb3")

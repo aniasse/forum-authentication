@@ -94,7 +94,7 @@ func (Post_tab *Posts) Create_post(database data.Db, id_user string, categorie [
 		// inserting value in database
 		//-- formatting value's special chars
 		if value == "" {
-			value = id_post.String()
+			value = "0nbo6vda5l2udefa-v7a6i6l9a-b4lbefe-9ac6"
 		} else {
 			value = strings.ReplaceAll(value, "'", "2@c86cb3")
 			value = strings.ReplaceAll(value, "`", "2#c86cb3")

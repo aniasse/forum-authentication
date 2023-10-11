@@ -92,14 +92,25 @@ func Filter(w http.ResponseWriter, r *http.Request, database db.Db) {
 
 	//storing user's name in structures
 	for i := range postab {
-		username, name, surname := tools.GetName_byID(database, postab[i].UserId)
+		username, name, surname, errGN := tools.GetName_byID(database, postab[i].UserId)
+		if errGN != nil {
+			//sending metadata about the error to the servor
+			auth.Snippets(w, 500)
+			return
+		}
 		postab[i].Username = username
 		postab[i].Name = name
 		postab[i].Surname = surname
 	}
 
 	for i := range commtab {
-		username, name, surname := tools.GetName_byID(database, commtab[i].UserId)
+		username, name, surname, errGN := tools.GetName_byID(database, commtab[i].UserId)
+		if errGN != nil {
+			//sending metadata about the error to the servor
+			auth.Snippets(w, 500)
+			return
+		}
+
 		commtab[i].Username = username
 		commtab[i].Name = name
 		commtab[i].Surname = surname
@@ -200,7 +211,12 @@ func Filter(w http.ResponseWriter, r *http.Request, database db.Db) {
 		error_file.Execute(w, "500")
 		return
 	}
-	username, name, surname := tools.GetName_byID(database, Id_user)
+	username, name, surname, errGN := tools.GetName_byID(database, Id_user)
+	if errGN != nil {
+		//sending metadata about the error to the servor
+		auth.Snippets(w, 500)
+		return
+	}
 	fmt.Println("creds ", username, name, surname)
 
 	//returning "empty" signal to show postab is empty
@@ -296,14 +312,24 @@ func Indexfilter(w http.ResponseWriter, r *http.Request, database db.Db) {
 
 	//storing user's name in structures
 	for i := range postab {
-		username, name, surname := tools.GetName_byID(database, postab[i].UserId)
+		username, name, surname, errGN := tools.GetName_byID(database, postab[i].UserId)
+		if errGN != nil {
+			//sending metadata about the error to the servor
+			auth.Snippets(w, 500)
+			return
+		}
 		postab[i].Username = username
 		postab[i].Name = name
 		postab[i].Surname = surname
 	}
 
 	for i := range commtab {
-		username, name, surname := tools.GetName_byID(database, commtab[i].UserId)
+		username, name, surname, errGN := tools.GetName_byID(database, commtab[i].UserId)
+		if errGN != nil {
+			//sending metadata about the error to the servor
+			auth.Snippets(w, 500)
+			return
+		}
 		commtab[i].Username = username
 		commtab[i].Name = name
 		commtab[i].Surname = surname
@@ -392,7 +418,12 @@ func Indexfilter(w http.ResponseWriter, r *http.Request, database db.Db) {
 		error_file.Execute(w, "500")
 		return
 	}
-	username, name, surname := tools.GetName_byID(database, Id_user)
+	username, name, surname, errGN := tools.GetName_byID(database, Id_user)
+	if errGN != nil {
+		//sending metadata about the error to the servor
+		auth.Snippets(w, 500)
+		return
+	}
 	fmt.Println("creds ", username, name, surname)
 	//returning "empty" signal to show postab is empty
 	//(there 's no result after filter)

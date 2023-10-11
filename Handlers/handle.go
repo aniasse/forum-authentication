@@ -2,7 +2,6 @@ package hdle
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	auth "forum/Authentification"
@@ -16,7 +15,8 @@ func Handlers() {
 
 	tab, err := db.Init_db()
 	if err != nil {
-		log.Fatalln(err)
+		fmt.Println(err)
+		return
 	}
 
 	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +53,7 @@ func Handlers() {
 	fmt.Println("|                                                    |")
 	fmt.Println("📡----------------------------------------------------📡")
 	errr := http.ListenAndServeTLS(":8080", "security/certificate.pem", "security/private.key", nil)
-    if errr != nil {
-        fmt.Printf("Erreur de serveur HTTPS : %s\n", errr)
-    }
+	if errr != nil {
+		fmt.Printf("Erreur de serveur HTTPS : %s\n", errr)
+	}
 }

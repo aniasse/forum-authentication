@@ -88,7 +88,9 @@
          </div>
      </div>
      <div class="post-read">
-         <pre style="word-wrap: break-word; white-space: pre-wrap;">{{$value.Content}}</pre> 
+        {{if ne $value.Content "0nbo6vda5l2udefa-v7a6i6l9a-b4lbefe-9ac6"}}
+        <pre style="word-wrap: break-word; white-space: pre-wrap;">{{$value.Content}}</pre> 
+        {{end}}
          {{if ne $value.ImageLink ""}}
          <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image">
          {{end}}

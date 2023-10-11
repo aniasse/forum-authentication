@@ -64,14 +64,25 @@ func GetAll_fromDB(w http.ResponseWriter, r *http.Request) {
 
 	//storing user's name in structures
 	for i := range postab {
-		username, name, surname := tools.GetName_byID(database, postab[i].UserId)
+		username, name, surname, errGN := tools.GetName_byID(database, postab[i].UserId)
+		if errGN != nil {
+			//sending metadata about the error to the servor
+			Err.Snippets(w, 500)
+			return
+		}
+
 		postab[i].Username = username
 		postab[i].Name = name
 		postab[i].Surname = surname
 	}
 
 	for i := range commtab {
-		username, name, surname := tools.GetName_byID(database, commtab[i].UserId)
+		username, name, surname, errGN := tools.GetName_byID(database, commtab[i].UserId)
+		if errGN != nil {
+			//sending metadata about the error to the servor
+			Err.Snippets(w, 500)
+			return
+		}
 		commtab[i].Username = username
 		commtab[i].Name = name
 		commtab[i].Surname = surname

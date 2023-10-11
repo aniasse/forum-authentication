@@ -59,7 +59,12 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 		return
 	}
 	// user's name
-	current_username, current_surname, current_name := tools.GetName_byID(database, Id_user)
+	current_username, current_surname, current_name, errGN := tools.GetName_byID(database, Id_user)
+	if errGN != nil {
+		//sending metadata about the error to the servor
+		Err.Snippets(w, 500)
+		return
+	}
 
 	//returning "empty" signal to show postab is empty
 	//(there 's no result after filter)
