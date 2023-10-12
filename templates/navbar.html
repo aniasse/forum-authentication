@@ -13,14 +13,14 @@
     </div>
     <div class="navbar-right">
         <div class="online">
-            <img src="/static/front-tools/images/profil.jpeg" class="nav-profile-img" onclick="toggleMenu()">
+            <img src="{{.CurrentPP}}" class="nav-profile-img" onclick="toggleMenu()">
         </div>
     </div>
          <!--  ---------- profile-drop-down-menu ----------   -->     
     <div class="profile-menu-wrap" id="profileMenu">
         <div class="profile-menu">
             <div class="user-info">
-                <img src="/static/front-tools/images/profil.jpeg">
+                <img src="{{.CurrentPP}}">
                 <div>
                     <h3>{{.CurrentN}} {{.CurrentSN}}</h3>
                     <p>@{{.CurrentUN}}</p>
