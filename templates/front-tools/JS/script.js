@@ -66,6 +66,26 @@ function autoSubmitForm(formId, inputId) {
 autoSubmitForm("imageForm", "murImageInput");
 autoSubmitForm("profileImageForm", "profileImageInput");
 
+//--------------------------size_of_img-----------------------------------------------
+
+function checkImageSized(inputId, errorElementId) {
+    var fileInput = document.getElementById(inputId);
+    var errorElement = document.getElementById(errorElementId);
+    var maxFileSize = 1024 * 1024; // 1 Mo en octets
+
+    if (fileInput.files.length > 0) {
+        var fileSize = fileInput.files[0].size;
+
+        if (fileSize > maxFileSize) {
+            errorElement.textContent = "❌ Le fichier ne doit pas dépasser 1 Mo.";
+            fileInput.value = null; // Réinitialisation du champ de fichier
+            console.log("fait");
+        } else {
+            errorElement.textContent = null; // Effacement du message d'erreur
+            console.log("fait");
+        }
+    }
+}
 
 // ------------------- comment input js ------------------------
 
