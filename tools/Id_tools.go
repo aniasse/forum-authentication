@@ -28,6 +28,26 @@ func GetName_byID(database data.Db, ID string) (string, string, string, error) {
 	return username, name, surname, nil
 }
 
+func GetPic_byID(database data.Db, Id string) (string, error) {
+	//getting the user's profil image
+	condition := fmt.Sprintf("WHERE %s = '%s'", data.Id_user, Id)
+	info, errn := database.GetData(data.Pp, data.User, condition)
+	if errn != nil {
+		fmt.Println("⚠ ERROR ⚠ : Couldn't get the profil photo according to the id from database ❌")
+		fmt.Printf("⚠ : %v\n", errn)
+		return "", errn
+	}
+
+	picture, errpic := data.Getelement(info)
+	if errpic != nil {
+		fmt.Println("⚠ ERROR ⚠ : Couldn't get the profil image from database ❌")
+		fmt.Printf("⚠ : %v\n", errn)
+		return "", errpic
+	}
+
+	return picture, nil
+}
+
 func GetName_bycomment(database data.Db, ID string) (string, error) {
 	//getting the user's name
 	condition := fmt.Sprintf("WHERE %s = '%s'", data.Id_comment, ID)
