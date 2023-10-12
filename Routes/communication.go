@@ -43,7 +43,7 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 		return
 	}
 
-	GetAll_fromDB(w, r) //display all values in the forum database
+	GetAll_fromDB(w) //display all values in the forum database
 	fmt.Println("postab size ->> ", len(postab))
 	StatusCode := ProcessData(w, r, redirect) //Process datas received fromn client request
 	if StatusCode != 200 {

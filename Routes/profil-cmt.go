@@ -42,7 +42,7 @@ func Profil_comment(w http.ResponseWriter, r *http.Request, database db.Db) {
 		return
 	}
 
-	GetAll_fromDB(w, r)
+	GetAll_fromDB(w)
 	StatusCode := ProcessData(w, r, "/myprofil/"+choice)
 	if StatusCode != 200 {
 		auth.Snippets(w, StatusCode)
@@ -65,7 +65,7 @@ func Profil_comment(w http.ResponseWriter, r *http.Request, database db.Db) {
 		auth.Snippets(w, 500)
 		return
 	}
-	
+
 	file, errf := template.ParseFiles("templates/filter_com.html", "templates/head.html", "templates/navbar.html", "templates/main.html", "templates/footer.html")
 	if errf != nil {
 		//sending metadata about the error to the servor
