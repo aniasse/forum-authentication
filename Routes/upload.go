@@ -66,8 +66,8 @@ func UploadImageUser(w http.ResponseWriter, r *http.Request, id string) {
 
 	if r.Method == "POST" {
 		fmt.Println("it's post")
-		imageProfil, errProfil := Upload_mngmnt(w, r, 5, "profileImage")
-		imageCover, errCover := Upload_mngmnt(w, r, 5, "murImage")
+		imageProfil, errProfil := Upload_mngmnt(w, r, 1, "profileImage")
+		imageCover, errCover := Upload_mngmnt(w, r, 1, "murImage")
 		if errProfil != nil || errCover != nil {
 			fmt.Println("erreur cover ou profil", errProfil, errCover)
 			return

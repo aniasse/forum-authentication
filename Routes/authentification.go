@@ -187,6 +187,21 @@ func LoginPage(w http.ResponseWriter, r *http.Request, tab db.Db) {
 		creds := Credentials{}
 		//checks that the fields in the query are not null
 		if username != "" && password != "" {
+			//change
+			if auth.NotAllow(username) {
+				fmt.Println("here")
+				message := "presence de \" ou ' ou injection XSS dans le username"
+				formlogin := Register{Username: "", Password: password, Message: message}
+				auth.DisplayFilewithexecute(w, "templates/register.html", formlogin, http.StatusBadRequest)
+				return
+
+			}
+			if auth.NotAllow(password) {
+				message := "presence de \" ou ' ou injection XSS dans le mdp"
+				formlogin := Register{Username: username, Password: "", Message: message}
+				auth.DisplayFilewithexecute(w, "templates/register.html", formlogin, http.StatusBadRequest)
+				return
+			}
 			//give the user the possibility to enter an email or a nickname
 			giveUsername := auth.GetDatafromBA(tab.Doc, username, "username", db.User)
 			giveEmail := auth.GetDatafromBA(tab.Doc, username, "email", db.User)
@@ -319,7 +334,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request, tab db.Db) {
 		if s != "" {
 			fmt.Println("cookie valide,affichage de /home", s)
 			id, _, _ := auth.HelpersBA(tab, "id_user", "WHERE usersession='"+c.Value+"'", "")
-			
+
 			Communication(w, r, id, "/home")
 			return
 		}
