@@ -13,7 +13,7 @@ import (
 GetAll_fromDB connects to database, retrieves from it informations
 that will be display in the hime and index page
 */
-func GetAll_fromDB(w http.ResponseWriter, r *http.Request) {
+func GetAll_fromDB(w http.ResponseWriter) {
 	// connecting to database
 	database.Doc, errd = sql.Open("sqlite3", "forum.db")
 	if errd != nil {
@@ -62,15 +62,21 @@ func GetAll_fromDB(w http.ResponseWriter, r *http.Request) {
 		commtab[i].SessionId = Id_user
 	}
 
-	//storing user's name in structures
+	//storing user's name and profil image in structures
 	for i := range postab {
 		username, name, surname, errGN := tools.GetName_byID(database, postab[i].UserId)
+		//	Profil, errprof := tools.GetPic_byID(database, postab[i].UserId)
 		if errGN != nil {
 			//sending metadata about the error to the servor
 			Err.Snippets(w, 500)
 			return
 		}
-
+		// if errprof != nil {
+		// 	//sending metadata about the error to the servor
+		// 	Err.Snippets(w, 500)
+		// 	return
+		// }
+		//postab[i].Profil = Profil
 		postab[i].Username = username
 		postab[i].Name = name
 		postab[i].Surname = surname
@@ -78,11 +84,19 @@ func GetAll_fromDB(w http.ResponseWriter, r *http.Request) {
 
 	for i := range commtab {
 		username, name, surname, errGN := tools.GetName_byID(database, commtab[i].UserId)
+		//	Profil, errprof := tools.GetPic_byID(database, comtab[i].UserId)
+
 		if errGN != nil {
 			//sending metadata about the error to the servor
 			Err.Snippets(w, 500)
 			return
 		}
+		// if errprof != nil {
+		// 	//sending metadata about the error to the servor
+		// 	Err.Snippets(w, 500)
+		// 	return
+		// }
+		//commtab[i].Profil = Profil
 		commtab[i].Username = username
 		commtab[i].Name = name
 		commtab[i].Surname = surname
