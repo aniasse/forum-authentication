@@ -12,6 +12,7 @@ import (
 
 type Post struct {
 	SessionId    string
+	Profil       string
 	Username     string
 	Name         string
 	Surname      string

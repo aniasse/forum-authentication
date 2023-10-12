@@ -11,6 +11,7 @@ import (
 
 type Comment struct {
 	SessionId    string
+	Profil       string
 	PostId       string
 	UserId       string
 	CommentId    string
@@ -26,7 +27,8 @@ type Comment struct {
 }
 
 type Comments []Comment
-//GetComment_data retrieves all datas related to comments from databse
+
+// GetComment_data retrieves all datas related to comments from databse
 func (Comm_tab *Comments) GetComment_data(database data.Db) error {
 	request := fmt.Sprintf("%s, %s, %s, %s, %s, %s", data.Post_id, data.User_id, data.Id_comment, data.Content, data.Time, data.Date)
 
@@ -48,11 +50,11 @@ func (Comm_tab *Comments) GetComment_data(database data.Db) error {
 			fmt.Printf("⚠ : %v\n", errscan)
 			return errscan
 		}
-		temp.Content= strings.ReplaceAll(temp.Content, "2@c86cb3", "'")
-		temp.Content= strings.ReplaceAll(temp.Content, "2#c86cb3", "`")
+		temp.Content = strings.ReplaceAll(temp.Content, "2@c86cb3", "'")
+		temp.Content = strings.ReplaceAll(temp.Content, "2#c86cb3", "`")
 		temCom = append(temCom, temp)
 	}
-	
+
 	*Comm_tab = temCom
 
 	fmt.Println("✅ comments 📊 has been stored in local 🗄 structure successfully")
