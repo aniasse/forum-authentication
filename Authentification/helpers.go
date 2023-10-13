@@ -74,7 +74,6 @@ func DisplayFile(w http.ResponseWriter, templatePath string) {
 	fmt.Println("✅ File displays!", templatePath)
 }
 
-
 func DisplayFilewithexecute(w http.ResponseWriter, templatePath string, execute interface{}, status int) {
 	w.WriteHeader(status)
 	file, errparsefile := template.ParseFiles(templatePath)
@@ -125,5 +124,5 @@ func FieldsLimited(field string, min, max int) bool {
 }
 
 func NotAllow(s string) bool {
-	return strings.Contains(s, "'")
+	return strings.Contains(s, "'") || strings.Contains(s, "\"")
 }
