@@ -43,6 +43,7 @@ func Profil_comment(w http.ResponseWriter, r *http.Request, database db.Db) {
 	}
 
 	GetAll_fromDB(w)
+	UploadImageUser(w, r, Id_user)
 	StatusCode := ProcessData(w, r, "/myprofil/"+choice)
 	if StatusCode != 200 {
 		auth.Snippets(w, StatusCode)
@@ -66,6 +67,15 @@ func Profil_comment(w http.ResponseWriter, r *http.Request, database db.Db) {
 		return
 	}
 
+	//code
+	current_pp, _, errpp := auth.HelpersBA(database, "pp", " WHERE id_user='"+Id_user+"'", "")
+	current_cover, _, errcover := auth.HelpersBA(database, "pc", " WHERE id_user='"+Id_user+"'", "")
+	//handle error
+	if errpp || errcover {
+		fmt.Println("error pp,", errpp, " error cover", errcover)
+		auth.Snippets(w, http.StatusInternalServerError)
+	}
+	//end
 	file, errf := template.ParseFiles("templates/filter_com.html", "templates/head.html", "templates/navbar.html", "templates/main.html", "templates/footer.html")
 	if errf != nil {
 		//sending metadata about the error to the servor
@@ -82,11 +92,13 @@ func Profil_comment(w http.ResponseWriter, r *http.Request, database db.Db) {
 	//users name and surname
 	//struct to execute
 	finalex := Res{
-		CurrentN:  name,
-		CurrentSN: surname,
-		CurrentUN: username,
-		Postab:    newtab,
-		Empty:     empty,
+		CurrentN:     name,
+		CurrentSN:    surname,
+		CurrentUN:    username,
+		CurrentPP:    current_pp,
+		CurrentCover: current_cover,
+		Postab:       newtab,
+		Empty:        empty,
 	}
 
 	//sending data to html

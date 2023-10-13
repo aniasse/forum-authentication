@@ -6,17 +6,20 @@ import (
 	"net/http"
 
 	Err "forum/Authentification"
+	auth "forum/Authentification"
 	Com "forum/Communication"
 	db "forum/Database"
 	tools "forum/tools"
 )
 
 type Res struct {
-	CurrentN  string
-	CurrentSN string
-	CurrentUN string
-	Postab    Com.Posts
-	Empty     bool
+	CurrentN     string
+	CurrentSN    string
+	CurrentUN    string
+	CurrentPP    string
+	CurrentCover string
+	Postab       Com.Posts
+	Empty        bool
 }
 
 var (
@@ -66,15 +69,26 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 		return
 	}
 
+	// code
+	current_pp, _, errpp := auth.HelpersBA(database, "pp", " WHERE id_user='"+Id_user+"'", "")
+	current_cover, _, errcover := auth.HelpersBA(database, "pc", " WHERE id_user='"+Id_user+"'", "")
+	// handle error
+	if errpp || errcover {
+		fmt.Println("error pp,", errpp, " error cover", errcover)
+		auth.Snippets(w, http.StatusInternalServerError)
+	}
+	//end
 	//returning "empty" signal to show postab is empty
 	//(there 's no result after filter)
 
 	//struct to execute
 	final := Res{
-		CurrentUN: current_username,
-		CurrentSN: current_surname,
-		CurrentN:  current_name,
-		Postab:    postab,
+		CurrentUN:    current_username,
+		CurrentSN:    current_surname,
+		CurrentN:     current_name,
+		CurrentPP:    current_pp,
+		CurrentCover: current_cover,
+		Postab:       postab,
 	}
 
 	//sending data to html

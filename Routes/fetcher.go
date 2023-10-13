@@ -65,18 +65,14 @@ func GetAll_fromDB(w http.ResponseWriter) {
 	//storing user's name and profil image in structures
 	for i := range postab {
 		username, name, surname, errGN := tools.GetName_byID(database, postab[i].UserId)
-		//	Profil, errprof := tools.GetPic_byID(database, postab[i].UserId)
-		if errGN != nil {
+		Profil, errprof := tools.GetPic_byID(database, postab[i].UserId)
+
+		if errprof != nil || errGN != nil {
 			//sending metadata about the error to the servor
 			Err.Snippets(w, 500)
 			return
 		}
-		// if errprof != nil {
-		// 	//sending metadata about the error to the servor
-		// 	Err.Snippets(w, 500)
-		// 	return
-		// }
-		//postab[i].Profil = Profil
+		postab[i].Profil = Profil
 		postab[i].Username = username
 		postab[i].Name = name
 		postab[i].Surname = surname
@@ -84,19 +80,14 @@ func GetAll_fromDB(w http.ResponseWriter) {
 
 	for i := range commtab {
 		username, name, surname, errGN := tools.GetName_byID(database, commtab[i].UserId)
-		//	Profil, errprof := tools.GetPic_byID(database, comtab[i].UserId)
+		Profil, errprof := tools.GetPic_byID(database, commtab[i].UserId)
 
-		if errGN != nil {
+		if errprof != nil || errGN != nil {
 			//sending metadata about the error to the servor
 			Err.Snippets(w, 500)
 			return
 		}
-		// if errprof != nil {
-		// 	//sending metadata about the error to the servor
-		// 	Err.Snippets(w, 500)
-		// 	return
-		// }
-		//commtab[i].Profil = Profil
+		commtab[i].Profil = Profil
 		commtab[i].Username = username
 		commtab[i].Name = name
 		commtab[i].Surname = surname
