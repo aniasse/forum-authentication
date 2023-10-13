@@ -29,6 +29,8 @@ func (database Db) Tables() {
 		surname TEXT NOT NULL,
 		email TEXT NOT NULL,
 		password TEXT NOT NULL,
+		pp TEXT,
+		PC TEXT,
 		usersession TEXT
 		);
 		`
