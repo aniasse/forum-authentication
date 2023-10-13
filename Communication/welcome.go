@@ -39,8 +39,8 @@ Thank you for being part of this adventure with us!
 			return err
 		}
 
-		request1 := fmt.Sprintf("(%s, %s,%s, %s, %s, %s, %s)", data.Id_user, data.Username, data.Name, data.Surname, data.Email, data.Password, data.Usersession)
-		values1 := fmt.Sprintf("('%s', '%s', '%s', '%s','%s', '%s', '%s')", "avams", "avams_team", "TEAM", "AVAMS", "avams@avams.com", "12345678", "sessiontestforwelcome")
+		request1 := fmt.Sprintf("(%s, %s,%s, %s, %s, %s, %s,%s, %s)", data.Id_user, data.Username, data.Name, data.Surname, data.Email, data.Password, data.Usersession, data.Pp, data.Pc)
+		values1 := fmt.Sprintf("('%s', '%s', '%s', '%s','%s', '%s', '%s','%s', '%s')", "avams", "avams_team", "TEAM", "AVAMS", "avams@avams.com", "12345678", "sessiontestforwelcome", "../static/front-tools/images/profil.jpeg","../static/front-tools/images/mur.png")
 		erruser := database.INSERT("users", request1, values1)
 		if erruser != nil {
 			fmt.Println("⚠ ERROR ⚠ : Couldn't insert avams profil in database ❌")
