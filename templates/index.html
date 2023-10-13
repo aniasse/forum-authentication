@@ -57,7 +57,7 @@
                 <hr class="separate">
                 <div class="post-author">
                     <div class="post-author_info">
-                        <img src="/static/front-tools/images/profil.jpeg">
+                        <img src="{{$value.Profil}}">
                         <div>
                             <h1>{{$value.Surname}} {{$value.Name}}</h1>
                             <small>@{{$value.Username}}</small>
@@ -89,7 +89,7 @@
                     <div class="reactform">
                         <input type="text" name="Rpostid" value="{{$value.PostId}}" style="display: none;">
                         <div data-post_id="{{$value.PostId}}"  class="comment-section-toggler">
-                            <img src="/static/front-tools/images/profil.jpeg" class="post-activity-user-icon">
+                            <img src="{{$value.Profil}}" class="post-activity-user-icon">
                             <img src="/static/front-tools/images/down-arrow.png" class="post-activity-arrow-icon">
                         </div>
                         <label for="{{$value.PostId}}like" style="display: inline;">
@@ -134,9 +134,9 @@
                     <div class="comments" id="{{.CommentId}}">
                         <div class="comment-author">
                             <div class="post-author_info">
-                                <img src="/static/front-tools/images/profil.jpeg">
+                                <img src="{{.Profil}}">
                                 <div>
-                                    <h1>{{.Name}} {{.Surname}}</h1>
+                                    <h1>{{.Surname}} {{.Name}}</h1>
                                     <small>@{{.Username}}</small>
                                     <small>{{.Time}}</small>
                                 </div>

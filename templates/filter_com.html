@@ -38,17 +38,17 @@
         <div class="profile-main" style="width: 50%;">
             <div class="profile-container">
                 <!-- user infos  -->
-                <form action="#" id="imageForm">
+                <form action="/myprofil/comments" enctype="multipart/form-data" method="post" id="imageForm">
                     <label for="murImageInput">
-                        <img src="../static/front-tools/images/mur.png" width="100%" height="300px" id="murImage" onclick="selectMurImage()">
+                        <img src="{{.CurrentCover}}" width="100%" height="300px" id="murImage" onclick="selectMurImage()">
                     </label>
                     <input type="file" id="murImageInput" name="murImage" accept="image/*" onchange="uploadMurImage()" style="display: none;" />
                 </form>
                 
                 <div class="profile-container-inner">
-                    <form action="#" id="profileImageForm">
+                    <form action="/myprofil/comments" enctype="multipart/form-data" method="post" id="profileImageForm">
                         <label for="profileImageInput">
-                            <img src="../static/front-tools//images/profil.jpeg" class="profile-pic" width="100%" height="150px" id="profileImage" onclick="selectProfileImage()">
+                            <img src="{{.CurrentPP}}" class="profile-pic" width="100%" height="150px" id="profileImage" onclick="selectProfileImage()">
                         </label>
                         <input type="file" id="profileImageInput" name="profileImage" accept="image/*" onchange="uploadProfileImage()" style="display: none;" />
                     </form>
@@ -76,7 +76,7 @@
      <hr class="separate">
      <div class="post-author"> 
          <div class="post-author_info">
-             <img src="/static/front-tools/images/profil.jpeg">
+             <img src="{{$value.Profil}}">
              <div>
                  <h1>{{$value.Surname}} {{$value.Name}}</h1>
                  <small>@{{$value.Username}}</small>
@@ -108,7 +108,7 @@
          <form action="/myprofil/comments" method="post" class="reactform">
              <input type="text" name="Rpostid" value="{{$value.PostId}}" style="display: none;">
              <div data-post_id="{{$value.PostId}}"  class="comment-section-toggler">
-                 <img src="/static/front-tools/images/profil.jpeg" class="post-activity-user-icon">
+                 <img src="{{$value.Profil}}" class="post-activity-user-icon">
                  <img src="/static/front-tools/images/down-arrow.png" class="post-activity-arrow-icon">
              </div>
              <label for="{{$value.PostId}}like" style="display: inline;">
@@ -160,9 +160,9 @@
          <div class="comments" id="{{.CommentId}}">
              <div class="comment-author">
                  <div class="post-author_info">
-                     <img src="/static/front-tools/images/profil.jpeg">
+                     <img src="{{.Profil}}">
                      <div>
-                         <h1>{{.Name}} {{.Surname}}</h1>
+                         <h1>{{.Surname}} {{.Name}}</h1>
                          <small>@{{.Username}}</small>
                          <small>{{.Time}}</small>
                      </div>
