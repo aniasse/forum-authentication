@@ -138,5 +138,20 @@ func (database Db) Tables() {
 	}
 
 	fmt.Println("✅ 'categories' table has been created in database succesfully")
+	//----------------- 7 session table --------------------//
+	Session := `CREATE TABLE IF NOT EXISTS sessions (
+	    user_id TEXT,
+		id_session TEXT,
+		expireat TEXT,
+		FOREIGN KEY(user_id) REFERENCES users(id_user)
+		);
+			`
+	_, errSession := database.Doc.Exec(Session)
+	if errSession != nil {
+		fmt.Println("⚠ ERROR with table 'sessions' ⚠ :", errSession)
+		return
+	} else {
+		fmt.Println("✅ 'sessions' table has been created in database succesfully")
+	}
 
 }

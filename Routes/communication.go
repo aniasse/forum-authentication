@@ -70,8 +70,8 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 	}
 
 	// code
-	current_pp, _, errpp := auth.HelpersBA(database, "pp", " WHERE id_user='"+Id_user+"'", "")
-	current_cover, _, errcover := auth.HelpersBA(database, "pc", " WHERE id_user='"+Id_user+"'", "")
+	current_pp, _, errpp := auth.HelpersBA("users",database, "pp", " WHERE id_user='"+Id_user+"'", "")
+	current_cover, _, errcover := auth.HelpersBA("users",database, "pc", " WHERE id_user='"+Id_user+"'", "")
 	// handle error
 	if errpp || errcover {
 		fmt.Println("error pp,", errpp, " error cover", errcover)

@@ -62,10 +62,10 @@ func GetElementOfOneUser(db *sql.DB, username string) (user User, response bool)
 	return user, true
 }
 
-func HelpersBA(tab db.Db, attribute, condition, compare string) (string, error, bool) {
+func HelpersBA(from string, tab db.Db, attribute, condition, compare string) (string, error, bool) {
 	result := ""
 	response := false
-	rows, errorrows := tab.GetData(attribute, db.User, condition)
+	rows, errorrows := tab.GetData(attribute, from, condition)
 	if errorrows != nil {
 		// _, _, confirmemail := auth.HelpersBA(tab, "username", "", username)
 		return result, errorrows, response

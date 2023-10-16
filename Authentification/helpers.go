@@ -25,7 +25,7 @@ func CheckPasswordHash(password, hash string) bool {
 }
 
 // CreateSession allows you to create a session for the current user
-func CreateSession(w http.ResponseWriter, Username string, tab db.Db) {
+func CreateSession(w http.ResponseWriter, iduser string, tab db.Db) {
 	token, err := uuid.NewV4()
 	if err != nil {
 		fmt.Println("erreur uuid dans la creation de session")
@@ -36,7 +36,7 @@ func CreateSession(w http.ResponseWriter, Username string, tab db.Db) {
 	fmt.Println("expire a", expiresAt.String())
 
 	//update session dans la base de données
-	error := tab.UPDATE("users", "usersession='"+sessionToken+"'", "WHERE username="+"'"+Username+"'")
+	error := tab.UPDATE("sessions", "id_session='"+sessionToken+"',expireat='"+expiresAt.String()+"'", "WHERE user_id="+"'"+iduser+"'")
 	if error != nil {
 		fmt.Println("erreur update", error)
 	}
@@ -106,13 +106,13 @@ func CheckCookie(w http.ResponseWriter, r *http.Request, tab db.Db) {
 		fmt.Println("pas de cookie session")
 	} else {
 
-		s, err, _ := HelpersBA(tab, "username", "WHERE usersession='"+c.Value+"'", "")
+		idviasession, err, _ := HelpersBA("sessions", tab, "user_id", "WHERE id_session='"+c.Value+"'", "")
 		// fmt.Println("here", s, "error", err)
 		if err != nil {
 			fmt.Println("erreur du serveur", err)
 		}
-		if s != "" {
-			fmt.Println("cookie valide,affichage de /home", s)
+		if idviasession != "" {
+			fmt.Println("cookie valide,affichage de /home", idviasession)
 			http.Redirect(w, r, "/home", http.StatusSeeOther)
 			return
 		}

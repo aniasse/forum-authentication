@@ -14,7 +14,7 @@ func ComSession_Checker(w http.ResponseWriter, r *http.Request, database db.Db) 
 
 	} else {
 
-		s, err, _ := HelpersBA(database, "username", "WHERE usersession='"+c.Value+"'", "")
+		s, err, _ := HelpersBA("sessions",database, "user_id", "WHERE id_session='"+c.Value+"'", "")
 		// fmt.Println("here", s, "error", err)
 		if err != nil {
 			fmt.Println("erreur du serveur", err)
