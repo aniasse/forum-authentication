@@ -89,8 +89,8 @@ func CreateAccountPage(w http.ResponseWriter, r *http.Request, tab db.Db) {
 			}
 
 			email = validemail
-			_, _, confirmemail := auth.HelpersBA(tab, "email", " WHERE email='"+email+"'", email)
-			_, _, confirmusername := auth.HelpersBA(tab, "username", " WHERE username='"+username+"'", username)
+			_, _, confirmemail := auth.HelpersBA("users", tab, "email", " WHERE email='"+email+"'", email)
+			_, _, confirmusername := auth.HelpersBA("users", tab, "username", " WHERE username='"+username+"'", username)
 
 			if confirmemail || confirmusername {
 				messageE = "email/username already used"
@@ -136,9 +136,18 @@ func CreateAccountPage(w http.ResponseWriter, r *http.Request, tab db.Db) {
 				return
 
 			}
+			valuesession := "('" + creds.id + "')"
+			attributessession := "(user_id)"
+			errorsession := tab.INSERT("sessions", attributessession, valuesession)
+			if errorsession != nil {
+				fmt.Println("something wrong with insert session", errorsession)
+				fmt.Println("error", error)
+				auth.Snippets(w, http.StatusInternalServerError)
+				return
 
+			}
 			// creation of the session
-			auth.CreateSession(w, creds.Username, tab)
+			auth.CreateSession(w, creds.id, tab)
 			//redirecting the user to their home page
 			http.Redirect(w, r, "/home", http.StatusSeeOther)
 		} else {
@@ -210,7 +219,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request, tab db.Db) {
 				// fmt.Println("email given")
 				values := "WHERE email =" + "'" + username + "'"
 				// samePassword, errpassword = tab.GetData("email", db.User, values)
-				replaceEmailbyusername, err, _ := auth.HelpersBA(tab, "username", values, "")
+				replaceEmailbyusername, err, _ := auth.HelpersBA("users", tab, "username", values, "")
 				if err != nil {
 					if err == sql.ErrNoRows {
 						fmt.Println("erreur sql dans login page")
@@ -239,7 +248,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request, tab db.Db) {
 				return
 			}
 			values := "WHERE username =" + "'" + creds.Username + "'"
-			samePassword, errpassword, _ := auth.HelpersBA(tab, "password", values, "")
+			samePassword, errpassword, _ := auth.HelpersBA("users", tab, "password", values, "")
 			// fmt.Println("same", samePassword)
 			if errpassword != nil {
 				if errpassword == sql.ErrNoRows {
@@ -263,8 +272,8 @@ func LoginPage(w http.ResponseWriter, r *http.Request, tab db.Db) {
 				auth.DisplayFilewithexecute(w, "templates/register.html", formlogin, http.StatusUnauthorized)
 				return
 			}
-
-			auth.CreateSession(w, creds.Username, tab)
+			iduser, _, _ := auth.HelpersBA("users", tab, "id_user", "WHERE username='"+creds.Username+"'", "")
+			auth.CreateSession(w, iduser, tab)
 
 			http.Redirect(w, r, "/home", http.StatusSeeOther)
 
@@ -326,16 +335,15 @@ func HomeHandler(w http.ResponseWriter, r *http.Request, tab db.Db) {
 
 	} else {
 
-		s, err, _ := auth.HelpersBA(tab, "username", "WHERE usersession='"+c.Value+"'", "")
+		s, err, _ := auth.HelpersBA("sessions", tab, "user_id", "WHERE id_session='"+c.Value+"'", "")
 		fmt.Println("here", s, "error", err)
 		if err != nil {
 			fmt.Println("erreur du serveur", err)
 		}
 		if s != "" {
 			fmt.Println("cookie valide,affichage de /home", s)
-			id, _, _ := auth.HelpersBA(tab, "id_user", "WHERE usersession='"+c.Value+"'", "")
 
-			Communication(w, r, id, "/home")
+			Communication(w, r, s, "/home")
 			return
 		}
 	}

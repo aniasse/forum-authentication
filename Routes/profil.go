@@ -18,7 +18,7 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-	Id_user, _, _ := auth.HelpersBA(database, "id_user", "WHERE usersession='"+session.Value+"'", "")
+	Id_user, _, _ := auth.HelpersBA("sessions", database, "user_id", "WHERE id_session='"+session.Value+"'", "")
 
 	//checking the http request
 	if r.Method != "GET" && r.Method != "POST" {
@@ -63,8 +63,8 @@ func Profil(w http.ResponseWriter, r *http.Request, database db.Db) {
 	}
 
 	//code
-	current_pp, _, errpp := auth.HelpersBA(database, "pp", " WHERE id_user='"+Id_user+"'", "")
-	current_cover, _, errcover := auth.HelpersBA(database, "pc", " WHERE id_user='"+Id_user+"'", "")
+	current_pp, _, errpp := auth.HelpersBA("users",database, "pp", " WHERE id_user='"+Id_user+"'", "")
+	current_cover, _, errcover := auth.HelpersBA("users",database, "pc", " WHERE id_user='"+Id_user+"'", "")
 	//handle error
 	if errpp || errcover {
 		fmt.Println("error pp,", errpp, " error cover", errcover)
