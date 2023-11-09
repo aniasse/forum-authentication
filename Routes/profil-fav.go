@@ -2,7 +2,7 @@ package Route
 
 import (
 	"fmt"
-	auth "forum/Authentification"
+	auth "forum/Authentication"
 	Com "forum/Communication"
 	db "forum/Database"
 	tools "forum/tools"

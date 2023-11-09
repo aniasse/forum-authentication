@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
-	auth "forum/Authentification"
+	auth "forum/Authentication"
 	Com "forum/Communication"
 	db "forum/Database"
 	tools "forum/tools"

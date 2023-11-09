@@ -3,7 +3,7 @@ package Route
 import (
 	"database/sql"
 	"fmt"
-	Err "forum/Authentification"
+	Err "forum/Authentication"
 	Com "forum/Communication"
 	tools "forum/tools"
 	"net/http"

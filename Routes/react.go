@@ -2,7 +2,7 @@ package Route
 
 import (
 	"fmt"
-	Err "forum/Authentification"
+	Err "forum/Authentication"
 	db "forum/Database"
 	"net/http"
 )
