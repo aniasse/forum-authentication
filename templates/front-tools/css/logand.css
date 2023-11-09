@@ -28,7 +28,6 @@ body{
     position: absolute;
     border-radius: 50%;
 }
-
 form{
     height: 47rem;
     width: 33rem;
@@ -48,14 +47,12 @@ form{
     outline: none;
     border: none;
 }
-
 form h3{
     font-size: 32px;
     font-weight: 500;
     line-height: 42px;
     text-align: center;
 }
-
 label{
     display: block;
     margin-top: 30px;
@@ -107,7 +104,50 @@ input{
 ::placeholder{
     color: #181717;
 }
-button{
+.social-mess{
+    margin-top: 20px;
+}
+.otherwebsites{
+    display: flex;
+    .github-button{
+        margin-left: 17%;
+    }
+    .google-button{
+        margin-left: 20%;
+    }
+}
+.google-button a,
+.github-button a {
+    text-decoration: none;
+}
+.google-button, .github-button{
+    display: flex;
+    color: #0b0b0b;
+    width: 21%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 0 10px; /* Marge entre les boutons */
+    cursor: pointer;
+    .google-logo{
+        width: 60%;
+    }
+    p {
+        margin-left: 5px;
+        margin-top: 15px;
+    }
+    a {
+        text-decoration: none;
+    }
+}
+.google-button:hover, .github-button:hover{
+    background-color: #045be6;
+}
+.google-button:hover p, .github-button:hover p {
+    color: #fff;
+}
+ 
+.login-button{
     margin-top: 50px;
     width: 100%;
     background-color: #045be6;
@@ -118,15 +158,14 @@ button{
     border-radius: 100px;
     cursor: pointer;
 }
-
 /* -------------------------------------messageback---------------------------------- */
 .MessageOfBack{
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
     color: red;
-    width: 80%;
+    width: 100%;
     padding: 10px;
     text-align: center;
-    overflow: hidden;
+    overflow-x: auto;
     animation: scrollMessage 10s linear infinite;
 }
 @keyframes scrollMessage{
@@ -138,7 +177,6 @@ button{
     }
 }
 /* ------------------------------------messageback-------------------------------------- */
-
 .signup-button {
     display: block;
     margin: 0 auto; 
@@ -148,11 +186,9 @@ button{
     display: block;
     margin: 0 auto;
 }
-
 form {
     text-align: center;
 }
-
 @media (max-width: 400px) {
     .background {
         background: no-repeat;
