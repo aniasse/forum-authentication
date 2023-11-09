@@ -1,12 +1,22 @@
 # Web Forum
 
-This project is a web forum application developed using Go and SQLite for data storage. The forum allows users to communicate with each other, associate categories with posts, like and dislike posts and comments, and filter posts based on different categories.
+## Table of Contents
+1. [Objectives](#objectives)
+2. [Technologies-Used](#technologies-Used)
+3. [Key-Features](#key-Features)
+4. [Docker-Image](#docker-Usage)
+5. [Main-Directories](#main-Directories)
+6. [Instructions](#instructions)
+
+
+This project is a continuation of the web forum application developed using Go and SQLite for data storage. The forum allows users to communicate with each other, associate categories with posts, like and dislike posts adding image and comments, and filter posts based on different categories.
 
 ## Objectives
 
 The main objectives of this project include:
 
 - Allowing user registration and authentication.
+- Adding image to a post
 - Enabling users to create posts and comments.
 - Associating categories with posts.
 - Managing likes and dislikes of posts and comments.
@@ -29,7 +39,7 @@ The main objectives of this project include:
 
 ### Communication
 
-- Registered users can create posts and comments.
+- Registered users can create posts adding image to a post and comments.
 - Categories can be associated with posts.
 - All posts and comments are visible to all users.
 
@@ -49,61 +59,103 @@ The application utilizes Docker for managing the development environment. You ca
 # Project Directory Structure
 The project is organized into multiple directories for better source code organization.
 
-├── Authentification 
+      ├── Authentification 
 
-├── Communication 
+         |   ├── BD.go
 
-├── Database 
+         |   ├── helpers.go
 
-├── Filter 
+      ├──    Communication 
 
-├── front-end tools 
+         |   ├── categories.go
 
-|   ├── css 
+         |   ├── comment.go
 
-|   ├── images 
+         |   ├── posts.go
 
-|   └── JS 
+         |   ├── reaction.go
 
-├── handlers 
+         |   ├── welcome.go
 
-├── models 
+      ├── Handlers
 
-├── new-frontend 
+         |   ├── handle.go
 
-│   ├── static 
+      ├── Database 
 
-│   │   ├── css 
+         |   ├── commands.go
 
-│   │   ├── images 
+         |   ├── const_db.go
 
-│   │   └── JS 
+         |   ├── Init_db.go
 
-│   └── templates 
+         |   ├── tables.go
 
-├── Routes 
+      ├── templates
 
-├── templates 
+         |   ├── front-tools
 
-├── test_templates 
+         |   ├── image_storage
 
-│   ├── css 
+         |   ├── createacount.html
 
-│   ├── images 
+         |   ├── error.html
 
-│   ├── JS 
+         |   ├── footer.html
 
-│   └── style 
- 
-└── tools 
+         |   ├── head.html
+
+         |   ├── image_storage
+
+         |   ├── home.html
+
+         |   ├── index.html
+
+         |   ├── main.html
+
+         |   ├── navbar.hmtl
+
+         |   ├── profil.html
+
+         |   ├── register.html
+
+      ├── tools
+
+         |   ├── Id_tools.go
+
+         |   ├── uuid.go
+
+         |   ├── Validity.go
+
+         |   ├── standard_funcs.go
 
 
+      ├── models 
 
-## Main Directories
+         |   ├── ERD.png
+
+      ├── Routes 
+
+         |   ├── authentification.go
+
+         |   ├── communication.go
+
+         |   ├── filter.go
+
+         |   ├── index.go
+
+         |   ├── react.go
+
+         |   ├── tools_communication.go
+
+         |   ├──  upload.go
+
+
+## Main-Directories
 
 ### Authentification
 
-The `Authentification` directory contains files related to user authentication, including database management and helper functions.
+The    `Authentification` directory contains files related to user authentication, including database management and helper functions.
 
 ### Communication
 
@@ -113,14 +165,6 @@ The `Communication` directory is dedicated to communication, including the creat
 
 The `Database` directory includes files related to database management, such as SQL commands, constants, database initialization, and table definitions.
 
-### Filter
-
-The `Filter` directory contains files related to post filtering functions.
-
-### front-end tools
-
-The `front-end tools` directory is dedicated to frontend resources, including CSS files, images, and JavaScript scripts.
-
 ### handlers
 
 The `handlers` directory may contain request handler functions or other features related to processing user requests.
@@ -128,10 +172,6 @@ The `handlers` directory may contain request handler functions or other features
 ### models
 
 The `models` directory may contain data models or other elements related to the application's domain model.
-
-### new-frontend
-
-The `new-frontend` directory may contain a new version of the frontend user interface, including CSS files, images, JavaScript scripts, and HTML templates.
 
 ### Routes
 
@@ -153,11 +193,21 @@ Feel free to explore each individual subdirectory for more details on its conten
 
 This directory structure is designed for efficient organization of source code and project resources. Please refer to individual subdirectories for more information on their content and usage.
 
-### Instructions
+## Instructions
 
-1. Clone the project from https://learn.zone01dakar.sn/git/sniang/forum 
+1.
+***
+A little intro about how to install:
+```
+$ Clone the project from https://learn.zone01dakar.sn/git/aboubakdiallo/forum-image-upload.git
+$ cd forum
+```
 
 2. Use Docker to build an image of the application.
 
    ```bash
    docker build -t forum-app .
+
+
+
+*@Licensed by team AVAMS*

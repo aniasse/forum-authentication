@@ -8,10 +8,11 @@
 body{
     color: white;
     background-image: url("/static/images/loginimage1.jpg");
+    background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
     height: 310px;
-    width: 500px;
+    width: 100px;
     position: absolute;
     transform: translate(-50%,-50%);
     top: 50%;
@@ -30,8 +31,12 @@ h1{
     line-height: 50px;
     text-align: center;
 }
-.errors {
+.background {
     text-align: center;
+    height: 310px;
+    width: 100px;
+    transform: translate(-50%,-50%);
+    background-color: rgba(255, 255, 255, 0.611);
 }
 
 

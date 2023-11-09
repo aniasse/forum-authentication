@@ -10,10 +10,12 @@
 <body>
     <!-- -------------------------------------------------------------------- -->
 	<div id="errorservice">
-		<div class="background">
+		<div class="background" style="height: 300px; width: 500px; background-color: rgba(249, 249, 249, 0.45); text-align: center;padding-top: 5%;">
 			<div class="errors">
 				<h1>{{.}}</h1>
-				{{if eq . "404"}}
+				{{if eq . "400"}}
+                <h2>Bad request</h2>
+				{{else if eq . "404"}}
 				<h2>Page not found</h2>
 				{{else if eq . "500"}}
 				<h2>Internal server error</h2>

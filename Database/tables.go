@@ -29,6 +29,8 @@ func (database Db) Tables() {
 		surname TEXT NOT NULL,
 		email TEXT NOT NULL,
 		password TEXT NOT NULL,
+		pp TEXT,
+		PC TEXT,
 		usersession TEXT
 		);
 		`
@@ -46,7 +48,7 @@ func (database Db) Tables() {
 			id_post TEXT PRIMARY KEY NOT NULL,
 			user_id TEXT NOT NULL ,
 			title TEXT NOT NULL,
-			description TEXT NOT NULL,
+			description TEXT DEFAULT "",
 			image TEXT DEFAULT "",
 			time TEXT NOT NULL,
 			date TEXT NOT NULL,
@@ -136,5 +138,20 @@ func (database Db) Tables() {
 	}
 
 	fmt.Println("✅ 'categories' table has been created in database succesfully")
+	//----------------- 7 session table --------------------//
+	Session := `CREATE TABLE IF NOT EXISTS sessions (
+	    user_id TEXT,
+		id_session TEXT,
+		expireat TEXT,
+		FOREIGN KEY(user_id) REFERENCES users(id_user)
+		);
+			`
+	_, errSession := database.Doc.Exec(Session)
+	if errSession != nil {
+		fmt.Println("⚠ ERROR with table 'sessions' ⚠ :", errSession)
+		return
+	} else {
+		fmt.Println("✅ 'sessions' table has been created in database succesfully")
+	}
 
 }

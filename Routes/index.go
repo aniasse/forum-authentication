@@ -18,22 +18,18 @@ func Index(w http.ResponseWriter, r *http.Request, database db.Db) {
 	//fin code
 	if r.Method != "GET" {
 		fmt.Printf("⚠ ERROR ⚠ : cannot access to that page by get mode must log out to reach it ❌")
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "405")
+		Err.Snippets(w, 405)
 		return
 	}
 
 	//checking whether the route exists or not
 	if r.URL.Path != "/" && r.URL.Path != "/home" && r.URL.Path != "/myprofil" && r.URL.Path != "/filter" {
 		fmt.Printf("⚠ ERROR ⚠ parsing --> page not found ❌\n")
-		w.WriteHeader(http.StatusNotFound)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "404")
+		Err.Snippets(w, 404)
 		return
 	}
 
-	Display_mngmnt(w, r) // displaying datas
+	GetAll_fromDB(w) // displaying datas
 	//--displaying welcoming post when database is empty
 	if len(postab) == 0 {
 		errwel := postab.Welcome_user(database, "index")
@@ -55,13 +51,11 @@ func Index(w http.ResponseWriter, r *http.Request, database db.Db) {
 		postab[i].SessionReact = ""
 	}
 
-	file, errf := template.ParseFiles("templates/index.html")
+	file, errf := template.ParseFiles("templates/index.html", "templates/head.html", "templates/navbar.html", "templates/footer.html")
 	if errf != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR ⚠ parsing --> %v\n", errf)
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
+		Err.Snippets(w, 500)
 		return
 	}
 
@@ -75,9 +69,7 @@ func Index(w http.ResponseWriter, r *http.Request, database db.Db) {
 	if errexc != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR index ⚠ executing file --> %v\n", errexc)
-		w.WriteHeader(http.StatusInternalServerError)
-		error_file := template.Must(template.ParseFiles("templates/error.html"))
-		error_file.Execute(w, "500")
+		Err.Snippets(w, 500)
 		return
 	}
 	fmt.Println("--------------- 🟢🌐 data sent from index -----------------------")

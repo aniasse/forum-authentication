@@ -24,67 +24,36 @@
         <br> 
         <h3>Login</h3>
         <br>
-        <label for="username">Enter your username/email *</label>
+        <label for="username">Enter your username *</label>
         <input type="text" placeholder="Email or Username" id="username" name="username" value="{{.Username}}" required>
         <br>
         <label for="username">Enter your password *</label>
         <input type="password" placeholder="Password" id="password" name="password" value="{{.Password}}" required>
-        <p style="color: #fb1b1b; margin-top: 2rem; text-align: center;">{{.Message}}</p>
         <!-- --------------redirection vers la page de creation de compte----------- -->
+        <p style="color: #fb1b1b; margin-top: 2rem; text-align: center;">{{.Message}}</p>
         <a href="/create">
-        <button class="login-button">Log In</button>
+        <button>Log In</button>
         </a>
         <br>
           <p>Don't have an account? <a href="/create">Create one</a></p>
-          <p class="social-mess">Or signup with: </p>
-          <div class="otherwebsites">
-            <div class="google-button">
-              <a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Faccounts.google.com%2F&followup=https%3A%2F%2Faccounts.google.com%2F&ifkv=AYZoVheyVBxtJR3lHmX2PjeeEgzkXq5LmFgfJL4Vh0I5MEsbg_J5v3UY-vI7-Kkc3ZqddG3iwmx2uA&passive=1209600&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-2096748266%3A1696683500657671&theme=glif">
-                  <img src="/static/front-tools/images/google.png" alt="" class="google-logo">
-                <p>Google</p>
-              </a>
-            </div>
-            <div class="github-button">
-              <a href="https://github.com/login">
-                  <img src="/static/front-tools/images/github.png" alt="" class="google-logo">
-                <p>GitHub</p>
-              </a>
-            </div>
-            </div>
       </form>
     {{else}}
     <form method="post" action="/login">   
         <br> 
         <h3>Login</h3>
         <br>
-        <label for="username">Enter your username/ email *</label>
+        <label for="username">Enter your username/email *</label>
         <input type="text" placeholder="Email or Username" id="username" name="username" required>
         <br>
         <label for="username">Enter your password *</label>
         <input type="password" placeholder="Password" id="password" name="password" required>
         <p style="color: #fb1b1b; margin-top: 2rem; text-align: center;">{{.Message}}</p>
         <!-- --------------redirection vers la page de creation de compte----------- -->
-          <a href="/create">
-          <button class="login-button">Log In</button>
-          </a>
+        <a href="/create">
+        <button>Log In</button>
+    </a>
         <br>
           <p>Don't have an account? <a href="/create">Create one</a></p>
-          <p class="social-mess">Or signup with: </p>
-          <div class="otherwebsites">
-            <div class="google-button">
-              <a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Faccounts.google.com%2F&followup=https%3A%2F%2Faccounts.google.com%2F&ifkv=AYZoVheyVBxtJR3lHmX2PjeeEgzkXq5LmFgfJL4Vh0I5MEsbg_J5v3UY-vI7-Kkc3ZqddG3iwmx2uA&passive=1209600&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-2096748266%3A1696683500657671&theme=glif">
-                  <img src="/static/front-tools/images/google.png" alt="" class="google-logo">
-                <p>Google</p>
-              </a>
-            </div>
-            <div class="github-button">
-              <a href="https://github.com/login">
-                  <img src="/static/front-tools/images/github.png" alt="" class="google-logo">
-                <p>GitHub</p>
-              </a>
-            </div>
-            </div>
-          
       </form>
     {{end}}
       <!-- -------------------------------------------------------------------- -->

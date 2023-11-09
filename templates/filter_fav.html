@@ -38,21 +38,19 @@
         <div class="profile-main" style="width: 50%;">
             <div class="profile-container">
                 <!-- user infos  -->
-                <form action="/myprofil/posts" enctype="multipart/form-data" id="imageForm" class="profile-image-input" method="post">
+                <form action="/myprofil/favorites" enctype="multipart/form-data" method="post" id="imageForm">
                     <label for="murImageInput">
                         <img src="{{.CurrentCover}}" width="100%" height="300px" id="murImage" onclick="selectMurImage()">
                     </label>
-                    <input type="file" id="murImageInput" name="murImage" accept="image/png, image/jpg, image/jpeg, image/PNG, image/JPG, image/JPEG" onchange="uploadMurImage();checkImageSized(murImageInput, murImageError);" style="display: none;" />
-                    <p id="murImageError" style="color: red;"></p>
+                    <input type="file" id="murImageInput" name="murImage" accept="image/*" onchange="uploadMurImage()" style="display: none;" />
                 </form>
                 
                 <div class="profile-container-inner">
-                    <form action="/myprofil/posts" enctype="multipart/form-data"  id="profileImageForm" class="profile-image-input" method="post">
+                    <form action="/myprofil/favorites" enctype="multipart/form-data" method="post" id="profileImageForm">
                         <label for="profileImageInput">
                             <img src="{{.CurrentPP}}" class="profile-pic" width="100%" height="150px" id="profileImage" onclick="selectProfileImage()">
                         </label>
-                        <input type="file" id="profileImageInput" name="profileImage" accept="image/png, image/jpg, image/jpeg, image/PNG, image/JPG, image/JPEG" onchange="uploadProfileImage();checkImageSized(profileImageInput, profileImageError);" style="display: none;" />
-                        <p id="profileImageError" style="color: red;"></p>
+                        <input type="file" id="profileImageInput" name="profileImage" accept="image/*" onchange="uploadProfileImage()" style="display: none;" />
                     </form>
                 <h1>{{.CurrentSN}} {{.CurrentN}}</h1>
                     <b>@{{.CurrentUN}}</b>
@@ -63,7 +61,7 @@
                             <!------------ -display post & comment----------->
                             {{if eq .Empty true}}
  <div class="vide">
-     <p>😕 You have not created a post yet ❌ </p>
+     <p>😕 You don't have any favorite post 💬</p>
      <a href="/home">Go back </a>
  </div>
  {{else}}
@@ -92,7 +90,7 @@
      <div class="post-read">
         {{if ne $value.Content "0nbo6vda5l2udefa-v7a6i6l9a-b4lbefe-9ac6"}}
         <pre style="word-wrap: break-word; white-space: pre-wrap;">{{$value.Content}}</pre> 
-        {{end}} 
+        {{end}}
          {{if ne $value.ImageLink ""}}
          <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image">
          {{end}}
@@ -107,7 +105,7 @@
      </div>
  
      <div class="post-activity">
-         <form action="/myprofil/posts" method="post" class="reactform">
+         <form action="/myprofil/favorites" method="post" class="reactform">
              <input type="text" name="Rpostid" value="{{$value.PostId}}" style="display: none;">
              <div data-post_id="{{$value.PostId}}"  class="comment-section-toggler">
                  <img src="{{$value.Profil}}" class="post-activity-user-icon">
@@ -150,7 +148,7 @@
              
      </div>
      <div class="post-activity-comment-input" id="commenting_{{$value.PostId}}">
-         <form action="/myprofil/posts" method="post">
+         <form action="/myprofil/favorites" method="post">
              <input type="text" name="postid" value="{{$value.PostId}}" style="display:none;">
              <textarea id="comment-input"  rows="4" placeholder="Write your comment here" name="newcomment" style="overflow-y: scroll;" maxlength="1000" required></textarea>
              <button type="submit" name="subcomm" value="SC">Comment</button>
@@ -180,7 +178,7 @@
              <div class="post-stats">
              </div>
              <div class="comment-activity">
-                 <form action="/myprofil/posts" method="post" class="reactform">
+                 <form action="/myprofil/favorites" method="post" class="reactform">
                      <input type="text" name="Rcomid" value="{{.CommentId}}" style="display: none;"> 
                      <label for="{{.CommentId}}like">
                          <div class="post-activity-link" id="comment-like-button">
@@ -221,7 +219,7 @@
                  </form>
              </div>
              <div class="post-activity-reply-input" id="replying_{{.CommentId}}">
-                 <form action="/myprofil/posts" method="post">
+                 <form action="/myprofil/favorites" method="post">
                      <input type="text" name="postid" value="{{.PostId}}" style="display: none;">
                      <input type="text" name="comId" value="{{.CommentId}}" style="display: none;">
                      <textarea id="reply-input" rows="4" placeholder="Write your reply here" name="replycomm" style="overflow-y: scroll;" maxlength="1000" required></textarea>

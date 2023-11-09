@@ -2,8 +2,8 @@ package db
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
-	"log"
 )
 
 /*
@@ -98,7 +98,8 @@ DELETE removes an element from a table
 func (database *Db) DELETE(table string, condition string) error {
 	query := fmt.Sprintf("DELETE FROM %v %s;", table, condition)
 	if table == "" {
-		log.Fatal("⚠ ERROR: cannot delete data from database, missing entity (table)\n")
+		fmt.Println("⚠ ERROR: cannot delete data from database, missing entity (table)")
+		return errors.New("missing table")
 	}
 
 	_, err := database.Doc.Exec(query)

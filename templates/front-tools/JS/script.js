@@ -6,26 +6,86 @@ function toggleMenu(){
 }
 
 // ---------------------- toggle commentaire --------------------------
-
 // Sélectionnez tous les éléments de commentaire
 const commentContainers = document.querySelectorAll(".comment-container");
-console.log(commentContainers)
+console.log(commentContainers);
+
 // Ajoutez des gestionnaires d'événements à chaque commentaire
-togglers = document.querySelectorAll(".comment-section-toggler")
+const toggles = document.querySelectorAll(".comment-section-toggler");
 
-togglers.forEach(toggler=>{
-        toggler.addEventListener("click",(e)=>{
-            let id = toggler.dataset.post_id
-        let test =document.querySelector(`#comment-container_${id}`)
-            console.log(test)
-            if (test.style.display === "none" || test.style.display === "") {
-                test.style.display = "block";
-            } else {
-                test.style.display = "none";
-            }
-        })
-})
+toggles.forEach(toggler => {
+    toggler.addEventListener("click", (e) => {
+        let id = toggler.dataset.post_id;
+        let test = document.querySelector(`#comment-container_${id}`);
 
+        // Vérifiez si l'état du commentaire est stocké en local
+        const isOpen = localStorage.getItem(`comment_${id}_open`) === "true";
+
+        if (isOpen) {
+            test.style.display = "none";
+            // Mettez à jour l'état dans le stockage local
+            localStorage.setItem(`comment_${id}_open`, "false");
+        } else {
+            test.style.display = "block";
+            // Mettez à jour l'état dans le stockage local
+            localStorage.setItem(`comment_${id}_open`, "true");
+        }
+    });
+});
+
+// Restaurez l'état des commentaires lors du chargement de la page
+toggles.forEach(toggler => {
+    let id = toggler.dataset.post_id;
+    let test = document.querySelector(`#comment-container_${id}`);
+
+    const isOpen = localStorage.getItem(`comment_${id}_open`) === "true";
+
+    if (isOpen) {
+        test.style.display = "block";
+    } else {
+        test.style.display = "none";
+    }
+});
+
+//------------------------------------------------------------------------
+
+// Fonction pour automatiser la soumission du formulaire lorsque l'image est sélectionnée
+function autoSubmitForm(formId, inputId) {
+    var form = document.getElementById(formId);
+    var input = document.getElementById(inputId);
+
+    if (form && input) {
+        input.addEventListener("change", function () {
+            form.submit();
+            console.log("Formulaire soumis !");
+        });
+    }
+}
+
+// Appelez la fonction pour chaque formulaire
+autoSubmitForm("imageForm", "murImageInput");
+autoSubmitForm("profileImageForm", "profileImageInput");
+
+//--------------------------size_of_img-----------------------------------------------
+
+function checkImageSized(inputId, errorElementId) {
+    var fileInput = document.getElementById(inputId);
+    var errorElement = document.getElementById(errorElementId);
+    var maxFileSize = 1024 * 1024; // 1 Mo en octets
+
+    if (fileInput.files.length > 0) {
+        var fileSize = fileInput.files[0].size;
+
+        if (fileSize > maxFileSize) {
+            errorElement.textContent = "❌ Le fichier ne doit pas dépasser 1 Mo.";
+            fileInput.value = null; // Réinitialisation du champ de fichier
+            console.log("fait");
+        } else {
+            errorElement.textContent = null; // Effacement du message d'erreur
+            console.log("fait");
+        }
+    }
+}
 
 // ------------------- comment input js ------------------------
 
@@ -110,9 +170,6 @@ function closeLoginRequest() {
     loginRequest.classList.remove("open-log-request");
     body.classList.remove("open-login-overlay");
 };
-
-
-    
 
 /* --------------------------------dark-mode------------------------------------------ */
 
@@ -224,5 +281,36 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-
+// ------------------- JS upload image ----------------------
+function selectMurImage() {
+    // Cliquez sur le champ d'entrée de l'image de mur pour ouvrir la boîte de dialogue de sélection de fichier
+    document.getElementById("murImageInput").click();
+}
+function selectProfileImage() {
+    // Cliquez sur le champ d'entrée de l'image de profil pour ouvrir la boîte de dialogue de sélection de fichier
+    document.getElementById("profileImageInput").click();
+}
+function uploadMurImage() {
+    // Récupérez le fichier sélectionné pour l'image de mur
+    const imageInput = document.getElementById("murImageInput");
+    const selectedFile = imageInput.files[0];
+    if (selectedFile) {
+        // Créez un objet URL pour l'image sélectionnée
+        const imageURL = URL.createObjectURL(selectedFile);
+        // Mettez à jour l'image de mur avec la nouvelle image
+        const murImage = document.getElementById("murImage");
+        murImage.src = imageURL;
+    }
+}
+function uploadProfileImage() {
+    // Récupérez le fichier sélectionné pour l'image de profil
+    const imageInput = document.getElementById("profileImageInput");
+    const selectedFile = imageInput.files[0];
+    if (selectedFile) {
+        // Créez un objet URL pour l'image sélectionnée
+        const imageURL = URL.createObjectURL(selectedFile);
+        // Mettez à jour l'image de profil avec la nouvelle image
+        const profileImage = document.getElementById("profileImage");
+        profileImage.src = imageURL;
+    }
+}

@@ -1,74 +1,16 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/front-tools/css/style.css">
-    <link rel="shortcut icon" href="/static/front-tools/images/clap.png" type="image">
-    <script src="/static/front-tools/JS/script.js" defer></script>
-    <title>Forum</title>
-</head>
+    {{template "head" .}}
 <body>
-    <nav class="navbar">
-        <div class="navbar-left">
-            <a href="/" class="logo">
-                <H2>FORUM</H2>
-            </a>
-           
-        </div>
-        <div class="navbar-center">
-        </div>
-        <div class="navbar-right">
-            <div class="login">
-                <a href="/login"><span>LOG IN</span></a>
-                <a href="/create"><span>SIGN UP</span></a>
-            </div>
-        </div>
-             <!--  ---------- profile-drop-down-menu ----------   -->     
-        <div class="profile-menu-wrap" id="profileMenu">
-            <div class="profile-menu">
-                <div class="user-info">
-                    <img src="/static/front-tools/images/profil.jpeg">
-                    <div>
-                        <h3>{{.CurrentN}} {{.CurrentSN}}</h3>
-                        <p>@{{.CurrentUN}}</p>
-                    </div>
-                </div>
-                <hr>
-                <a href="#" class="profile-menu-link">
-                    <img src="/static/front-tools/images/feedback.png">
-                    <p>Give Feedback</p>
-                    <span>></span>
-                </a>
-                <a href="#" class="profile-menu-link">
-                    <img src="/static/front-tools/images/setting.png">
-                    <p>Settings & Privacy</p>
-                    <span>></span>
-                </a>
-                <a href="#" class="profile-menu-link">
-                    <img src="/static/front-tools/images/help.png">
-                    <p>Help & Support</p>
-                    <span>></span>
-                </a>
-                <a href="#" class="profile-menu-link">
-                    <img src="/static/front-tools/images/display.png">
-                    <p>Display & Accessiblity</p>
-                    <span>></span>
-                </a>
-                <a href="#" class="profile-menu-link">
-                    <img src="/static/front-tools/images/logout.png">
-                    <p>Logout</p>
-                    <span>></span>
-                </a>
-            </div>
-        </div>   
-    </nav>
+                                 <!-- navbar  -->
+    {{template "navbar2" .}}
                     <!--  ---------- navbar close ----------   -->
 
     <div class="container">
                     <!--  ---------- left-sidebar ----------   -->
         <div class="right-sidebar">
+            <!-- filter by posts fav comments and categories  -->
             <div class="sidebar-news">
                 <img src="/static/front-tools/images/filter.png" class="info-icon">
                 <h3>Filter</h3>
@@ -96,13 +38,15 @@
     
                     <!--  ---------- main-content ----------   -->
         <div class="main-content">
+            <!-- no result message  -->
             {{if eq .Empty true}}
-            <div style="margin: 5% 40%;">
-                <p style="color:rgb(1, 13, 36); font-size:larger" >NO RESULT</p>
-                <a href="/" style="color:rgb(185, 185, 185);">Go back </a>
+            <div class="vide" >
+                <p>NO RESULT</p>
+                <a href="/">Go back </a>
             </div>
             {{else}}
 
+            <!-- display of posts and comments  -->
             {{range $index, $value := .Postab}}
             <div class="post" id="{{$value.PostId}}">
                 <div class="post-title">
@@ -110,9 +54,10 @@
                     <h3>{{$value.Title}}</h3>
                     <hr>
                 </div> 
+                <hr class="separate">
                 <div class="post-author">
                     <div class="post-author_info">
-                        <img src="/static/front-tools/images/profil.jpeg">
+                        <img src="{{$value.Profil}}">
                         <div>
                             <h1>{{$value.Surname}} {{$value.Name}}</h1>
                             <small>@{{$value.Username}}</small>
@@ -124,7 +69,9 @@
                     </div>
                 </div>
                 <div class="post-read">
+                    {{if ne $value.Content "0nbo6vda5l2udefa-v7a6i6l9a-b4lbefe-9ac6"}}
                     <pre style="word-wrap: break-word; white-space: pre-wrap;">{{$value.Content}}</pre> 
+                    {{end}} 
                     {{if ne $value.ImageLink ""}}
                     <img src="/static/image_storage/{{$value.ImageLink}}" alt="post's image">
                     {{end}}
@@ -142,7 +89,7 @@
                     <div class="reactform">
                         <input type="text" name="Rpostid" value="{{$value.PostId}}" style="display: none;">
                         <div data-post_id="{{$value.PostId}}"  class="comment-section-toggler">
-                            <img src="/static/front-tools/images/profil.jpeg" class="post-activity-user-icon">
+                            <img src="{{$value.Profil}}" class="post-activity-user-icon">
                             <img src="/static/front-tools/images/down-arrow.png" class="post-activity-arrow-icon">
                         </div>
                         <label for="{{$value.PostId}}like" style="display: inline;">
@@ -187,9 +134,9 @@
                     <div class="comments" id="{{.CommentId}}">
                         <div class="comment-author">
                             <div class="post-author_info">
-                                <img src="/static/front-tools/images/profil.jpeg">
+                                <img src="{{.Profil}}">
                                 <div>
-                                    <h1>{{.Name}} {{.Surname}}</h1>
+                                    <h1>{{.Surname}} {{.Name}}</h1>
                                     <small>@{{.Username}}</small>
                                     <small>{{.Time}}</small>
                                 </div>
@@ -250,6 +197,7 @@
             {{end}}
             {{end}}
 
+            <!-- login required  -->
             <div class="login-request" id="logRequest">
                 <span class="close-button" onclick="closeLoginRequest()">&times;</span>
                 <p>Please log in. <br> Your account is required to interact with content.</p>
@@ -258,20 +206,9 @@
                     <a href="/create"><span>SIGN UP</span></a>
                 </div>
             </div>
-            
-            
-        </div>
-                
+        </div>          
     </div>
-    <footer>
-        <div class="sidebar-useful-links"> <div class="copyright-msg">
-            <H2>Forum</H2>
-            <p>VAAMS &#169; 2023. All right reserved</p>
-        </div>
-    </div>
-    </footer>
-    
+    <!-- ------------------ footer -------------- -->
+    {{template "footer" .}}
 </body>
-
-
 </html>

@@ -3,48 +3,71 @@ package tools
 import (
 	"fmt"
 	data "forum/Database"
-	"log"
 )
 
-func GetName_byID(database data.Db, ID string) (string, string, string) {
+func GetName_byID(database data.Db, ID string) (string, string, string, error) {
 	//getting the user's name
 	condition := fmt.Sprintf("WHERE %s = '%s'", data.Id_user, ID)
 	request := fmt.Sprintf("%s, %s, %s", data.Username, data.Name, data.Surname)
 	info, errn := database.GetData(request, data.User, condition)
 	if errn != nil {
 		fmt.Println("⚠ ERROR ⚠ : Couldn't get the username according to the id from database ❌")
-		log.Fatalf("⚠ : %v\n", errn)
+		fmt.Printf("⚠ : %v\n", errn)
+		return "", "", "", errn
 	}
 
 	var username, surname, name string
 	for info.Next() {
 		err := info.Scan(&username, &name, &surname)
 		if err != nil {
-			log.Fatalln(err)
+			fmt.Printf("⚠ : %v\n", err)
+			return "", "", "", err
 		}
 	}
 
-	return username, name, surname
+	return username, name, surname, nil
 }
 
-func GetName_bycomment(database data.Db, ID string) string {
+func GetPic_byID(database data.Db, Id string) (string, error) {
+	//getting the user's profil image
+	condition := fmt.Sprintf("WHERE %s = '%s'", data.Id_user, Id)
+	info, errn := database.GetData(data.Pp, data.User, condition)
+	if errn != nil {
+		fmt.Println("⚠ ERROR ⚠ : Couldn't get the profil photo according to the id from database ❌")
+		fmt.Printf("⚠ : %v\n", errn)
+		return "", errn
+	}
+
+	picture, errpic := data.Getelement(info)
+	if errpic != nil {
+		fmt.Println("⚠ ERROR ⚠ : Couldn't get the profil image from database ❌")
+		fmt.Printf("⚠ : %v\n", errn)
+		return "", errpic
+	}
+
+	return picture, nil
+}
+
+func GetName_bycomment(database data.Db, ID string) (string, error) {
 	//getting the user's name
 	condition := fmt.Sprintf("WHERE %s = '%s'", data.Id_comment, ID)
 	info, errn := database.GetData(data.Username, data.Comment, condition)
 	if errn != nil {
 		fmt.Println("⚠ ERROR ⚠ : Couldn't get the username according to the commentId from database ❌")
-		log.Fatalf("⚠ : %v\n", errn)
+		fmt.Printf("⚠ : %v\n", errn)
+		return "", errn
 	}
 
 	var username string
 	for info.Next() {
 		err := info.Scan(&username)
 		if err != nil {
-			log.Fatalln(err)
+			fmt.Println(err)
+			return "", err
 		}
 	}
 
-	return username
+	return username, nil
 }
 
 func IsnotExist_user(id string, database data.Db) bool {

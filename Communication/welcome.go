@@ -12,7 +12,7 @@ func (Post_tab *Posts) Welcome_user(database data.Db, id_user string) error {
 	if id_user != "" {
 
 		date, time := tools.Time() //date and time
-		categorie := []string{"Education", "Sport", "Art & culture", "Cinema", "health", "others"}
+		categorie := []string{"education", "sport", "art & culture", "cinema", "health", "others"}
 		// inserting value in database
 		//-- formatting value's special chars
 		value := `
@@ -29,7 +29,7 @@ Thank you for being part of this adventure with us!
 		title := "FIRST USER 🎉"
 
 		//-- formatting image link's special chars
-		image := "welcoming.png"
+		image := "welcome.jpg"
 
 		request0 := fmt.Sprintf("(%s, %s,%s, %s, %s, %s, %s)", data.Id_post, data.User_id, data.Title, data.Description, data.Image, data.Time, data.Date)
 		values := fmt.Sprintf("('%s', '%s', '%s', '%s','%s', '%s', '%s')", "avamspost", "avams", title, value, image, time, date)
@@ -39,8 +39,8 @@ Thank you for being part of this adventure with us!
 			return err
 		}
 
-		request1 := fmt.Sprintf("(%s, %s,%s, %s, %s, %s, %s)", data.Id_user, data.Username, data.Name, data.Surname, data.Email, data.Password, data.Usersession)
-		values1 := fmt.Sprintf("('%s', '%s', '%s', '%s','%s', '%s', '%s')", "avams", "avams_team", "TEAM", "AVAMS", "avams@avams.com", "12345678", "sessiontestforwelcome")
+		request1 := fmt.Sprintf("(%s, %s,%s, %s, %s, %s, %s,%s, %s)", data.Id_user, data.Username, data.Name, data.Surname, data.Email, data.Password, data.Usersession, data.Pp, data.Pc)
+		values1 := fmt.Sprintf("('%s', '%s', '%s', '%s','%s', '%s', '%s','%s', '%s')", "avams", "avams_team", "TEAM", "AVAMS", "avams@avams.com", "12345678", "sessiontestforwelcome", "../static/front-tools/images/profil.jpeg","../static/front-tools/images/mur.png")
 		erruser := database.INSERT("users", request1, values1)
 		if erruser != nil {
 			fmt.Println("⚠ ERROR ⚠ : Couldn't insert avams profil in database ❌")
@@ -70,7 +70,7 @@ Thank you for being part of this adventure with us!
 func (Post_tab *Posts) DeleteWelcome_user(database data.Db, id_user string) (error, bool) {
 	if id_user != "" {
 		//----------   checking the existence of the post   ------------------
-		condicheck := "WHERE image = \"welcoming.png\""
+		condicheck := "WHERE id_post = \"avamspost\""
 		check, errcheck := database.Exist(data.Id_post, data.Post, condicheck)
 		if errcheck != nil {
 			fmt.Println("⚠ ERROR ⚠ : Couldn't get data from database in 'DeleteWelcome_user function' ❌")
@@ -80,20 +80,6 @@ func (Post_tab *Posts) DeleteWelcome_user(database data.Db, id_user string) (err
 		if !check {
 			return nil, false
 		}
-		// check, errdata := database.GetData(data.Post, data.Id_post, condicheck)
-		// if errdata != nil {
-		// 	fmt.Println("⚠ ERROR ⚠ : Couldn't get data from database in 'DeleteWelcome_user function' ❌")
-		// 	return errdata, false
-		// }
-		// checkvalue, errCheckVal := data.Getelement(check)
-		// if errCheckVal != nil {
-		// 	fmt.Println("⚠ ERROR ⚠ : Couldn't get value in 'DeleteWelcome_user' function ❌")
-		// 	return errCheckVal, false
-		// }
-		// // if there is no such post => return empty string in checkvalue variable
-		// if checkvalue == "" {
-		// 	return nil, false
-		// }
 		//-----------------------  end of checking   -----------------------
 
 		condition := "WHERE id_post = \"avamspost\""
