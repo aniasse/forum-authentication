@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	auth "forum/Authentification"
+	auth "forum/Authentication"
 	db "forum/Database"
 	Rt "forum/Routes"
 )
@@ -23,24 +23,40 @@ func Handlers() {
 		switch r.URL.Path {
 		case "/": //default page
 			Rt.Index(w, r, tab)
+
 		case "/create": //create account page
 			Rt.CreateAccountPage(w, r, tab)
+
+		case "/auth/google/login": // googleAuth login page
+			Rt.HandleGoogleLogin(w, r)
+
+		case "/auth/google/callback": //googleAuth response url
+			Rt.HandleCallback(w, r)
+
 		case "/login": //login page
 			Rt.LoginPage(w, r, tab)
+
 		case "/logout": //logout page
 			Rt.LogOutHandler(w, r, tab)
+
 		case "/home": //home page
 			Rt.HomeHandler(w, r, tab)
+
 		case "/myprofil/posts": //filtered created post page
 			Rt.Profil(w, r, tab)
+
 		case "/myprofil/favorites": //filtered liked post page
 			Rt.Profil_fav(w, r, tab)
+
 		case "/myprofil/comments": //filtered commented post page
 			Rt.Profil_comment(w, r, tab)
+
 		case "/filter": //filtered post by categorie page for registered
 			Rt.Filter(w, r, tab)
+
 		case "/index": //filtered post by categorie page for non-registered
 			Rt.Indexfilter(w, r, tab)
+
 		default: // page does not exist
 			auth.Snippets(w, http.StatusNotFound)
 		}
