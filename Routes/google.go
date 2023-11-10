@@ -13,7 +13,7 @@ import (
 
 // handleGoogleLogin redirects the user to the google auth interface
 func HandleGoogleLogin(w http.ResponseWriter, r *http.Request) {
-	url := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=profile email&response_type=code", Google.AuthURL, Google.ClientID, Google.RedirectURI)
+	url := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=profile email&response_type=code", Google.GoAuthURL, Google.GoClientID, Google.GoRedirectURI)
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
@@ -27,14 +27,14 @@ func HandleCallback(w http.ResponseWriter, r *http.Request) {
 	// establishing the post request to exchange the permission with an access token
 	data := url.Values{}   // we use url.values in order to ensure well url encoding and more security against injections
 	data.Set("code", code) // setting the permission code
-	data.Set("client_id", Google.ClientID)
-	data.Set("client_secret", Google.ClientSecret)
+	data.Set("client_id", Google.GoClientID)
+	data.Set("client_secret", Google.GoClientSecret)
 	// telling to the google api that the request is based upon a permission code
 	//meaning that we have the user's consentment
 	data.Set("grant_type", "authorization_code")
-	data.Set("redirect_uri", Google.RedirectURI) // setting url where goolgle api will send its response
+	data.Set("redirect_uri", Google.GoRedirectURI) // setting url where goolgle api will send its response
 
-	tokenResp, err := http.Post(Google.TokenURL, "application/x-www-form-urlencoded", strings.NewReader(data.Encode()))
+	tokenResp, err := http.Post(Google.GoTokenURL, "application/x-www-form-urlencoded", strings.NewReader(data.Encode()))
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to exchange token: %s", err), http.StatusInternalServerError)
 		return
@@ -52,7 +52,7 @@ func HandleCallback(w http.ResponseWriter, r *http.Request) {
 
 	accessToken := token["access_token"].(string) //  retrievieng the access token in the token response body
 
-	userInfoResp, err := http.Get(fmt.Sprintf("%s?access_token=%s", Google.UserInfoURL, accessToken))
+	userInfoResp, err := http.Get(fmt.Sprintf("%s?access_token=%s", Google.GoUserInfoURL, accessToken))
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to fetch user info: %s", err), http.StatusInternalServerError)
 		return
