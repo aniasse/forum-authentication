@@ -33,6 +33,12 @@ func Handlers() {
 		case "/auth/google/callback": //googleAuth response url
 			Rt.HandleCallback(w, r)
 
+		case "/auth/github/login": // githubAuth login page
+			Rt.HandleGitHubLogin(w, r)
+
+		case "/auth/github/callback": //githubAuth response url
+			Rt.HandleGitHubCallback(w, r)
+
 		case "/login": //login page
 			Rt.LoginPage(w, r, tab)
 
