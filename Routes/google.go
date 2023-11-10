@@ -3,12 +3,12 @@ package Route
 import (
 	"encoding/json"
 	"fmt"
+	Google "forum/Authentication"
 	"html/template"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
-	Google "forum/Authentication"
 )
 
 // handleGoogleLogin redirects the user to the google auth interface
@@ -41,7 +41,7 @@ func HandleCallback(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tokenResp.Body.Close()
 	//--reading and storing the response
-	tokenData, err := ioutil.ReadAll(tokenResp.Body)
+	tokenData, err := io.ReadAll(tokenResp.Body)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to read token data: %s", err), http.StatusInternalServerError)
 		return
@@ -59,7 +59,7 @@ func HandleCallback(w http.ResponseWriter, r *http.Request) {
 	}
 	defer userInfoResp.Body.Close()
 
-	userInfoData, err := ioutil.ReadAll(userInfoResp.Body)
+	userInfoData, err := io.ReadAll(userInfoResp.Body)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to read user info data: %s", err), http.StatusInternalServerError)
 		return
