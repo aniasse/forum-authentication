@@ -3,22 +3,22 @@ package Route
 import (
 	"encoding/json"
 	"fmt"
+	Github "forum/Authentication"
 	"html/template"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
-	Github "forum/Authentication"
 )
 
 func HandleGitHubLogin(w http.ResponseWriter, r *http.Request) {
 	// redirecting user to githubAuth interface
 	parameter := url.Values{}
 	parameter.Set("client_id", Github.GitClientID)
-	parameter.Set("redirect_uri",  Github.GitRedirectURI)
+	parameter.Set("redirect_uri", Github.GitRedirectURI)
 	parameter.Set("scope", "user:email") // ask permission to user's email
 	parameter.Set("response_type", "code")
-	redirectURL :=  Github.GitAuthURL + "?" + parameter.Encode()
+	redirectURL := Github.GitAuthURL + "?" + parameter.Encode()
 	http.Redirect(w, r, redirectURL, http.StatusTemporaryRedirect)
 }
 
@@ -30,10 +30,10 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 	// exchnaging code with token access
 	tokenURL := "https://github.com/login/oauth/access_token"
 	data := url.Values{}
-	data.Set("client_id",  Github.GitClientID)
-	data.Set("client_secret",  Github.GitClientSecret)
+	data.Set("client_id", Github.GitClientID)
+	data.Set("client_secret", Github.GitClientSecret)
 	data.Set("code", code)
-	data.Set("redirect_uri",  Github.GitRedirectURI)
+	data.Set("redirect_uri", Github.GitRedirectURI)
 	data.Set("grant_type", "authorization_code")
 
 	tokenResp, err := http.Post(tokenURL, "application/x-www-form-urlencoded", strings.NewReader(data.Encode()))
@@ -44,7 +44,7 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 	defer tokenResp.Body.Close()
 
 	//--reading and storing the response
-	tokenData, err := ioutil.ReadAll(tokenResp.Body)
+	tokenData, err := io.ReadAll(tokenResp.Body)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to read token data: %s", err), http.StatusInternalServerError)
 		return
@@ -77,18 +77,19 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// debugging
+	fmt.Println("---USER INFO FROM GITHUB---")
 	for i, v := range userResp {
 		fmt.Printf("%v : %v\n", i, v)
 	}
 
 	var final = struct {
-		Name  string
-		Email string
-		Id    string
+		Name  interface{}
+		Email interface{}
+		Id    interface{}
 	}{
-		Name:  userResp["login"].(string),
-		Email: userResp["email"].(string),
-		Id:    userResp["id"].(string),
+		Name:  userResp["login"],
+		Email: userResp["email"],
+		Id:    userResp["id"],
 	}
 
 	t, _ := template.ParseFiles("templates/success.html")
