@@ -30,6 +30,17 @@ func Index(w http.ResponseWriter, r *http.Request, database db.Db) {
 	}
 
 	GetAll_fromDB(w) // displaying datas
+	//--removing the reactions highlihts
+
+	for i := range postab {
+		postab[i].SessionReact = ""
+	}
+	for i := range postab {
+		for v := range postab[i].Comment_tab {
+			postab[i].Comment_tab[v].SessionReact = ""
+		}
+	}
+	
 	//--displaying welcoming post when database is empty
 	if len(postab) == 0 {
 		errwel := postab.Welcome_user(database, "index")
@@ -40,15 +51,6 @@ func Index(w http.ResponseWriter, r *http.Request, database db.Db) {
 		}
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		fmt.Println("✔ ✨ welcome post sent ✨")
-	}
-
-	//--removing the reactions highlihts
-	for i := range commtab {
-		commtab[i].SessionReact = ""
-	}
-
-	for i := range postab {
-		postab[i].SessionReact = ""
 	}
 
 	file, errf := template.ParseFiles("templates/index.html", "templates/head.html", "templates/navbar.html", "templates/footer.html")
