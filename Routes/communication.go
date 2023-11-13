@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"net/http"
 
-	Err "forum/Authentification"
 	auth "forum/Authentification"
 	Com "forum/Communication"
 	db "forum/Database"
@@ -42,7 +41,7 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 	//!--checking the http request
 	if r.Method != "POST" && r.Method != "GET" {
 		fmt.Printf("⚠ ERROR ⚠ : cannot access to that page by with mode other than GET & POST must log out to reach it ❌")
-		Err.Snippets(w, 405)
+		auth.Snippets(w, 405)
 		return
 	}
 
@@ -50,7 +49,7 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 	fmt.Println("postab size ->> ", len(postab))
 	StatusCode := ProcessData(w, r, redirect) //Process datas received fromn client request
 	if StatusCode != 200 {
-		Err.Snippets(w, StatusCode)
+		auth.Snippets(w, StatusCode)
 		return
 	}
 
@@ -58,20 +57,20 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 	if errf != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR ⚠ parsing --> %v\n", errf)
-		Err.Snippets(w, 500)
+		auth.Snippets(w, 500)
 		return
 	}
 	// user's name
 	current_username, current_surname, current_name, errGN := tools.GetName_byID(database, Id_user)
 	if errGN != nil {
 		//sending metadata about the error to the servor
-		Err.Snippets(w, 500)
+		auth.Snippets(w, 500)
 		return
 	}
 
 	// code
-	current_pp, _, errpp := auth.HelpersBA("users",database, "pp", " WHERE id_user='"+Id_user+"'", "")
-	current_cover, _, errcover := auth.HelpersBA("users",database, "pc", " WHERE id_user='"+Id_user+"'", "")
+	current_pp, _, errpp := auth.HelpersBA("users", database, "pp", " WHERE id_user='"+Id_user+"'", "")
+	current_cover, _, errcover := auth.HelpersBA("users", database, "pc", " WHERE id_user='"+Id_user+"'", "")
 	// handle error
 	if errpp || errcover {
 		fmt.Println("error pp,", errpp, " error cover", errcover)
@@ -96,7 +95,7 @@ func Communication(w http.ResponseWriter, r *http.Request, Id string, redirect s
 	if errexc != nil {
 		//sending metadata about the error to the servor
 		fmt.Printf("⚠ ERROR ⚠ executing file --> %v\n", errexc)
-		Err.Snippets(w, 500)
+		auth.Snippets(w, 500)
 		return
 	}
 	fmt.Println("--------------- 🟢🌐 home data sent -----------------------") //debug
