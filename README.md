@@ -1,213 +1,237 @@
-# Web Forum
+# Web Forum (authentication)
 
 ## Table of Contents
-1. [Objectives](#objectives)
-2. [Technologies-Used](#technologies-Used)
-3. [Key-Features](#key-Features)
-4. [Docker-Image](#docker-Usage)
-5. [Main-Directories](#main-Directories)
-6. [Instructions](#instructions)
+1. [Description](#description)
+2. [Objectives](#🎯-objectives)
+3. [Technologies-Used](#👨‍💻-technologies-used)
+4. [Key-Features](#🔑-key-features)
+5. [File system:](#🗃-file-system)
+6. [Main-Directories](#main-directories)
+7. [Instructions](#📜-instructions)
+8. [Authors](#👥-authors)
+
+### Description:
+***
+This project is a continuation of the web forum application developed using Go and SQLite for data storage. The forum allows users to communicate with each other, associate categories with posts, like and dislike posts adding image and comments, and filter posts based on different categories. User is also able register with his  **G🔴🟡GLE** or **GITHUB 🐱‍👤** account
+
+## 🎯 Objectives
+
+The main objective of this project is to allow user registering with:
+
+- GOOGLE
+- GITHUB
+
+## 👨‍💻 Technologies Used
+***
+- **GO**, also called Golang or Go language, is an open source programming language that Google developed. For more details check their website [https://golang.org]
+* **HTML**,The HyperText Markup Language is the standard markup language for documents designed to be displayed in at web browser.
++ **CSS**,Cascading Style Sheets, form a computer language that describes the presentation of HTML documents.  
+
++ **SQlite**, it is a database engine written in the C programming language. It is not a standalone app; rather, it is a library that software developers embed in their apps. As such, it belongs to the family of embedded databases.
+
++ **Docker**, Docker is a platform designed to help developers build, share, and run container applications. See more at [https://www.docker.com]
 
 
-This project is a continuation of the web forum application developed using Go and SQLite for data storage. The forum allows users to communicate with each other, associate categories with posts, like and dislike posts adding image and comments, and filter posts based on different categories.
+## 🔑 Key-Features
 
-## Objectives
+### 🔐 Authentication 
 
-The main objectives of this project include:
-
-- Allowing user registration and authentication.
-- Adding image to a post
-- Enabling users to create posts and comments.
-- Associating categories with posts.
-- Managing likes and dislikes of posts and comments.
-- Providing a mechanism to filter posts by categories, created posts, and posts liked by the logged-in user.
-
-## Technologies Used
-
-- Go: Used for backend development.
-- SQLite: Used for managing the database.
-- HTML/CSS: Used for creating the user interface.
-- Docker: Used for containerizing the application.
-
-## Key Features
-
-### Authentication
-
-- Users can register by providing their email address, username, and password.
-- Creation of login sessions allows users to sign in to the forum.
+- registration by providing their email address, username, and password.
+- Registration using **G🔴🟡GLE** or **GITHUB 🐱‍👤** account
+- Creation of login sessions, allowing users to sign in to the forum.
 - Use of cookies to manage sessions with an expiration date.
 
-### Communication
+### Communication 💻
 
 - Registered users can create posts adding image to a post and comments.
 - Categories can be associated with posts.
 - All posts and comments are visible to all users.
 
-### Likes and Dislikes
+### 👍🏻👎🏻 Likes and Dislikes 
 
 - Only registered users can like or dislike posts and comments.
 - The number of likes and dislikes is visible to all users.
 
-### Filtering
+### ♻ Filtering 
 
 - Users can filter posts by categories, created posts, and posts liked by them.
 
-## Docker Usage
+## 🐋 Docker Usage
 
-The application utilizes Docker for managing the development environment. You can create a Docker image to run the application.
+The application utilizes Docker for managing the development environment.
 
-# Project Directory Structure
+## 🗃 file-system  
 The project is organized into multiple directories for better source code organization.
+```go
+.
+|
+|____📂Authentication  
+|    |-----------📄auth_api_tools.go
+|    |-----------📄BD.go
+|    |-----------📄helpers.go
+|    |-----------📄Session_com.go
+|
+|____📂Communication
+|    |-----------📄categories.go
+|    |-----------📄comment.go
+|    |-----------📄posts.go
+|    |-----------📄reaction.go
+|    |-----------📄welcome.go
+|
+|____📂Database
+|    |-----------📄commands.go
+|    |-----------📄const_db.go
+|    |-----------📄Init_db.go
+|    |-----------📄tables.go
+|
+|____📂Handlers
+|    |-----------📄handle.go
+|
+|____📂Models
+|    |-----------📄ERD.go
+|
+|____📂Routes
+|    |-----------📄authentication.go
+|    |-----------📄communication.go
+|    |-----------📄fetcher.go
+|    |-----------📄filter.go
+|    |-----------📄github.go
+|    |-----------📄google.go
+|    |-----------📄index.go
+|    |-----------📄processing.go
+|    |-----------📄profil-cmt.go
+|    |-----------📄profil-fav.go
+|    |-----------📄profil.go
+|    |-----------📄react.go
+|    |-----------📄tools_communication.go
+|    |-----------📄upload.go
+|
+|____🗄📂templates
+|    |____📂front-tools
+|    |    |___📂css
+|    |    |   |-----------🎨aboutus.css
+|    |    |   |-----------🎨error.css
+|    |    |   |-----------🎨logand.css
+|    |    |   |-----------🎨style.css
+|    |    |
+|    |    |___📂images
+|    |    |   |-----------📷(front-images...)
+|    |    |
+|    |    |___📂Js
+|    |    |   |-----------📒script.js
+|    |    |   |-----------📒upload.js
+|    |___📂image_storage
+|    |   |-----(💾images uploaded from website...)
+|    |    
+|    |--------------------------------------------------📝createaccout.html
+|    |--------------------------------------------------📝error.html
+|    |--------------------------------------------------📝filter_com.html
+|    |--------------------------------------------------📝filter_fav.html
+|    |--------------------------------------------------📝footer.html
+|    |--------------------------------------------------📝head.html
+|    |--------------------------------------------------📝home.html
+|    |--------------------------------------------------📝home.html
+|    |--------------------------------------------------📝index.html
+|    |--------------------------------------------------📝main.html
+|    |--------------------------------------------------📝navbar.html
+|    |--------------------------------------------------📝profil.html
+|    |--------------------------------------------------📝register.html
+|
+|____📂tools
+|    |--------------🔧Id_toold.go
+|    |--------------🔧standard_funcs.go
+|    |--------------🔧validity.go
+|
+|----🐋Dockerfile
+|
+|----🛢forum.db
+|
+|----⚙go.mod
+|
+|----🔃go.sum
+|
+|----📝main.go
+|
+|----📜README.md
+|
+|----⚙script.sh
+|
+|----📜task guider.md
+.
 
-      ├── Authentification 
-
-         |   ├── BD.go
-
-         |   ├── helpers.go
-
-      ├──    Communication 
-
-         |   ├── categories.go
-
-         |   ├── comment.go
-
-         |   ├── posts.go
-
-         |   ├── reaction.go
-
-         |   ├── welcome.go
-
-      ├── Handlers
-
-         |   ├── handle.go
-
-      ├── Database 
-
-         |   ├── commands.go
-
-         |   ├── const_db.go
-
-         |   ├── Init_db.go
-
-         |   ├── tables.go
-
-      ├── templates
-
-         |   ├── front-tools
-
-         |   ├── image_storage
-
-         |   ├── createacount.html
-
-         |   ├── error.html
-
-         |   ├── footer.html
-
-         |   ├── head.html
-
-         |   ├── image_storage
-
-         |   ├── home.html
-
-         |   ├── index.html
-
-         |   ├── main.html
-
-         |   ├── navbar.hmtl
-
-         |   ├── profil.html
-
-         |   ├── register.html
-
-      ├── tools
-
-         |   ├── Id_tools.go
-
-         |   ├── uuid.go
-
-         |   ├── Validity.go
-
-         |   ├── standard_funcs.go
-
-
-      ├── models 
-
-         |   ├── ERD.png
-
-      ├── Routes 
-
-         |   ├── authentification.go
-
-         |   ├── communication.go
-
-         |   ├── filter.go
-
-         |   ├── index.go
-
-         |   ├── react.go
-
-         |   ├── tools_communication.go
-
-         |   ├──  upload.go
-
+```
 
 ## Main-Directories
+`Authentification` directory contains files related to user authentication, including database management and helper functions.
 
-### Authentification
+`Communication` directory is dedicated to communication, including the creation of comments and posts.  
 
-The    `Authentification` directory contains files related to user authentication, including database management and helper functions.
+`Database` directory includes files related to database management, such as SQL commands, constants, database initialization, and table definitions.
 
-### Communication
+ `handlers` directory may contain request handler functions or other features related to processing user requests.
 
-The `Communication` directory is dedicated to communication, including the creation of comments and posts.
+`models` directory may contain data models or other elements related to the application's domain model.
 
-### Database
+`Routes` directory may contain route management files to direct user requests to the appropriate functionalities.
 
-The `Database` directory includes files related to database management, such as SQL commands, constants, database initialization, and table definitions.
+`templates` directory may contain HTML templates used to generate web pages.
 
-### handlers
+`tools` directory may contain tools, utilities, or reusable libraries.
 
-The `handlers` directory may contain request handler functions or other features related to processing user requests.
-
-### models
-
-The `models` directory may contain data models or other elements related to the application's domain model.
-
-### Routes
-
-The `Routes` directory may contain route management files to direct user requests to the appropriate functionalities.
-
-### templates
-
-The `templates` directory may contain HTML templates used to generate web pages.
-
-### tools
-
-The `tools` directory may contain tools, utilities, or reusable libraries.
-
-## Subdirectories
-
-Some directories, such as `css`, `images`, and `JS`, are organized into subdirectories for better structuring of frontend resources.
-
+Some directories, such as `css`, `images`, and `JS`, are organized into subdirectories for better structuring of frontend resources.  
 Feel free to explore each individual subdirectory for more details on its contents and specific purpose.
 
-This directory structure is designed for efficient organization of source code and project resources. Please refer to individual subdirectories for more information on their content and usage.
 
-## Instructions
+## 📜 Instructions
 
-1.
-***
-A little intro about how to install:
-```
-$ Clone the project from https://learn.zone01dakar.sn/git/aboubakdiallo/forum-image-upload.git
-$ cd forum
-```
+1. how to install:
+   ```bash
+   $ git clone https://learn.zone01dakar.sn/git/mthiaw/forum-authentication.git
+   $ cd forum-authentication
+   ```
 
-2. Use Docker to build an image of the application.
+2. how to enter the forum:
+   ```go
+   go run main.go
+   ✅ database has been created successfully
+   ✅ 'users' table has been created in database succesfully
+   ✅ 'posts' table has been created in database succesfully
+   ✅ 'comments' table has been created in database succesfully
+   ✅ 'post_reactions' table has been created in database succesfully   
+   ✅ 'comment_reactions' table has been created in database succesfully
+   ✅ 'categories' table has been created in database succesfully       
+   ✅ 'sessions' table has been created in database succesfully
+   📡----------------------------------------------------📡
+   |                                                      |
+   | 🌐 Server has started at "http://localhost:8080 🟢" |
+   |                                                      |
+   📡----------------------------------------------------📡
+   ```
+   go to the link and follow instructions
 
+3. how to Use Docker to build an image of the application.
    ```bash
    docker build -t forum-app .
+   # step 1 : build image
+   docker build -t <image_name>
+   # step 2 : build and run container with built image
+   docker run -d --name <container_name> -p <port>: <container_port> <image_name>
+   # enter the container and list items with this command a
+   docker exec <container_name> ls -l 
+   ```
+or execute directly the `script.sh` file
+```bash
+$sh script.sh
+```
+  
+## 👥 Authors:
+### front-end team :
 
+- [**A-boubakrine DIALLO** (*aboubakdiallo*)](https://learn.zone01dakar.sn/git/aboubakdiallo)
+- [**V-incent Félix NDOUR** (*vindour*)](https://learn.zone01dakar.sn/git/vindour)
+### back-end team :
+- [**A-dama NIASSE** (*aniasse*)](https://learn.zone01dakar.sn/git/aniasse)
+* [**M-asseck THIAW** (*mthiaw - **captain***)](https://learn.zone01dakar.sn/git/mthiaw)
++ [**S-eynabou NIANG** (*sniang*)](https://learn.zone01dakar.sn/git/sniang)
 
-
-*@Licensed by team AVAMS*
+#### *@Licensed by AVAMS👏 team*
