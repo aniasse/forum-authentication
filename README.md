@@ -37,7 +37,7 @@ The main objective of this project is to allow user registering with:
 ### 🔐 Authentication 
 
 - registration by providing their email address, username, and password.
-- Registration using **G🔴🟡GLE** or **GITHUB 🐱‍👤** account
+- Registration using **G🔴🟡GLE** or **GITHUB** account
 - Creation of login sessions, allowing users to sign in to the forum.
 - Use of cookies to manage sessions with an expiration date.
 
@@ -120,6 +120,7 @@ The project is organized into multiple directories for better source code organi
 |    |    |___📂Js
 |    |    |   |-----------📒script.js
 |    |    |   |-----------📒upload.js
+|    |    |
 |    |___📂image_storage
 |    |   |-----(💾images uploaded from website...)
 |    |    
