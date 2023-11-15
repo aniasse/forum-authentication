@@ -23,13 +23,13 @@ The main objective of this project is to allow user registering with:
 
 ## 👨‍💻 Technologies Used
 ***
-- **GO**, also called Golang or Go language, is an open source programming language that Google developed. For more details check their website [https://golang.org]
+- **GO**, also called Golang or Go language, is an open source programming language that Google developed. For more details check their [website](https://golang.org)
 * **HTML**,The HyperText Markup Language is the standard markup language for documents designed to be displayed in at web browser.
 + **CSS**,Cascading Style Sheets, form a computer language that describes the presentation of HTML documents.  
 
 + **SQlite**, it is a database engine written in the C programming language. It is not a standalone app; rather, it is a library that software developers embed in their apps. As such, it belongs to the family of embedded databases.
 
-+ **Docker**, Docker is a platform designed to help developers build, share, and run container applications. See more at [https://www.docker.com]
++ **Docker**, Docker is a platform designed to help developers build, share, and run container applications. See more [here](https://www.docker.com)
 
 
 ## 🔑 Key-Features
@@ -56,7 +56,7 @@ The main objective of this project is to allow user registering with:
 
 - Users can filter posts by categories, created posts, and posts liked by them.
 
-## 🐋 Docker Usage
+## 🐋 Docker
 
 The application utilizes Docker for managing the development environment.
 
