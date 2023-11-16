@@ -38,7 +38,12 @@ func Upload_mngmnt(w http.ResponseWriter, r *http.Request, size int, formFile st
 			fmt.Println("⚠ Wrong image extension")
 			return "", errors.New("invalid extension")
 		}
-		uploaded, err := os.Create("templates/image_storage/" + header.Filename)
+		ImgName, errImg := tools.GenImageName(header.Filename)
+		if errImg != nil { 
+			fmt.Println("🚫 empty image")
+			return "", errImg
+		}
+		uploaded, err := os.Create("templates/image_storage/" + ImgName)
 		if err != nil {
 			fmt.Println("⚠ wrong image path")
 			return "", err
@@ -52,7 +57,7 @@ func Upload_mngmnt(w http.ResponseWriter, r *http.Request, size int, formFile st
 			return "", err
 		}
 
-		return header.Filename, nil
+		return ImgName, nil
 	}
 	return "", nil
 

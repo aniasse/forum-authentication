@@ -1,8 +1,11 @@
 package tools
 
 import (
+	"errors"
 	"fmt"
 	data "forum/Database"
+
+	"github.com/gofrs/uuid/v5"
 )
 
 func GetName_byID(database data.Db, ID string) (string, string, string, error) {
@@ -104,4 +107,12 @@ func IsnotExist_Comment(id string, database data.Db) bool {
 		return true
 	}
 	return false
+}
+
+func GenImageName(image string) (string, error) {
+	idImg, errImg := uuid.NewV4()
+	if errImg != nil {
+		return "", errors.New("cannot generate id for img name")
+	}
+	return fmt.Sprintf("%s%s", idImg, image), nil
 }
