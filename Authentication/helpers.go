@@ -2,7 +2,9 @@ package auth
 
 import (
 	"fmt"
+	// auth "forum/Authentication"
 	db "forum/Database"
+	"math/rand"
 	"net/http"
 	"net/mail"
 	"strconv"
@@ -44,6 +46,7 @@ func CreateSession(w http.ResponseWriter, iduser string, tab db.Db) {
 		Name:    "session_token",
 		Value:   sessionToken,
 		Expires: expiresAt,
+		Path:    "/",
 		// SameSite: http.SameSiteDefaultMode,
 	})
 }
@@ -69,7 +72,7 @@ func DisplayFile(w http.ResponseWriter, templatePath string) {
 		Snippets(w, http.StatusInternalServerError)
 		return
 	}
-	
+
 	errExecutionFile = file.Execute(w, nil)
 	if errExecutionFile != nil {
 		fmt.Println("Probléme de parsing ou d'execution de fichier", templatePath)
@@ -130,4 +133,12 @@ func FieldsLimited(field string, min, max int) bool {
 
 func NotAllow(s string) bool {
 	return strings.Contains(s, "'") || strings.Contains(s, "\"")
+}
+func GenerateUsername(name string, tab db.Db) string {
+	username := name + strconv.Itoa(rand.Intn(101))
+	_, _, confirmusername := HelpersBA("users", tab, "username", " WHERE username='"+username+"'", username)
+	if confirmusername {
+		return GenerateUsername(name, tab)
+	}
+	return username
 }
