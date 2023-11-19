@@ -2,26 +2,26 @@
 
 ## Table of Contents
 1. [Description](#description)
-2. [Objectives](#🎯-objectives)
-3. [Technologies-Used](#👨‍💻-technologies-used)
-4. [Key-Features](#🔑-key-features)
-5. [File system:](#🗃-file-system)
+2. [Objectives](#objectives)
+3. [Technologies-Used](#technologies-used)
+4. [Key-Features](#key-features)
+5. [File system:](#file-system)
 6. [Main-Directories](#main-directories)
-7. [Instructions](#📜-instructions)
-8. [Authors](#👥-authors)
+7. [Instructions](#instructions)
+8. [Authors](#authors)
 
 ### Description:
 ***
 This project is a continuation of the web forum application developed using Go and SQLite for data storage. The forum allows users to communicate with each other, associate categories with posts, like and dislike posts adding image and comments, and filter posts based on different categories. User is also able register with his  **G🔴🟡GLE** or **GITHUB 🐱‍👤** account
 
-## 🎯 Objectives
+## Objectives
 
 The main objective of this project is to allow user registering with:
 
 - GOOGLE
 - GITHUB
 
-## 👨‍💻 Technologies Used
+## Technologies Used
 ***
 - **GO**, also called Golang or Go language, is an open source programming language that Google developed. For more details check their [website](https://golang.org)
 * **HTML**,The HyperText Markup Language is the standard markup language for documents designed to be displayed in at web browser.
@@ -32,7 +32,7 @@ The main objective of this project is to allow user registering with:
 + **Docker**, Docker is a platform designed to help developers build, share, and run container applications. See more [here](https://www.docker.com)
 
 
-## 🔑 Key-Features
+## Key-Features
 
 ### 🔐 Authentication 
 
@@ -41,7 +41,7 @@ The main objective of this project is to allow user registering with:
 - Creation of login sessions, allowing users to sign in to the forum.
 - Use of cookies to manage sessions with an expiration date.
 
-### Communication 💻
+### 💻 Communication 
 
 - Registered users can create posts adding image to a post and comments.
 - Categories can be associated with posts.
@@ -60,7 +60,7 @@ The main objective of this project is to allow user registering with:
 
 The application utilizes Docker for managing the development environment.
 
-## 🗃 file-system  
+## file-system  
 The project is organized into multiple directories for better source code organization.
 ```go
 .
@@ -183,7 +183,7 @@ Some directories, such as `css`, `images`, and `JS`, are organized into subdirec
 Feel free to explore each individual subdirectory for more details on its contents and specific purpose.
 
 
-## 📜 Instructions
+## Instructions
 
 1. how to install:
    ```bash
@@ -225,7 +225,7 @@ or execute directly the `script.sh` file
 $sh script.sh
 ```
   
-## 👥 Authors:
+## Authors:
 ### front-end team :
 
 - [**A-boubakrine DIALLO** (*aboubakdiallo*)](https://learn.zone01dakar.sn/git/aboubakdiallo)
