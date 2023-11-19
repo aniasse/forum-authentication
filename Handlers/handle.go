@@ -31,7 +31,7 @@ func Handlers() {
 			Rt.HandleGoogleLogin(w, r)
 
 		case "/auth/google/callback": //googleAuth response url
-			Rt.HandleCallback(w, r)
+			Rt.HandleCallback(w, r, tab)
 
 		case "/auth/github/login": // githubAuth login page
 			Rt.HandleGitHubLogin(w, r)
