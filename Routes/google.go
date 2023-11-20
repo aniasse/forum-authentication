@@ -13,7 +13,8 @@ import (
 )
 
 // handleGoogleLogin redirects the user to the google auth interface
-func HandleGoogleLogin(w http.ResponseWriter, r *http.Request) {
+func HandleGoogleLogin(w http.ResponseWriter, r *http.Request, tab db.Db) {
+	auth.CheckCookie(w, r, tab)
 	url := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=profile email&response_type=code", Google.GoAuthURL, Google.GoClientID, Google.GoRedirectURI)
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }

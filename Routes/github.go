@@ -12,7 +12,9 @@ import (
 	"strings"
 )
 
-func HandleGitHubLogin(w http.ResponseWriter, r *http.Request) {
+func HandleGitHubLogin(w http.ResponseWriter, r *http.Request,tab db.Db) {
+	auth.CheckCookie(w, r, tab)
+
 	// redirecting user to githubAuth interface
 	parameter := url.Values{}
 	parameter.Set("client_id", Github.GitClientID)
@@ -24,6 +26,8 @@ func HandleGitHubLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleGitHubCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
+	auth.CheckCookie(w, r, tab)
+
 	// Retrieving permission code
 	code := r.URL.Query().Get("code")
 	// fmt.Println("code is here", code)

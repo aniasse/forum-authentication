@@ -28,13 +28,13 @@ func Handlers() {
 			Rt.CreateAccountPage(w, r, tab)
 
 		case "/auth/google/login": // googleAuth login page
-			Rt.HandleGoogleLogin(w, r)
+			Rt.HandleGoogleLogin(w, r, tab)
 
 		case "/auth/google/callback": //googleAuth response url
 			Rt.HandleCallback(w, r, tab)
 
 		case "/auth/github/login": // githubAuth login page
-			Rt.HandleGitHubLogin(w, r)
+			Rt.HandleGitHubLogin(w, r, tab)
 
 		case "/auth/github/callback": //githubAuth response url
 			Rt.HandleGitHubCallback(w, r, tab)
