@@ -10,8 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/gofrs/uuid/v5"
 )
 
 // handleGoogleLogin redirects the user to the google auth interface
@@ -85,59 +83,13 @@ func HandleCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 		Email:      userInfo["email"].(string),
 		Id:         userInfo["id"].(string),
 	}
-	foundEmail := auth.GetDatafromBA(tab.Doc, final.Email, "email", db.User)
-	fmt.Println("find it           ", final.Name)
-
-	// verifier si le user existe deja sinon lui creer un compte dans les deux cas redirections vers /home
-	if foundEmail {
-		iduser, _, _ := auth.HelpersBA("users", tab, "id_user", "WHERE email='"+final.Email+"'", "")
-		auth.CreateSession(w, iduser, tab)
-		http.Redirect(w, r, "/home", http.StatusSeeOther)
+	if final.Email != "" && final.Id != "" && final.Name != "" {
+		Connection0auth(tab, final.Email, final.Name, final.FamilyName, w, r, final.Id)
 	} else {
-		newid, err := uuid.NewV4()
-		if err != nil {
-			fmt.Println("erreur avec le uuid niveau create account")
-			auth.Snippets(w, http.StatusInternalServerError)
-			return
-		}
-		// password hash
-		hashpassword, errorhash := auth.HashPassword(final.Id)
-		if errorhash != nil {
-			fmt.Println("error hash")
-			auth.Snippets(w, http.StatusInternalServerError)
-			return
-		}
-		//creation pseudo
-		username := auth.GenerateUsername(final.Name, tab)
-
-		values := "('" + newid.String() + "','" + final.Email + "','" + final.Name + "','" + username + "','" + final.FamilyName + "','" + hashpassword + "','../static/front-tools/images/profil.jpeg','../static/front-tools/images/mur.png')"
-		attributes := "(id_user,email,name,username,surname, password,pp,pc)"
-		error := tab.INSERT(db.User, attributes, values)
-		if error != nil {
-			fmt.Println("something wrong")
-			fmt.Println("error", error)
-			auth.Snippets(w, http.StatusInternalServerError)
-			return
-
-		}
-		valuesession := "('" + newid.String() + "')"
-		attributessession := "(user_id)"
-		errorsession := tab.INSERT("sessions", attributessession, valuesession)
-		if errorsession != nil {
-			fmt.Println("something wrong with insert session", errorsession)
-			fmt.Println("error", error)
-			auth.Snippets(w, http.StatusInternalServerError)
-			return
-
-		}
-		// fmt.Println("un w", w)
-		// creation of the session
-		auth.CreateSession(w, newid.String(), tab)
-		// fmt.Println("deux w", w)
-
-		//redirecting the user to their home page
-		http.Redirect(w, r, "/home", http.StatusSeeOther)
+		//pas d'email
+		message := "connecting to the forum requires a valid email address and personal details, please go to your google email settings to work the magic. See you soon!"
+		formlogin := Register{Username: "", Password: "", Message: message}
+		auth.DisplayFilewithexecute(w, "templates/register.html", formlogin, http.StatusBadRequest)
+		return
 	}
-	// t, _ := template.ParseFiles("templates/success.html")
-	// t.Execute(w, final)
 }

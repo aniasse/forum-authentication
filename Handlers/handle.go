@@ -37,7 +37,7 @@ func Handlers() {
 			Rt.HandleGitHubLogin(w, r)
 
 		case "/auth/github/callback": //githubAuth response url
-			Rt.HandleGitHubCallback(w, r)
+			Rt.HandleGitHubCallback(w, r, tab)
 
 		case "/login": //login page
 			Rt.LoginPage(w, r, tab)
