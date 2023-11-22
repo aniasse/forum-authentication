@@ -9,10 +9,11 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
-func HandleGitHubLogin(w http.ResponseWriter, r *http.Request,tab db.Db) {
+func HandleGitHubLogin(w http.ResponseWriter, r *http.Request, tab db.Db) {
 	auth.CheckCookie(w, r, tab)
 
 	// redirecting user to githubAuth interface
@@ -96,14 +97,23 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 		Email: userResp["email"],
 		Id:    userResp["id"],
 	}
+	fmt.Println("final id", final.Id)
 
-	if final.Email != nil && final.Id != nil && final.Name != nil {
+	if final.Id != nil && final.Name != nil {
 		name, _ := (final.Name).(string)
-		Email, _ := (final.Email).(string)
-		Id, _ := (final.Id).(string)
+		Id, _ := (final.Id).(float64)
+		numeroString := strconv.FormatFloat(Id, 'f', -1, 64)
+		// fmt.Println("id", Id)
+		Email := ""
+		if final.Email == nil {
+			Email = numeroString + name
+		} else {
+			Email, _ = (final.Email).(string)
 
+		}
+		// Convertir en chaîne de caractères
 		firstName, familyName := auth.Familyname(name)
-		Connection0auth(tab, Email, firstName, familyName, w, r, Id)
+		Connection0auth(tab, Email, firstName, familyName, w, r, numeroString)
 	} else {
 		//pas d'email
 		message := "connecting to the forum requires an email address and personal details, please make your email address visible on your github account to enjoy our site. See you soon!"
