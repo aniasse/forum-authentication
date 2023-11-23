@@ -374,14 +374,14 @@ func Connection0auth(tab db.Db, email string, name string, familyName string, w 
 			// data := fmt.Sprintf("surname=%s&name=%s&username=%s&email=%s&password=%s&confirmpwd=%s",
 			// name,familyName, name, "example@gmail.com", "exemple", "confirm exemple")
 			formcreate := Create{Surname: name, Name: familyName, Username: name, Email: email, Password: "password", Confirmpwd: "confirmpwd"}
-
 			r.URL.Path = "/create"
 			messageE := "email/username already used"
 			message := Message{Errormessage: messageE, CreateForm: formcreate}
 			auth.DisplayFilewithexecute(w, "templates/createacount.html", message, http.StatusBadRequest)
-			fmt.Println("⚠ ERROR ⚠:❌  email ", email, "ou username existant",name)
+			fmt.Println("⚠ ERROR ⚠:❌  email ", email, "ou username existant", name)
+			// fmt.Fprint(w, `<script>window.history.pushState({}, '', '/create');</script>`)
 			return
-		
+
 		} else {
 			// password hash
 			hashpassword, errorhash := auth.HashPassword(id)
@@ -416,6 +416,8 @@ func Connection0auth(tab db.Db, email string, name string, familyName string, w 
 			auth.CreateSession(w, id, tab)
 			http.Redirect(w, r, "/home", http.StatusSeeOther)
 		}
+		return
 	}
+	return
 
 }
