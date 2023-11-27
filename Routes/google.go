@@ -99,7 +99,9 @@ func HandleCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 		Connection0auth(tab, Email, Name, FamilyName, w, r, Id)
 	} else {
 		//pas d'email
-		message := "connecting to the forum requires a valid email address and personal details, please go to your google email settings to work the magic. See you soon!"
+		message := "missing personal information in Google"
+
+		// message := "connecting to the forum requires a valid email address and personal details, please go to your google email settings to work the magic. See you soon!"
 		formlogin := Register{Username: "", Password: "", Message: message}
 		auth.DisplayFilewithexecute(w, "templates/register.html", formlogin, http.StatusBadRequest)
 		return

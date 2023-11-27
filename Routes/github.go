@@ -99,7 +99,7 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 	}
 	fmt.Println("final id", final.Id)
 
-	if final.Id != nil && final.Name != nil {
+	if final.Id != nil && final.Name != nil && final.Email != nil {
 		name, _ := (final.Name).(string)
 		Id, _ := (final.Id).(float64)
 		numeroString := strconv.FormatFloat(Id, 'f', -1, 64)
@@ -116,7 +116,8 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 		Connection0auth(tab, Email, firstName, familyName, w, r, numeroString)
 	} else {
 		//pas d'email
-		message := "connecting to the forum requires an email address and personal details, please make your email address visible on your github account to enjoy our site. See you soon!"
+		message := "missing personal information in Github"
+		// message := "connecting to the forum requires an email address and personal details, please make your email address visible on your github account to enjoy our site. See you soon!"
 		formlogin := Register{Username: "", Password: "", Message: message}
 		auth.DisplayFilewithexecute(w, "templates/register.html", formlogin, http.StatusBadRequest)
 		return
