@@ -99,7 +99,7 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 	}
 	fmt.Println("final id", final.Id)
 
-	if final.Id != nil && final.Name != nil && final.Email != nil {
+	if final.Id != nil && final.Name != nil {
 		name, _ := (final.Name).(string)
 		Id, _ := (final.Id).(float64)
 		numeroString := strconv.FormatFloat(Id, 'f', -1, 64)
