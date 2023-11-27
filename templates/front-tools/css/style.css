@@ -19,7 +19,7 @@ a{
 }
 
 #murimage{
-    background-size: cover;
+    background-size: contain;
 }
 .navbar{
     display: flex;
