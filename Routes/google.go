@@ -74,18 +74,29 @@ func HandleCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 	fmt.Println("user info here", userInfo)
 
 	var final = struct {
-		Name       string
-		FamilyName string
-		Email      string
-		Id         string
+		Name       interface{}
+		FamilyName interface{}
+		Email      interface{}
+		Id         interface{}
 	}{
-		FamilyName: userInfo["family_name"].(string),
-		Name:       userInfo["given_name"].(string),
-		Email:      userInfo["email"].(string),
-		Id:         userInfo["id"].(string),
+		FamilyName: userInfo["family_name"],
+		Name:       userInfo["given_name"],
+		Email:      userInfo["email"],
+		Id:         userInfo["id"],
 	}
-	if final.Email != "" && final.Id != "" && final.Name != "" {
-		Connection0auth(tab, final.Email, final.Name, final.FamilyName, w, r, final.Id)
+	fmt.Println("     given         ", final.Email, final.Name, final.Id)
+	if final.Email != nil && final.Id != nil && final.Name != nil {
+		Email := (final.Email).(string)
+		Name := (final.Name).(string)
+		Id := (final.Id).(string)
+		FamilyName := ""
+		if final.FamilyName == nil {
+			Email = Name
+		} else {
+			FamilyName = (final.FamilyName).(string)
+		}
+
+		Connection0auth(tab, Email, Name, FamilyName, w, r, Id)
 	} else {
 		//pas d'email
 		message := "connecting to the forum requires a valid email address and personal details, please go to your google email settings to work the magic. See you soon!"
