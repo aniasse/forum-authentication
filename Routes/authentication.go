@@ -373,7 +373,7 @@ func Connection0auth(tab db.Db, email string, name string, familyName string, w 
 
 			// data := fmt.Sprintf("surname=%s&name=%s&username=%s&email=%s&password=%s&confirmpwd=%s",
 			// name,familyName, name, "example@gmail.com", "exemple", "confirm exemple")
-			formcreate := Create{Surname: name, Name: familyName, Username: name, Email: email, Password: "password", Confirmpwd: "confirmpwd"}
+			formcreate := Create{Surname: name, Name: familyName, Username: name, Email: email, Password: "", Confirmpwd: ""}
 			r.URL.Path = "/create"
 			messageE := "email/username already used"
 			message := Message{Errormessage: messageE, CreateForm: formcreate}
