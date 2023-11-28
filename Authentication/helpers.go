@@ -142,3 +142,15 @@ func GenerateUsername(name string, tab db.Db) string {
 	}
 	return username
 }
+func Familyname(name string) (string, string) {
+	name = strings.Trim(name, " ")
+	arrayname := strings.Split(name, " ")
+	limit := len(arrayname)
+	if limit == 1 {
+		return name, name
+	}
+	lastfamilyname := arrayname[limit-1]
+	familynames := arrayname[0 : limit-1]
+	firstfamilyname := strings.Join(familynames, " ")
+	return firstfamilyname, lastfamilyname
+}

@@ -10,8 +10,8 @@ const (
 	GoUserInfoURL  = "https://www.googleapis.com/oauth2/v2/userinfo"                            // url to exchange token with user info
 
 	// -- github side
-	GitClientID     = "d0e6a8ea96ab8fe09e42"                     // our application id
-	GitClientSecret = "a00571f86a06be74e121c692a55383a209f3911c" // our secret client id
+	GitClientID     = "9b8a06490595c8ed0010"                     // our application id
+	GitClientSecret = "77aa4b05065248d269efe72d55ca2bbbdae7fa2b" // our secret client id //77aa4b05065248d269efe72d55ca2bbbdae7fa2b
 	GitRedirectURI  = "http://localhost:8080/auth/github/callback"
 	GitAuthURL      = "https://github.com/login/oauth/authorize"
 )

@@ -10,12 +10,11 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/gofrs/uuid/v5"
 )
 
 // handleGoogleLogin redirects the user to the google auth interface
-func HandleGoogleLogin(w http.ResponseWriter, r *http.Request) {
+func HandleGoogleLogin(w http.ResponseWriter, r *http.Request, tab db.Db) {
+	auth.CheckCookie(w, r, tab)
 	url := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=profile email&response_type=code", Google.GoAuthURL, Google.GoClientID, Google.GoRedirectURI)
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
@@ -75,69 +74,36 @@ func HandleCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 	fmt.Println("user info here", userInfo)
 
 	var final = struct {
-		Name       string
-		FamilyName string
-		Email      string
-		Id         string
+		Name       interface{}
+		FamilyName interface{}
+		Email      interface{}
+		Id         interface{}
 	}{
-		FamilyName: userInfo["family_name"].(string),
-		Name:       userInfo["given_name"].(string),
-		Email:      userInfo["email"].(string),
-		Id:         userInfo["id"].(string),
+		FamilyName: userInfo["family_name"],
+		Name:       userInfo["given_name"],
+		Email:      userInfo["email"],
+		Id:         userInfo["id"],
 	}
-	foundEmail := auth.GetDatafromBA(tab.Doc, final.Email, "email", db.User)
-	fmt.Println("find it           ", final.Name)
+	fmt.Println("     given         ", final.Email, final.Name, final.Id)
+	if final.Email != nil && final.Id != nil && final.Name != nil {
+		Email := (final.Email).(string)
+		Name := (final.Name).(string)
+		Id := (final.Id).(string)
+		FamilyName := ""
+		if final.FamilyName == nil {
+			Email = Name
+		} else {
+			FamilyName = (final.FamilyName).(string)
+		}
 
-	// verifier si le user existe deja sinon lui creer un compte dans les deux cas redirections vers /home
-	if foundEmail {
-		iduser, _, _ := auth.HelpersBA("users", tab, "id_user", "WHERE email='"+final.Email+"'", "")
-		auth.CreateSession(w, iduser, tab)
-		http.Redirect(w, r, "/home", http.StatusSeeOther)
+		Connection0auth(tab, Email, Name, FamilyName, w, r, Id)
 	} else {
-		newid, err := uuid.NewV4()
-		if err != nil {
-			fmt.Println("erreur avec le uuid niveau create account")
-			auth.Snippets(w, http.StatusInternalServerError)
-			return
-		}
-		// password hash
-		hashpassword, errorhash := auth.HashPassword(final.Id)
-		if errorhash != nil {
-			fmt.Println("error hash")
-			auth.Snippets(w, http.StatusInternalServerError)
-			return
-		}
-		//creation pseudo
-		username := auth.GenerateUsername(final.Name, tab)
+		//pas d'email
+		message := "missing personal information in Google"
 
-		values := "('" + newid.String() + "','" + final.Email + "','" + final.Name + "','" + username + "','" + final.FamilyName + "','" + hashpassword + "','../static/front-tools/images/profil.jpeg','../static/front-tools/images/mur.png')"
-		attributes := "(id_user,email,name,username,surname, password,pp,pc)"
-		error := tab.INSERT(db.User, attributes, values)
-		if error != nil {
-			fmt.Println("something wrong")
-			fmt.Println("error", error)
-			auth.Snippets(w, http.StatusInternalServerError)
-			return
-
-		}
-		valuesession := "('" + newid.String() + "')"
-		attributessession := "(user_id)"
-		errorsession := tab.INSERT("sessions", attributessession, valuesession)
-		if errorsession != nil {
-			fmt.Println("something wrong with insert session", errorsession)
-			fmt.Println("error", error)
-			auth.Snippets(w, http.StatusInternalServerError)
-			return
-
-		}
-		// fmt.Println("un w", w)
-		// creation of the session
-		auth.CreateSession(w, newid.String(), tab)
-		// fmt.Println("deux w", w)
-
-		//redirecting the user to their home page
-		http.Redirect(w, r, "/home", http.StatusSeeOther)
+		// message := "connecting to the forum requires a valid email address and personal details, please go to your google email settings to work the magic. See you soon!"
+		formlogin := Register{Username: "", Password: "", Message: message}
+		auth.DisplayFilewithexecute(w, "templates/register.html", formlogin, http.StatusBadRequest)
+		return
 	}
-	// t, _ := template.ParseFiles("templates/success.html")
-	// t.Execute(w, final)
 }

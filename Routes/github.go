@@ -4,14 +4,18 @@ import (
 	"encoding/json"
 	"fmt"
 	Github "forum/Authentication"
-	"html/template"
+	auth "forum/Authentication"
+	db "forum/Database"
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
-func HandleGitHubLogin(w http.ResponseWriter, r *http.Request) {
+func HandleGitHubLogin(w http.ResponseWriter, r *http.Request, tab db.Db) {
+	auth.CheckCookie(w, r, tab)
+
 	// redirecting user to githubAuth interface
 	parameter := url.Values{}
 	parameter.Set("client_id", Github.GitClientID)
@@ -22,7 +26,9 @@ func HandleGitHubLogin(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, redirectURL, http.StatusTemporaryRedirect)
 }
 
-func HandleGitHubCallback(w http.ResponseWriter, r *http.Request) {
+func HandleGitHubCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
+	auth.CheckCookie(w, r, tab)
+
 	// Retrieving permission code
 	code := r.URL.Query().Get("code")
 	// fmt.Println("code is here", code)
@@ -87,11 +93,34 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 		Email interface{}
 		Id    interface{}
 	}{
-		Name:  userResp["login"],
+		Name:  userResp["name"],
 		Email: userResp["email"],
 		Id:    userResp["id"],
 	}
+	fmt.Println("final id", final.Id)
 
-	t, _ := template.ParseFiles("templates/success.html")
-	t.Execute(w, final)
+	if final.Id != nil && final.Name != nil {
+		name, _ := (final.Name).(string)
+		Id, _ := (final.Id).(float64)
+		numeroString := strconv.FormatFloat(Id, 'f', -1, 64)
+		// fmt.Println("id", Id)
+		Email := ""
+		if final.Email == nil {
+			Email = numeroString + name
+		} else {
+			Email, _ = (final.Email).(string)
+
+		}
+		// Convertir en chaîne de caractères
+		firstName, familyName := auth.Familyname(name)
+		Connection0auth(tab, Email, firstName, familyName, w, r, numeroString)
+	} else {
+		//pas d'email
+		message := "missing personal information in Github"
+		// message := "connecting to the forum requires an email address and personal details, please make your email address visible on your github account to enjoy our site. See you soon!"
+		formlogin := Register{Username: "", Password: "", Message: message}
+		auth.DisplayFilewithexecute(w, "templates/register.html", formlogin, http.StatusBadRequest)
+		return
+	}
+
 }
