@@ -357,6 +357,14 @@ func Error404Handler(w http.ResponseWriter, r *http.Request) {
 }
 func Connection0auth(tab db.Db, email string, name string, familyName string, w http.ResponseWriter, r *http.Request, id string) {
 	auth.CheckCookie(w, r, tab)
+	if r.Method != "GET" {
+		auth.Snippets(w, http.StatusMethodNotAllowed)
+		return
+	}
+	if r.URL.Path != "/auth/github/callback" && r.URL.Path != "/auth/google/callback" {
+		auth.Snippets(w, http.StatusUnauthorized)
+		return
+	}
 	// verifier si le user existe deja sinon lui creer un compte dans les deux cas redirections vers /home
 	// iduser, _, foundId := auth.HelpersBA("users", tab, "id_user", "WHERE id_user='"+id+"'", "")
 	foundId := auth.GetDatafromBA(tab.Doc, id, "id_user", db.User)
