@@ -401,7 +401,7 @@ func Connection0auth(tab db.Db, email string, name string, familyName string, w 
 			//creation pseudo
 			username := auth.GenerateUsername(name, tab)
 
-			values := "('" + id + "','" + email + "','" + name + "','" + username + "','" + familyName + "','" + hashpassword + "','../static/front-tools/images/profil.jpeg','../static/front-tools/images/mur.png')"
+			values := "('" + id + "','" + email + "','" + familyName + "','" + username + "','" + name + "','" + hashpassword + "','../static/front-tools/images/profil.jpeg','../static/front-tools/images/mur.png')"
 			attributes := "(id_user,email,name,username,surname, password,pp,pc)"
 			error := tab.INSERT(db.User, attributes, values)
 			if error != nil {
@@ -426,6 +426,5 @@ func Connection0auth(tab db.Db, email string, name string, familyName string, w 
 		}
 		return
 	}
-	return
 
 }
