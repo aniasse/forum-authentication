@@ -29,7 +29,7 @@ body{
     border-radius: 50%;
 }
 form{
-    height: 47rem;
+    height:47rem;
     width: 33rem;
     background-color: rgba(238, 238, 247, 0.925);
     position: absolute;
@@ -46,6 +46,7 @@ form{
     letter-spacing: 0.5px;
     outline: none;
     border: none;
+    overflow-y: scroll;
 }
 form h3{
     font-size: 32px;
