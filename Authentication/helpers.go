@@ -2,11 +2,12 @@ package auth
 
 import (
 	"fmt"
+	"regexp"
+
 	// auth "forum/Authentication"
 	db "forum/Database"
 	"math/rand"
 	"net/http"
-	"net/mail"
 	"strconv"
 	"strings"
 	"text/template"
@@ -101,11 +102,19 @@ func DisplayFilewithexecute(w http.ResponseWriter, templatePath string, execute 
 
 // validation email user
 func ValidMailAddress(address string) (string, bool) {
-	addr, err := mail.ParseAddress(address)
+
+	regex := "^[A-Za-z0-9._%+-]{2,}@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+
+	// Test de la chaîne "peach" avec la regex
+	match, err := regexp.MatchString(regex, address)
+	// Vérification des erreurs
 	if err != nil {
-		return "", false
+		fmt.Println("Erreur lors de la correspondance de la regex:", err)
 	}
-	return addr.Address, true
+
+	// Affichage du résultat
+	fmt.Println(match, "de l'email", address)
+	return address, match
 }
 
 func CheckCookie(w http.ResponseWriter, r *http.Request, tab db.Db) {

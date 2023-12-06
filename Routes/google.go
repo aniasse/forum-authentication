@@ -99,7 +99,7 @@ func HandleCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 		Id := (final.Id).(string)
 		FamilyName := ""
 		if final.FamilyName == nil {
-			Email = Name
+			FamilyName = Name
 		} else {
 			FamilyName = (final.FamilyName).(string)
 		}

@@ -97,13 +97,15 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 	}
 
 	var final = struct {
-		Name  interface{}
-		Email interface{}
-		Id    interface{}
+		Name           interface{}
+		Email          interface{}
+		Id             interface{}
+		UsernameGithub interface{}
 	}{
-		Name:  userResp["name"],
-		Email: userResp["email"],
-		Id:    userResp["id"],
+		Name:           userResp["name"],
+		Email:          userResp["email"],
+		Id:             userResp["id"],
+		UsernameGithub: userResp["login"],
 	}
 	fmt.Println("final id", final.Id)
 
@@ -114,7 +116,12 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request, tab db.Db) {
 		// fmt.Println("id", Id)
 		Email := ""
 		if final.Email == nil {
-			Email = numeroString + name
+			// 92727101+Seynabou96@users.noreply.github.com
+			login:=""
+			if final.UsernameGithub!=nil{
+				login=(final.UsernameGithub).(string)
+			}
+			Email = numeroString + "+" + login + "@users.noreply.github.com"
 		} else {
 			Email, _ = (final.Email).(string)
 
